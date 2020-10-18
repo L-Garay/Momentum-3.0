@@ -15,10 +15,10 @@ const app = express();
 // Conenct to MongoDB
 connectDB();
 
+// NOTE This sections is for middleware and third party packages - see other 'NOTE' for end of section
 // Client req.body parser
 app.use(express.json());
 
-// NOTE This sections is for middleware and third party packages - see other 'NOTE' for end of section
 // Sanatize requests being sent to DB to prevent NoSQL injections
 app.use(mongoSanitize());
 
