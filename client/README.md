@@ -2,4 +2,4 @@
 
 ### Web application inspired from Google's Extension Momentum.
 
-![Getting Started](./assets/momentumPicture.JPG)
+<img src="client\src\assets\momentumPicture.JPG" alt="Image of Momentum Extension from Google">
