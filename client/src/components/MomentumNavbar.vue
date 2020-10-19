@@ -50,4 +50,9 @@ input {
 .weather-widget {
   border-radius: 5px;
 }
+@media (min-width: 992px) {
+  .col-lg-2 {
+    min-width: 250px;
+  }
+}
 </style>
