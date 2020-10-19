@@ -2,7 +2,10 @@
   <div class="momentum-navbar">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-11 p-0 mt-3">
+        <div class="col-md-1 mt-3">
+          <momentumSettings />
+        </div>
+        <div class="col-md-10 p-0 mt-3">
           <nav class="navbar-light bg-transparent">
             <div class="row d-flex justify-content-end">
               <div class="col-md-4 col-lg-2 bg-dark text-light weather-widget">
@@ -32,8 +35,13 @@
 </template>
 
 <script>
+import MomentumSettings from "@/components/MomentumSettings.vue";
 export default {
-  name: "momentum-navbar"
+  name: "momentum-navbar",
+  components: {
+    MomentumSettings
+  },
+  methods: {}
 };
 </script>
 
