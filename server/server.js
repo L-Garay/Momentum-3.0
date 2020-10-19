@@ -1,11 +1,12 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const connectDB = require('./config/DBConfig');
+// const connectDB = require('./config/DBConfig');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const configureCors = require('./config/CorsConfig');
+import DBConfig from './config/DBConfig';
 
 // Load environment variables
 dotenv.config({ path: './config/config.env' });
@@ -13,7 +14,8 @@ dotenv.config({ path: './config/config.env' });
 // Initial server setup
 const app = express();
 // Conenct to MongoDB
-connectDB();
+// connectDB();
+DBConfig.connectDB();
 
 // NOTE This sections is for middleware and third party packages - see other 'NOTE' for end of section
 // Client req.body parser
