@@ -8,8 +8,10 @@ const hpp = require('hpp');
 const configureCors = require('./config/CorsConfig');
 import DBConfig from './config/DBConfig';
 
-// Load environment variables
-dotenv.config({ path: './config/config.env' });
+// // Load environment variables
+dotenv.config();
+// NOTE I had to move the .env file to the top level, because for some reason I couldn't access process.env.whatever when the .env file was within the config folder.  So moved it out, renamed the folder to db and just called the file .env
+// dotenv.config({ path: './config/config.env' });
 
 // Initial server setup
 const app = express();
