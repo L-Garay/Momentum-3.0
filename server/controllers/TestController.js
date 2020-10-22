@@ -1,4 +1,5 @@
 import BaseController from '../utils/BaseController';
+import ErrorResponse from '../utils/ErrorResponse';
 
 export class TestController extends BaseController {
   constructor() {
@@ -10,7 +11,7 @@ export class TestController extends BaseController {
     try {
       return res.status(200).send({ data: 'NOTHING' });
     } catch (error) {
-      next(error);
+      next(new ErrorResponse(`THIS IS A TEST`, 404));
     }
   }
 }
