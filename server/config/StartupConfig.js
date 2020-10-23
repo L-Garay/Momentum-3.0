@@ -5,6 +5,7 @@ import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 import hpp from 'hpp';
 import { RegisterControllers, Paths } from '../../Setup';
+import errorHandler from '../middleware/Error';
 
 export default class Startup {
   static ConfigureGlobalMiddleware(app) {
@@ -23,6 +24,7 @@ export default class Startup {
     app.use(mongoSanitize());
     app.use(xss());
     app.use(hpp());
+    app.use(errorHandler);
   }
   static ConfigureRoutes(app) {
     let router = express.Router();
