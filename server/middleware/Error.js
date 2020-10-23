@@ -28,4 +28,4 @@ const errorHandler = (err, req, res, next) => {
     .json({ success: false, error: error.message || 'Server Error' });
 };
 
-export default errorHandler();
+export default errorHandler;
