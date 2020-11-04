@@ -3,12 +3,16 @@ import Vuex from 'vuex';
 import axios from 'axios';
 
 Vue.use(Vuex);
-let base = window.location.host.includes('localhost')
-  ? '//localhost:8080/'
+// let base = window.location.host.includes('localhost')
+//   ? '//localhost:8080/'
+//   : '/';
+
+// let api = axios.create({ baseURL: base + 'api/' });
+let base = window.location.host.includes('localhost:8080')
+  ? '//localhost:3000/'
   : '/';
 
 let api = axios.create({ baseURL: base + 'api/' });
-
 export default new Vuex.Store({
   state: {
     photo: null,
@@ -29,14 +33,23 @@ export default new Vuex.Store({
   actions: {
     //#region --Photo Methods--
     async getPhoto({ commit }) {
-      let res = await api.get('photos');
-      commit('setPhoto', res.data);
+      try {
+        let res = await api.get('photos');
+        commit('setPhoto', res.data);
+      } catch (error) {
+        console.log(error.toJSON());
+      }
     },
     //#endregion
     //#region --Weather Methods--
     async getWeather({ commit }, coord) {
-      let res = await api.get('weather', coord);
-      commit('setWeather', res.data);
+      try {
+        let res = await api.get('weather', coord);
+        debugger;
+        commit('setWeather', res.data);
+      } catch (error) {
+        console.log(error.toJSON());
+      }
     },
     //#endregion
   },
