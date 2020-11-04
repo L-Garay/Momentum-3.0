@@ -1,4 +1,4 @@
-// @ts-ignore
+// Set options as a parameter, environment variable, or rc file.
+// eslint-disable-next-line no-global-assign
 require = require('esm')(module);
-// @ts-ignore
-module.exports = require('./server/server');
+module.exports = require('./server/main.js');
