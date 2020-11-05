@@ -3,11 +3,7 @@ import Vuex from 'vuex';
 import axios from 'axios';
 
 Vue.use(Vuex);
-// let base = window.location.host.includes('localhost')
-//   ? '//localhost:8080/'
-//   : '/';
 
-// let api = axios.create({ baseURL: base + 'api/' });
 let base = window.location.host.includes('localhost:8080')
   ? '//localhost:3000/'
   : '/';
