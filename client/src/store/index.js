@@ -13,6 +13,7 @@ export default new Vuex.Store({
   state: {
     photo: null,
     weather: null,
+    quote: null,
   },
   mutations: {
     //#region --Photo Methods--
@@ -24,6 +25,11 @@ export default new Vuex.Store({
     setWeather(state, weather) {
       console.log(weather);
       state.weather = weather;
+    },
+    //#endregion
+    //#region --Quote Methods--
+    setQuote(state, quote) {
+      state.quote = quote;
     },
     //#endregion
   },
@@ -51,6 +57,17 @@ export default new Vuex.Store({
       try {
         let res = await api.post('weather/change', cityName);
         commit('setWeather', res.data);
+      } catch (error) {
+        console.log(error.toJSON());
+      }
+    },
+    //#endregion
+    //#region --Quote Methods--
+    async getQuote({ commit }) {
+      try {
+        let res = await api.get('quotes');
+        console.log(res.data);
+        commit('setQuote', res.data);
       } catch (error) {
         console.log(error.toJSON());
       }
