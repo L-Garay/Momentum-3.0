@@ -34,6 +34,12 @@ p {
 p:first-child {
   margin: 0;
 }
+p:last-child {
+  opacity: 0.7;
+}
+p:last-child:hover {
+  opacity: 1;
+}
 @media (max-width: 768px) {
   p {
     font-size: 13px;
