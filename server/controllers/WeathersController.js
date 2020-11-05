@@ -4,7 +4,7 @@ import { weatherService } from '../services/WeatherService';
 export class WeathersController extends BaseController {
   constructor() {
     super('api/weather');
-    this.router.get('', this.getWeather).get('/change', this.getNewWeather);
+    this.router.post('', this.getWeather).post('/change', this.getNewWeather);
   }
 
   async getWeather(req, res, next) {

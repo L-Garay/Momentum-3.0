@@ -5,9 +5,22 @@
     :style="{ 'background-image': 'url(' + photo.urls.regular + ')' }"
   >
     <div class="container-fluid">
-      <settings />
-      <weather />
-      <momentumQuote />
+      <div class="row justify-content-between">
+        <div class="col-4"><settings /></div>
+        <div class="col-4 mr-2"><weather /></div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Time and greeting here -->
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-4 offest-4">
+          <momentumQuote />
+        </div>
+      </div>
     </div>
   </div>
 </template>

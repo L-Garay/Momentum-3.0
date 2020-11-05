@@ -22,6 +22,7 @@ export default new Vuex.Store({
     //#endregion
     //#region --Weather Methods--
     setWeather(state, weather) {
+      console.log(weather);
       state.weather = weather;
     },
     //#endregion
@@ -40,8 +41,15 @@ export default new Vuex.Store({
     //#region --Weather Methods--
     async getWeather({ commit }, coord) {
       try {
-        let res = await api.get('weather', coord);
-        debugger;
+        let res = await api.post('weather', coord);
+        commit('setWeather', res.data);
+      } catch (error) {
+        console.log(error.toJSON());
+      }
+    },
+    async getNewWeather({ commit }, cityName) {
+      try {
+        let res = await api.post('weather/change', cityName);
         commit('setWeather', res.data);
       } catch (error) {
         console.log(error.toJSON());
