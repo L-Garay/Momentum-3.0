@@ -7,7 +7,7 @@
     <div class="container-fluid">
       <div class="row justify-content-between">
         <div class="col-4"><settings /></div>
-        <div class="col-4 mr-2"><weather /></div>
+        <div class="col-4 mr-3"><weather /></div>
       </div>
     </div>
     <div class="container-fluid">

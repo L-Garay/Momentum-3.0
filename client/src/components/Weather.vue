@@ -175,7 +175,7 @@ export default {
 
 .locationIcon {
   z-index: 1000;
-  font-size: 10px !important;
+  font-size: 15px;
   color: white;
 }
 
@@ -183,7 +183,7 @@ export default {
   z-index: 1000;
   position: absolute;
   font-family: 'Noto Sans', sans-serif;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 200;
   right: 20px;
   bottom: 15px;
@@ -194,9 +194,27 @@ export default {
   right: 20px;
   bottom: 15px;
 }
-@media (min-width: 992px) {
-  .col-lg-2 {
-    min-width: 250px;
+@media (max-width: 1024px) {
+  .main {
+    width: 225px;
+  }
+  #F {
+    font-size: 20px;
+  }
+  .Temp {
+    font-size: 27px;
+  }
+  .Location {
+    font-size: 14px;
+  }
+  .locationIcon {
+    font-size: 12px;
+  }
+  .Condtion {
+    font-size: 12px;
+  }
+  .Time {
+    font-size: 15px;
   }
 }
 </style>
