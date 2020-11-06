@@ -40,9 +40,9 @@ p:last-child {
 p:last-child:hover {
   opacity: 1;
 }
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   p {
-    font-size: 13px;
+    font-size: 15px;
   }
 }
 </style>

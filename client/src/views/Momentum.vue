@@ -12,7 +12,9 @@
     </div>
     <div class="container-fluid middle">
       <div class="row">
-        <!-- Time and greeting here -->
+        <div class="col-6 offset-3">
+          <clock />
+        </div>
       </div>
     </div>
     <div class="container-fluid ">
@@ -29,12 +31,14 @@
 import Weather from '@/components/Weather.vue';
 import Quote from '@/components/Quote.vue';
 import Settings from '@/components/MomentumSettings.vue';
+import Clock from '@/components/Clock.vue';
 export default {
   name: 'momentum',
   components: {
     Weather,
     Quote,
     Settings,
+    Clock,
   },
   data() {
     return {};
