@@ -14,6 +14,7 @@
       <div class="row">
         <div class="col-6 offset-3">
           <clock />
+          <greeting />
         </div>
       </div>
     </div>
@@ -32,6 +33,7 @@ import Weather from '@/components/Weather.vue';
 import Quote from '@/components/Quote.vue';
 import Settings from '@/components/MomentumSettings.vue';
 import Clock from '@/components/Clock.vue';
+import Greeting from '@/components/Greeting.vue';
 export default {
   name: 'momentum',
   components: {
@@ -39,6 +41,7 @@ export default {
     Quote,
     Settings,
     Clock,
+    Greeting,
   },
   data() {
     return {};
