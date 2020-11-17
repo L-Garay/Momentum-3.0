@@ -4,6 +4,10 @@ import ErrorResponse from '../utils/ErrorResponse';
 class LastUserService {
   async create(user) {
     try {
+      let result = await dbContext.LastUser.findOne({});
+      if (result) {
+        await dbContext.LastUser.findOneAndDelete({});
+      }
       return await dbContext.LastUser.create(user);
     } catch (error) {
       throw error;

@@ -56,7 +56,8 @@ export default {
       }
     },
     createNewUser() {
-      (this.noUser = true), (this.user.name = '');
+      this.noUser = true;
+      this.user.name = '';
       this.$nextTick(() => this.$refs.focus.focus());
     },
     getTimeOfDay() {
