@@ -24,7 +24,6 @@ export default new Vuex.Store({
     //#endregion
     //#region --Weather Methods--
     setWeather(state, weather) {
-      console.log(weather);
       state.weather = weather;
     },
     //#endregion
@@ -73,7 +72,6 @@ export default new Vuex.Store({
     async getQuote({ commit }) {
       try {
         let res = await api.get('quotes');
-        console.log(res.data);
         commit('setQuote', res.data);
       } catch (error) {
         console.log(error.toJSON());

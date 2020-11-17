@@ -47,14 +47,17 @@ export default {
     },
     async checkForLastUser() {
       let result = await this.$store.dispatch('getLastUser');
+      console.log(result);
       if (result === undefined) {
         this.noUser = true;
       } else if (result) {
+        this.noUser = false;
         this.$store.state.user = result;
       }
     },
     createNewUser() {
-      (this.noUser = true), (this.user.name = '');
+      this.noUser = true;
+      this.user.name = '';
       this.$nextTick(() => this.$refs.focus.focus());
     },
     getTimeOfDay() {
