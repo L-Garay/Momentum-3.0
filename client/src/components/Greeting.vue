@@ -2,6 +2,7 @@
   <div class="greeting" v-if="noUser">
     Good {{ timeOfDay }},
     <input
+      v-click-outside="onClickOutside"
       ref="focus"
       type="text"
       v-model="user.name"
@@ -10,16 +11,25 @@
     />
   </div>
   <div class="greeting" v-else>
-    Good {{ timeOfDay }}, {{ User.name }}
+    <h1>
+      Good {{ timeOfDay }}, <span>{{ User.name }}</span>
+    </h1>
+    <!-- Good {{ timeOfDay }}, {{ User.name }} -->
     <i class="fas fa-pencil-alt" @click="createNewUser"></i>
   </div>
 </template>
 
 <script>
 import VueInputAutoWidth from 'vue-input-autowidth';
+import vClickOUtside from 'v-click-outside';
 import Vue from 'vue';
 Vue.use(VueInputAutoWidth);
+Vue.use(vClickOUtside);
+
 export default {
+  directives: {
+    clickOutside: vClickOUtside.directive,
+  },
   name: 'Greeting',
   data() {
     return {
@@ -69,6 +79,9 @@ export default {
       }
       setTimeout(this.getTimeOfDay, 6000); //every minute (I don't know how this will effect app speed)
     },
+    onClickOutside() {
+      this.noUser = false;
+    },
   },
 };
 </script>
@@ -89,6 +102,9 @@ input {
 }
 input:focus {
   outline: none;
+}
+span:hover {
+  cursor: pointer;
 }
 i {
   color: green;
