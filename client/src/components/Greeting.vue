@@ -47,9 +47,11 @@ export default {
     },
     async checkForLastUser() {
       let result = await this.$store.dispatch('getLastUser');
+      console.log(result);
       if (result === undefined) {
         this.noUser = true;
       } else if (result) {
+        this.noUser = false;
         this.$store.state.user = result;
       }
     },

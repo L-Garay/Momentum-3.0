@@ -1,7 +1,7 @@
 import BaseController from '../utils/BaseController';
 import { lastUserService } from '../services/LastUserService';
 
-export class UsersController extends BaseController {
+export class LastUsersController extends BaseController {
   constructor() {
     super('api/lastuser');
     this.router.post('', this.create).get('', this.get);
