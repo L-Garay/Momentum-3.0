@@ -14,6 +14,7 @@ export default new Vuex.Store({
     photo: null,
     weather: null,
     quote: null,
+    user: null,
   },
   mutations: {
     //#region --Photo Methods--
@@ -30,6 +31,11 @@ export default new Vuex.Store({
     //#region --Quote Methods--
     setQuote(state, quote) {
       state.quote = quote;
+    },
+    //#endregion
+    //#region --User Methods--
+    setUser(state, user) {
+      state.user = user;
     },
     //#endregion
   },
@@ -63,6 +69,7 @@ export default new Vuex.Store({
     },
     //#endregion
     //#region --Quote Methods--
+
     async getQuote({ commit }) {
       try {
         let res = await api.get('quotes');
@@ -71,6 +78,17 @@ export default new Vuex.Store({
       } catch (error) {
         console.log(error.toJSON());
       }
+    },
+    //#endregion
+    //#region --User Methods--
+    async newUser({ commit }, user) {
+      let res = await api.post('users', user);
+      await api.post('lastuser', res.data);
+      commit('setUser', res.data);
+    },
+    async getLastUser() {
+      let res = await api.get('lastuser');
+      return res.data;
     },
     //#endregion
   },
