@@ -15,6 +15,7 @@ export default new Vuex.Store({
     weather: null,
     quote: null,
     user: null,
+    users: [],
   },
   mutations: {
     //#region --Photo Methods--
@@ -35,6 +36,9 @@ export default new Vuex.Store({
     //#region --User Methods--
     setUser(state, user) {
       state.user = user;
+    },
+    setUsers(state, users) {
+      state.users = users;
     },
     //#endregion
   },
@@ -83,6 +87,10 @@ export default new Vuex.Store({
       let res = await api.post('users', user);
       await api.post('lastuser', res.data);
       commit('setUser', res.data);
+    },
+    async getAllUsers({ commit }) {
+      let res = await api.get('users');
+      commit('setUsers', res.data);
     },
     async getLastUser() {
       let res = await api.get('lastuser');

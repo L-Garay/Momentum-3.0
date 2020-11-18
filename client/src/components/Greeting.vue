@@ -10,10 +10,30 @@
       v-autowidth="{ maxWidth: '550px', minWidth: '100px', comfortZone: 30 }"
     />
   </div>
-  <div class="greeting" v-else>
-    <h1>
-      Good {{ timeOfDay }}, <span @click="createNewUser">{{ User.name }}</span>
-    </h1>
+  <div class="greeting d-flex" v-else>
+    <h1>Good {{ timeOfDay }}, {{ User.name }}.</h1>
+
+    <div class="dropdown dropright">
+      <button
+        class="btn"
+        type="button"
+        id="dropdownMenuButton"
+        data-toggle="dropdown"
+      >
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+      <div class="dropdown-menu" v-if="!showAllUsers">
+        <a class="dropdown-item" @click="createNewUser">Create new user</a>
+        <a class="dropdown-item" @click="showAllUsersList">Change user</a>
+      </div>
+      <div class="dropdown-menu" v-else>
+        <ul class="usersList">
+          <li v-for="user in Users" :key="user._id">
+            {{ user.name }}
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -32,15 +52,20 @@ export default {
         name: '',
         militaryTimeSelected: false,
       },
+      showAllUsers: false,
     };
   },
   mounted() {
     this.getTimeOfDay();
     this.checkForLastUser();
+    this.$store.dispatch('getAllUsers');
   },
   computed: {
     User() {
       return this.$store.state.user;
+    },
+    Users() {
+      return this.$store.state.users;
     },
   },
   methods: {
@@ -74,6 +99,11 @@ export default {
     },
     onClickOutside() {
       this.noUser = false;
+      this.showAllUsers = false;
+    },
+    showAllUsersList() {
+      this.showAllUsers = true;
+      $('.dropdown-toggle').dropdown('show');
     },
   },
 };
@@ -84,6 +114,7 @@ export default {
   font-size: 3rem;
   color: white;
   text-align: center;
+  justify-content: center;
 }
 input {
   border: none;
@@ -100,11 +131,19 @@ span:hover {
   cursor: pointer;
 }
 i {
+  font-size: 1.25rem;
   color: grey;
   opacity: 0.6;
 }
 i:hover {
   cursor: pointer;
+  color: white;
   opacity: 1;
+}
+.btn.focus .btn:focus {
+  box-shadow: transparent !important;
+}
+a:hover {
+  cursor: pointer;
 }
 </style>

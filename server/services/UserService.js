@@ -9,10 +9,17 @@ class UserService {
       throw error;
     }
   }
-  async get() {
+  // async get() {
+  //   try {
+  //     // get the last/most recent document from User collection
+  //     return await dbContext.User.findOne({}, { sort: { $natural: -1 } });
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
+  async getAll() {
     try {
-      // get the last/most recent document from User collection
-      return await dbContext.User.findOne({}, { sort: { $natural: -1 } });
+      return await dbContext.User.find((u) => (u = {}));
     } catch (error) {
       throw error;
     }
