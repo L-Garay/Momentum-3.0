@@ -2,7 +2,7 @@
   <div class="greeting" v-if="noUser">
     Good {{ timeOfDay }},
     <input
-      v-click-outside="onClickOutside"
+      v-on:blur="onClickOutside"
       ref="focus"
       type="text"
       v-model="user.name"
@@ -12,24 +12,17 @@
   </div>
   <div class="greeting" v-else>
     <h1>
-      Good {{ timeOfDay }}, <span>{{ User.name }}</span>
+      Good {{ timeOfDay }}, <span @click="createNewUser">{{ User.name }}</span>
     </h1>
-    <!-- Good {{ timeOfDay }}, {{ User.name }} -->
-    <i class="fas fa-pencil-alt" @click="createNewUser"></i>
   </div>
 </template>
 
 <script>
 import VueInputAutoWidth from 'vue-input-autowidth';
-import vClickOUtside from 'v-click-outside';
 import Vue from 'vue';
 Vue.use(VueInputAutoWidth);
-Vue.use(vClickOUtside);
 
 export default {
-  directives: {
-    clickOutside: vClickOUtside.directive,
-  },
   name: 'Greeting',
   data() {
     return {
@@ -107,8 +100,8 @@ span:hover {
   cursor: pointer;
 }
 i {
-  color: green;
-  opacity: 0.1;
+  color: grey;
+  opacity: 0.6;
 }
 i:hover {
   cursor: pointer;
