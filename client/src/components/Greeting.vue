@@ -12,32 +12,6 @@
   </div>
   <div class="greeting d-flex" v-else>
     <h1>Good {{ timeOfDay }}, {{ User.name }}.</h1>
-
-    <!-- <div class="dropdown dropright">
-      <button
-        class="btn"
-        type="button"
-        id="dropdownMenuButton"
-        data-toggle="dropdown"
-      >
-        <i class="fas fa-ellipsis-h"></i>
-      </button>
-      <div class="dropdown-menu" v-if="!showAllUsers">
-        <a class="dropdown-item" @click="createNewUser">Create new user</a>
-        <a class="dropdown-item" @click="showAllUsersList">Change user</a>
-      </div>
-      <div class="dropdown-menu" v-else>
-        <ul class="usersList">
-          <li
-            v-for="user in Users"
-            :key="user._id"
-            @click="getUserById(user._id)"
-          >
-            {{ user.name }}
-          </li>
-        </ul>
-      </div>
-    </div> -->
     <div class="dropdown">
       <a
         id="dLabel"
@@ -81,7 +55,7 @@ export default {
   data() {
     return {
       noUser: true,
-      timeOfDay: null,
+      timeOfDay: 'evening',
       user: {
         name: '',
         militaryTimeSelected: false,
@@ -103,6 +77,15 @@ export default {
     },
   },
   methods: {
+    getTimeOfDay() {
+      let hour = new Date().getHours();
+      if (hour < 12) {
+        this.timeOfDay = 'morning';
+      } else if (hour >= 12 && hour < 17) {
+        this.timeOfDay = 'afternoon';
+      }
+      setTimeout(this.getTimeOfDay, 3000 * 10);
+    },
     dropdown() {
       document.getElementById('usersDropdown').classList.toggle('show');
     },
@@ -127,16 +110,6 @@ export default {
     },
     getUserById(id) {
       this.$store.dispatch('getUserById', id);
-    },
-    getTimeOfDay() {
-      let hours = new Date().getHours(); // 0 - 23
-      if (hours < 12) {
-        this.timeOfDay = 'morning';
-      } else if (hours > 12 && hours < 17) {
-        this.timeOfDay = 'afternoon';
-      }
-      console.log(this.timeOfDay);
-      setTimeout(this.getTimeOfDay, 6000); //every minute (I don't know how this will effect app speed)
     },
     onClickOutside() {
       this.noUser = false;
