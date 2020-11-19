@@ -35,7 +35,7 @@ class PhotoService {
     return data;
   }
   async getPhotosByUserId(id) {
-    let data = await dbContext.Photo.findById({ userId: id });
+    let data = await dbContext.Photo.find({ userId: id });
     if (!data) {
       throw new ErrorResponse('Unable to find photos with that userId', 400);
     }
