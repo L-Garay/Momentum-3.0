@@ -24,6 +24,13 @@ class UserService {
       throw error;
     }
   }
+  async getById(id) {
+    try {
+      return await dbContext.User.findById(id);
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export const userService = new UserService();

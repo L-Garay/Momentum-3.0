@@ -92,6 +92,10 @@ export default new Vuex.Store({
       let res = await api.get('users');
       commit('setUsers', res.data);
     },
+    async getUserById({ commit }, id) {
+      let res = await api.get('users/' + id);
+      commit('setUser', res.data);
+    },
     async getLastUser() {
       let res = await api.get('lastuser');
       return res.data;

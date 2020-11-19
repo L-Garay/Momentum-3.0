@@ -13,7 +13,7 @@
   <div class="greeting d-flex" v-else>
     <h1>Good {{ timeOfDay }}, {{ User.name }}.</h1>
 
-    <div class="dropdown dropright">
+    <!-- <div class="dropdown dropright">
       <button
         class="btn"
         type="button"
@@ -28,11 +28,45 @@
       </div>
       <div class="dropdown-menu" v-else>
         <ul class="usersList">
-          <li v-for="user in Users" :key="user._id">
+          <li
+            v-for="user in Users"
+            :key="user._id"
+            @click="getUserById(user._id)"
+          >
             {{ user.name }}
           </li>
         </ul>
       </div>
+    </div> -->
+    <div class="dropdown">
+      <a
+        id="dLabel"
+        role="button"
+        data-toggle="dropdown"
+        class="btn btn-primary"
+      >
+        <i class="fas fa-ellipsis-h"></i>
+      </a>
+      <ul
+        class="dropdown-menu multi-level"
+        role="menu"
+        aria-labelledby="dropdownMenu"
+      >
+        <li><a @click="createNewUser">Create new user</a></li>
+        <li class="divider"></li>
+        <li class="dropdown-submenu">
+          <a tabindex="-1">Change user</a>
+          <ul class="dropdown-menu">
+            <li
+              v-for="user in Users"
+              :key="user._id"
+              @click="getUserById(user._id)"
+            >
+              {{ user.name }}
+            </li>
+          </ul>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -69,6 +103,9 @@ export default {
     },
   },
   methods: {
+    dropdown() {
+      document.getElementById('usersDropdown').classList.toggle('show');
+    },
     submitNewUser() {
       this.$store.dispatch('newUser', this.user);
       this.noUser = false;
@@ -88,6 +125,9 @@ export default {
       this.user.name = '';
       this.$nextTick(() => this.$refs.focus.focus());
     },
+    getUserById(id) {
+      this.$store.dispatch('getUserById', id);
+    },
     getTimeOfDay() {
       let hours = new Date().getHours(); // 0 - 23
       if (hours < 12) {
@@ -95,6 +135,7 @@ export default {
       } else if (hours > 12 && hours < 17) {
         this.timeOfDay = 'afternoon';
       }
+      console.log(this.timeOfDay);
       setTimeout(this.getTimeOfDay, 6000); //every minute (I don't know how this will effect app speed)
     },
     onClickOutside() {
@@ -103,7 +144,7 @@ export default {
     },
     showAllUsersList() {
       this.showAllUsers = true;
-      $('.dropdown-toggle').dropdown('show');
+      // $('.dropdown-toggle').dropdown('show');
     },
   },
 };
@@ -140,10 +181,61 @@ i:hover {
   color: white;
   opacity: 1;
 }
-.btn.focus .btn:focus {
-  box-shadow: transparent !important;
-}
+
 a:hover {
   cursor: pointer;
+}
+li:hover {
+  cursor: pointer;
+}
+
+/* NOTE Dropdown settings */
+
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  -webkit-border-radius: 0 6px 6px 6px;
+  -moz-border-radius: 0 6px 6px;
+  border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+  display: block;
+}
+
+.dropdown-submenu > a:after {
+  display: block;
+  content: ' ';
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #ccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+
+.dropdown-submenu:hover > a:after {
+  border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+  float: none;
+}
+
+.dropdown-submenu.pull-left > .dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  -webkit-border-radius: 6px 0 6px 6px;
+  -moz-border-radius: 6px 0 6px 6px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
