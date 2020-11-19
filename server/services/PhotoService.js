@@ -34,9 +34,16 @@ class PhotoService {
     }
     return data;
   }
-  async savePhoto(body) {
-    await unsplash.photos.downloadPhoto(body.old);
-    return await dbContext.Photo.create(body.updated);
+  async getPhotosByUserId(id) {
+    let data = await dbContext.Photo.find({ userId: id });
+    if (!data) {
+      throw new ErrorResponse('Unable to find photos with that userId', 400);
+    }
+    return data;
+  }
+  async savePhoto(combo) {
+    await unsplash.photos.downloadPhoto(combo.original);
+    return await dbContext.Photo.create(combo.updated);
   }
   async deletePhoto(id) {
     let data = await dbContext.Photo.findByIdAndDelete(id);

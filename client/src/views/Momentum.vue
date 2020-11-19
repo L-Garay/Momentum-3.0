@@ -6,7 +6,7 @@
   >
     <div class="container-fluid top">
       <div class="row justify-content-between">
-        <div class="col-4"><settings /></div>
+        <div class="col-4"><settings @openPhotosModal="openPhotosModal" /></div>
         <div class="col-4 mr-3"><weather /></div>
       </div>
     </div>
@@ -16,6 +16,43 @@
           <clock />
           <greeting />
         </div>
+        <vue-modal v-if="showModal" @close="closePhotosModal" />
+        <!-- NOTE Can't use bootstrap modal because for some reason I get an error saying the '$' symbol when trying to programatically open/close it using bootstrap's $('#myModal').modal(options) is 'undefined'. I have tried using a cdn directly from jquery, I have tried npm i-ing jquery directly into the project and neither work.  I have tried reodering the cdns, I have tried nmp i-ing bootstrap directly, and neither work.  I have no idea why it's not working. So the workaround is to use a modal made by the vue devs found at https://vuejs.org/v2/examples/modal.html?
+          <div
+          class="modal"
+          id="photosModal"
+          ref="photosModal"
+          tabindex="-1"
+          role="dialog"
+        >
+          <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalScrollableTitle">
+                  Modal title
+                </h5>
+                <button type="button" class="close" data-dismiss="modal">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                ...
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div> -->
       </div>
     </div>
     <div class="container-fluid ">
@@ -31,9 +68,11 @@
 <script>
 import Weather from '@/components/Weather.vue';
 import Quote from '@/components/Quote.vue';
-import Settings from '@/components/MomentumSettings.vue';
+import Settings from '@/components/Settings.vue';
 import Clock from '@/components/Clock.vue';
 import Greeting from '@/components/Greeting.vue';
+import VueModal from '@/components/VueModal.vue';
+import Vue from 'vue';
 export default {
   name: 'momentum',
   components: {
@@ -42,9 +81,13 @@ export default {
     Settings,
     Clock,
     Greeting,
+    VueModal,
   },
   data() {
-    return {};
+    return {
+      bus: new Vue(),
+      showModal: false,
+    };
   },
   mounted() {
     this.$store.dispatch('getPhoto');
@@ -52,6 +95,14 @@ export default {
   computed: {
     photo() {
       return this.$store.state.photo;
+    },
+  },
+  methods: {
+    openPhotosModal() {
+      this.showModal = true;
+    },
+    closePhotosModal() {
+      this.showModal = false;
     },
   },
 };

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 
 const Photo = new Schema(
   {
@@ -15,6 +16,7 @@ const Photo = new Schema(
     userName: { type: String, required: true },
     name: { type: String, required: true },
     unsplashLink: { type: String, required: true },
+    userId: { type: ObjectId, ref: 'User', required: true },
   },
   { timestamps: true, toJSON: { virtuals: true } }
 );

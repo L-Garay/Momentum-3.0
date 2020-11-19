@@ -6,13 +6,22 @@
         <div class="dropdown2">
           <button class="dropbtn2 ">Photos</button>
           <div class="dropdown-content2">
-            <button class="btn btn-none btn-sm option-button">
+            <button
+              class="btn btn-none btn-sm option-button"
+              @click="getNewPhoto"
+            >
               Get Photo
             </button>
-            <button class="btn btn-none btn-sm option-button">
+            <button
+              class="btn btn-none btn-sm option-button"
+              @click="savePhoto"
+            >
               Save Photo
             </button>
-            <button class="btn btn-none btn-sm option-button">
+            <button
+              class="btn btn-none btn-sm option-button"
+              @click="openPhotosModal"
+            >
               Choose Photo
             </button>
           </div>
@@ -46,11 +55,43 @@
 
 <script>
 export default {
-  name: 'momentum-settings',
+  name: 'Settings',
+  props: ['bus'],
+  mounted() {},
+  computed: {},
   methods: {
+    // Open and close settings dropdown
     settings() {
       document.getElementById('myDropdown').classList.toggle('show');
     },
+    //#region --Photo Methods--
+    getNewPhoto() {
+      this.$store.dispatch('getPhoto');
+      this.settings();
+    },
+    savePhoto() {
+      let savedPhoto = {
+        id: this.$store.state.photo.id,
+        width: this.$store.state.photo.width,
+        height: this.$store.state.photo.height,
+        urls: {
+          fullUrl: this.$store.state.photo.urls.full,
+          regular: this.$store.state.photo.urls.regular,
+          thumbUrl: this.$store.state.photo.urls.thumb,
+        },
+        downloadLocation: this.$store.state.photo.links.download_location,
+        userName: this.$store.state.photo.user.username,
+        name: this.$store.state.photo.user.name,
+        unsplashLink: this.$store.state.photo.links.html,
+        userId: this.$store.state.user.id,
+      };
+      this.$store.dispatch('savePhoto', savedPhoto);
+      this.settings();
+    },
+    openPhotosModal() {
+      this.$emit('openPhotosModal');
+    },
+    //#endregion
   },
 };
 </script>

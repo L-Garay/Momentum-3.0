@@ -43,7 +43,6 @@ export class PhotosController extends BaseController {
       next(error);
     }
   }
-
   async deletePhoto(req, res, next) {
     try {
       await photoService.deletePhoto(req.params.id);
