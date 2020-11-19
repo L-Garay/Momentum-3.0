@@ -12,6 +12,7 @@ let api = axios.create({ baseURL: base + 'api/' });
 export default new Vuex.Store({
   state: {
     photo: null,
+    savedPhotos: [],
     weather: null,
     quote: null,
     user: null,
@@ -21,6 +22,9 @@ export default new Vuex.Store({
     //#region --Photo Methods--
     setPhoto(state, photo) {
       state.photo = photo;
+    },
+    setSavedPhotos(state, photos) {
+      state.savedPhotos = photos;
     },
     //#endregion
     //#region --Weather Methods--
@@ -51,6 +55,19 @@ export default new Vuex.Store({
       } catch (error) {
         console.log(error.toJSON());
       }
+    },
+    async savePhoto({ dispatch, state }, savedPhoto) {
+      let combo = {
+        original: state.photo,
+        updated: savedPhoto,
+      };
+      await api.post('photos', combo);
+      dispatch('getSavedPhotosByUserId', state.user.id);
+    },
+    async getSavedPhotosByUserId({ commit }, id) {
+      console.log(id);
+      let res = await api.get('users/' + id + '/photos');
+      commit('setSavedPhotos', res.data);
     },
     //#endregion
     //#region --Weather Methods--

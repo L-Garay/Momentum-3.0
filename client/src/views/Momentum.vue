@@ -31,7 +31,7 @@
 <script>
 import Weather from '@/components/Weather.vue';
 import Quote from '@/components/Quote.vue';
-import Settings from '@/components/MomentumSettings.vue';
+import Settings from '@/components/Settings.vue';
 import Clock from '@/components/Clock.vue';
 import Greeting from '@/components/Greeting.vue';
 export default {

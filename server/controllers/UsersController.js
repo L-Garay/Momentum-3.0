@@ -1,5 +1,6 @@
 import BaseController from '../utils/BaseController';
 import { userService } from '../services/UserService';
+import { photoService } from '../services/PhotoService';
 
 export class UsersController extends BaseController {
   constructor() {
@@ -7,7 +8,8 @@ export class UsersController extends BaseController {
     this.router
       .post('', this.create)
       .get('', this.getAll)
-      .get('/:id', this.getById);
+      .get('/:id', this.getById)
+      .get('/:id/photos', this.getPhotosByUserId);
   }
 
   async create(req, res, next) {
@@ -37,6 +39,14 @@ export class UsersController extends BaseController {
   async getById(req, res, next) {
     try {
       let data = await userService.getById(req.params.id);
+      return res.status(200).send(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getPhotosByUserId(req, res, next) {
+    try {
+      let data = await photoService.getPhotosByUserId(req.params.id);
       return res.status(200).send(data);
     } catch (error) {
       next(error);
