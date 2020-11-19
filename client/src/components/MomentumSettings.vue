@@ -46,16 +46,16 @@
 
 <script>
 export default {
-  name: "momentum-settings",
+  name: 'momentum-settings',
   methods: {
     settings() {
-      document.getElementById("myDropdown").classList.toggle("show");
-    }
-  }
+      document.getElementById('myDropdown').classList.toggle('show');
+    },
+  },
 };
 </script>
 
-<style>
+<style scoped>
 .momentum-settings {
   position: fixed;
 }
