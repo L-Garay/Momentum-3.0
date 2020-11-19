@@ -18,7 +18,10 @@
             >
               Save Photo
             </button>
-            <button class="btn btn-none btn-sm option-button">
+            <button
+              class="btn btn-none btn-sm option-button"
+              @click="openPhotosModal"
+            >
               Choose Photo
             </button>
           </div>
@@ -53,6 +56,7 @@
 <script>
 export default {
   name: 'Settings',
+  props: ['bus'],
   mounted() {},
   computed: {},
   methods: {
@@ -82,6 +86,10 @@ export default {
         userId: this.$store.state.user.id,
       };
       this.$store.dispatch('savePhoto', savedPhoto);
+      this.settings();
+    },
+    openPhotosModal() {
+      this.$emit('openPhotosModal');
     },
     //#endregion
   },

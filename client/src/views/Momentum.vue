@@ -6,7 +6,7 @@
   >
     <div class="container-fluid top">
       <div class="row justify-content-between">
-        <div class="col-4"><settings /></div>
+        <div class="col-4"><settings @openPhotosModal="openPhotosModal" /></div>
         <div class="col-4 mr-3"><weather /></div>
       </div>
     </div>
@@ -15,6 +15,41 @@
         <div class="col-6 offset-3">
           <clock />
           <greeting />
+        </div>
+        <div
+          class="modal"
+          id="photosModal"
+          ref="photosModal"
+          tabindex="-1"
+          role="dialog"
+        >
+          <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalScrollableTitle">
+                  Modal title
+                </h5>
+                <button type="button" class="close" data-dismiss="modal">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                ...
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -34,6 +69,7 @@ import Quote from '@/components/Quote.vue';
 import Settings from '@/components/Settings.vue';
 import Clock from '@/components/Clock.vue';
 import Greeting from '@/components/Greeting.vue';
+import Vue from 'vue';
 export default {
   name: 'momentum',
   components: {
@@ -44,7 +80,9 @@ export default {
     Greeting,
   },
   data() {
-    return {};
+    return {
+      bus: new Vue(),
+    };
   },
   mounted() {
     this.$store.dispatch('getPhoto');
@@ -52,6 +90,17 @@ export default {
   computed: {
     photo() {
       return this.$store.state.photo;
+    },
+  },
+  methods: {
+    openPhotosModal() {
+      console.log('hit me');
+      console.log(this.$refs.photosModal);
+      // this.$refs.photosModal.open();
+      // document
+      //   .getElementById('photosModal')
+      //   .classList.remove('.modal-backdrop');
+      // document.getElementById('photosModal').classList.toggle('show');
     },
   },
 };
