@@ -9,7 +9,13 @@
 
           <div class="modal-body">
             <slot name="body">
-              default body
+              <img
+                v-for="photo in savedPhotos"
+                :key="photo.id"
+                :src="photo.urls.thumbUrl"
+                alt="should be small"
+                @click="selectPhoto"
+              />
             </slot>
           </div>
 
@@ -28,10 +34,30 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: 'PictureModal',
+  mounted() {
+    this.$store.dispatch('getSavedPhotosByUserId', this.$store.state.user.id);
+  },
+  computed: {
+    savedPhotos() {
+      return this.$store.state.savedPhotos;
+    },
+  },
+  methods: {
+    selectPhoto() {},
+  },
+};
 </script>
 
 <style scoped>
+img {
+  max-height: 135px;
+  max-width: 200px;
+  padding: 10px 10px;
+}
+
+/* Modal styles */
 .modal-mask {
   position: fixed;
   z-index: 9998;
@@ -49,7 +75,8 @@ export default {};
 }
 
 .modal-container {
-  width: 300px;
+  width: 650px;
+  height: 500px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;

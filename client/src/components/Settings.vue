@@ -1,11 +1,7 @@
 <template>
   <div class="momentum-settings">
     <div class="dropdown">
-      <button
-        @click="toggleSettings()"
-        v-on:blur="toggleSettings()"
-        class="dropbtn btn-dark"
-      >
+      <button @click="toggleSettings()" class="dropbtn btn-dark">
         settings
       </button>
       <div id="myDropdown" class="dropdown-content">
@@ -76,7 +72,7 @@ export default {
     //#region --Photo Methods--
     getNewPhoto() {
       this.$store.dispatch('getPhoto');
-      this.settings();
+      // this.settings();
     },
     savePhoto() {
       let savedPhoto = {
@@ -95,10 +91,11 @@ export default {
         userId: this.$store.state.user.id,
       };
       this.$store.dispatch('savePhoto', savedPhoto);
-      this.settings();
+      // this.settings();
     },
     openPhotosModal() {
       this.$emit('openPhotosModal');
+      document.getElementById('myDropdown').classList.toggle('show');
     },
     //#endregion
   },
