@@ -19,6 +19,10 @@
                   @click="selectQuote(quote._id)"
                 >
                   {{ quote.quote }} Author: {{ quote.author }}
+                  <i
+                    class="far fa-trash-alt"
+                    @click="deleteQuote(quote._id)"
+                  ></i>
                 </li>
               </ul>
             </slot>
@@ -55,13 +59,25 @@ export default {
     selectQuote(id) {
       this.$store.dispatch('getQuoteById', id);
     },
+    deleteQuote(id) {
+      this.$store.dispatch('deleteQuote', id);
+    },
   },
 };
 </script>
 
 <style scoped>
+li {
+  padding: 4px 0px;
+}
 li:hover {
   cursor: pointer;
+}
+i {
+  color: rgb(255, 0, 0, 0.3);
+}
+i:hover {
+  color: red;
 }
 
 /* Modal styles */

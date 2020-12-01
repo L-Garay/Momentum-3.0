@@ -123,6 +123,10 @@ export default new Vuex.Store({
       let res = await api.get('quotes/' + id);
       commit('setQuote', res.data);
     },
+    async deleteQuote({ dispatch, state }, id) {
+      await api.delete('quotes/' + id);
+      dispatch('getSavedQuotesByUserId', state.user.id);
+    },
     //#endregion
     //#region --User Methods--
     async newUser({ commit }, user) {
