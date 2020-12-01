@@ -1,7 +1,13 @@
 <template>
   <div class="momentum-settings">
     <div class="dropdown">
-      <button @click="settings()" class="dropbtn btn-dark">settings</button>
+      <button
+        @click="toggleSettings()"
+        v-on:blur="toggleSettings()"
+        class="dropbtn btn-dark"
+      >
+        settings
+      </button>
       <div id="myDropdown" class="dropdown-content">
         <div class="dropdown2">
           <button class="dropbtn2 ">Photos</button>
@@ -57,11 +63,14 @@
 export default {
   name: 'Settings',
   props: ['bus'],
+  data() {
+    return {};
+  },
   mounted() {},
   computed: {},
   methods: {
     // Open and close settings dropdown
-    settings() {
+    toggleSettings() {
       document.getElementById('myDropdown').classList.toggle('show');
     },
     //#region --Photo Methods--
