@@ -31,6 +31,13 @@ class UserService {
       throw error;
     }
   }
+  async updateUserById(user) {
+    try {
+      return await dbContext.User.findByIdAndUpdate(user.id, user);
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export const userService = new UserService();

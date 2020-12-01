@@ -13,21 +13,15 @@
   <div class="greeting d-flex" v-else>
     <h1>Good {{ timeOfDay }}, {{ User.name }}.</h1>
     <div class="dropdown">
-      <a
-        id="dLabel"
-        role="button"
-        data-toggle="dropdown"
-        class="btn btn-primary"
-      >
+      <div id="dLabel" role="button" data-toggle="dropdown" class="btn">
         <i class="fas fa-ellipsis-h"></i>
-      </a>
+      </div>
       <ul
         class="dropdown-menu multi-level"
         role="menu"
         aria-labelledby="dropdownMenu"
       >
-        <li><a @click="createNewUser">Create new user</a></li>
-        <li class="divider"></li>
+        <li @click="createNewUser">Create new user</li>
         <li class="dropdown-submenu">
           <a tabindex="-1">Change user</a>
           <ul class="dropdown-menu">
@@ -102,6 +96,7 @@ export default {
         this.noUser = false;
         this.$store.state.user = result;
       }
+      this.$root.$emit('sendUser', result);
     },
     createNewUser() {
       this.noUser = true;
@@ -127,8 +122,8 @@ export default {
 .greeting {
   font-size: 3rem;
   color: white;
-  text-align: center;
   justify-content: center;
+  align-items: center;
 }
 input {
   border: none;
@@ -141,29 +136,36 @@ input {
 input:focus {
   outline: none;
 }
-span:hover {
-  cursor: pointer;
+div.btn {
+  background-color: rgba(255, 255, 255, 0.61);
+  border-radius: 50%;
+  height: 36px;
+}
+div.btn:hover {
+  background-color: rgba(128, 128, 128, 0.678);
+  border: 1pt solid black;
 }
 i {
   font-size: 1.25rem;
-  color: grey;
-  opacity: 0.6;
+  color: black;
 }
 i:hover {
   cursor: pointer;
   color: white;
   opacity: 1;
 }
-
-a:hover {
-  cursor: pointer;
+li {
+  padding: 3px 0 3px 5px;
 }
 li:hover {
   cursor: pointer;
+  background-color: rgb(128, 128, 128, 0.5);
 }
 
 /* NOTE Dropdown settings */
-
+.dropdown {
+  padding-left: 12px;
+}
 .dropdown-submenu {
   position: relative;
 }

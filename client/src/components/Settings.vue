@@ -54,10 +54,16 @@
         <div class="dropdown2">
           <button class="dropbtn2">Clock</button>
           <div class="dropdown-content2">
-            <button class="btn btn-none btn-sm option-button">
+            <button
+              class="btn btn-none btn-sm option-button"
+              @click="setMilitaryTime"
+            >
               Military Time
             </button>
-            <button class="btn btn-none btn-sm option-button">
+            <button
+              class="btn btn-none btn-sm option-button"
+              @click="setStandardTime"
+            >
               Standard Time
             </button>
           </div>
@@ -84,7 +90,6 @@ export default {
     //#region --Photo Methods--
     getNewPhoto() {
       this.$store.dispatch('getPhoto');
-      // this.settings();
     },
     savePhoto() {
       let savedPhoto = {
@@ -103,7 +108,6 @@ export default {
         userId: this.$store.state.user.id,
       };
       this.$store.dispatch('savePhoto', savedPhoto);
-      // this.settings();
     },
     openPhotosModal() {
       this.$emit('openPhotosModal');
@@ -125,6 +129,18 @@ export default {
     openQuotesModal() {
       this.$emit('openQuotesModal');
       document.getElementById('myDropdown').classList.toggle('show');
+    },
+    //#endregion
+    //#region -- Time Methods
+    setMilitaryTime() {
+      this.$root.$emit('setMilitaryTime');
+      this.$store.state.user.militaryTimeSelected = true;
+      this.$store.dispatch('updateUserById', this.$store.state.user);
+    },
+    setStandardTime() {
+      this.$root.$emit('setStandardTime');
+      this.$store.state.user.militaryTimeSelected = false;
+      this.$store.dispatch('updateUserById', this.$store.state.user);
     },
     //#endregion
   },

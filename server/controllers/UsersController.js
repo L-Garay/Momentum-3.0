@@ -11,7 +11,8 @@ export class UsersController extends BaseController {
       .get('', this.getAll)
       .get('/:id', this.getById)
       .get('/:id/photos', this.getPhotosByUserId)
-      .get('/:id/quotes', this.getQuotesByUserId);
+      .get('/:id/quotes', this.getQuotesByUserId)
+      .put('', this.updateUserById);
   }
 
   async create(req, res, next) {
@@ -57,6 +58,14 @@ export class UsersController extends BaseController {
   async getQuotesByUserId(req, res, next) {
     try {
       let data = await quoteService.getQuotesByUserId(req.params.id);
+      return res.status(200).send(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async updateUserById(req, res, next) {
+    try {
+      let data = await userService.updateUserById(req.body);
       return res.status(200).send(data);
     } catch (error) {
       next(error);

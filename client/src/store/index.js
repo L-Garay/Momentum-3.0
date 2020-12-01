@@ -147,6 +147,11 @@ export default new Vuex.Store({
       let res = await api.get('lastuser');
       return res.data;
     },
+    async updateUserById({ commit }, user) {
+      api.put('lastuser', user);
+      let res = await api.put('users', user);
+      commit('setUser', res.data);
+    },
     //#endregion
   },
   modules: {},

@@ -17,6 +17,21 @@ export default {
   },
   mounted() {
     this.getTime();
+    this.$root.$on('setMilitaryTime', () => {
+      this.militaryTimeSelected = true;
+    });
+    this.$root.$on('setStandardTime', () => {
+      this.militaryTimeSelected = false;
+    });
+    this.$root.$on('sendUser', (result) => {
+      if (result.militaryTimeSelected == true) {
+        this.militaryTimeSelected = true;
+        console.log(this.militaryTimeSelected);
+      } else if (result.militaryTimeSelected == false) {
+        this.militaryTimeSelected = false;
+        console.log(this.militaryTimeSelected);
+      }
+    });
   },
   computed: {},
   methods: {
@@ -57,7 +72,7 @@ export default {
 
 <style>
 .clock {
-  font-size: clamp(6rem, 8rem, 9rem);
+  font-size: 10rem;
   color: white;
   text-align: center;
 }

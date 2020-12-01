@@ -21,6 +21,13 @@ class LastUserService {
       throw error;
     }
   }
+  async updateUserById(user) {
+    try {
+      await dbContext.LastUser.findByIdAndUpdate(user.id, user);
+    } catch (error) {
+      throw new ErrorResponse('Cant find user with that id', 400);
+    }
+  }
 }
 
 export const lastUserService = new LastUserService();
