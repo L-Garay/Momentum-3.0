@@ -96,15 +96,17 @@ export default {
         this.noUser = false;
         this.$store.state.user = result;
       }
-      this.$root.$emit('sendUser', result);
+      this.$root.$emit('checkLastUser', result);
     },
     createNewUser() {
       this.noUser = true;
       this.user.name = '';
       this.$nextTick(() => this.$refs.focus.focus());
     },
-    getUserById(id) {
-      this.$store.dispatch('getUserById', id);
+    async getUserById(id) {
+      await this.$store.dispatch('getUserById', id);
+      let newUser = this.$store.state.user;
+      this.$root.$emit('changedUser', newUser);
     },
     onClickOutside() {
       this.noUser = false;

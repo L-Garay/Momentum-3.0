@@ -23,13 +23,18 @@ export default {
     this.$root.$on('setStandardTime', () => {
       this.militaryTimeSelected = false;
     });
-    this.$root.$on('sendUser', (result) => {
+    this.$root.$on('checkLastUser', (result) => {
       if (result.militaryTimeSelected == true) {
         this.militaryTimeSelected = true;
-        console.log(this.militaryTimeSelected);
       } else if (result.militaryTimeSelected == false) {
         this.militaryTimeSelected = false;
-        console.log(this.militaryTimeSelected);
+      }
+    });
+    this.$root.$on('changedUser', (newUser) => {
+      if (newUser.militaryTimeSelected == true) {
+        this.militaryTimeSelected = true;
+      } else if (newUser.militaryTimeSelected == false) {
+        this.militaryTimeSelected = false;
       }
     });
   },
