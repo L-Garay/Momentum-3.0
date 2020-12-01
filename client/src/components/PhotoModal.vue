@@ -9,21 +9,31 @@
 
           <div class="modal-body">
             <slot name="body">
-              <img
-                v-for="photo in savedPhotos"
-                :key="photo.id"
-                :src="photo.urls.thumbUrl"
-                alt="should be small"
-                @click="selectPhoto(photo._id)"
-              />
+              <div class="container-fluid">
+                <div class="row">
+                  <div
+                    class="col-4 image"
+                    v-for="photo in savedPhotos"
+                    :key="photo.id"
+                  >
+                    <img
+                      :src="photo.urls.thumbUrl"
+                      alt="should be small"
+                      @click="selectPhoto(photo._id)"
+                    />
+                    <button @click="deletePhoto(photo._id)">
+                      Delete Me
+                    </button>
+                  </div>
+                </div>
+              </div>
             </slot>
           </div>
 
           <div class="modal-footer">
             <slot name="footer">
-              default footer
               <button class="modal-default-button" @click="$emit('close')">
-                OK
+                Close
               </button>
             </slot>
           </div>
@@ -48,16 +58,23 @@ export default {
     selectPhoto(id) {
       this.$store.dispatch('getPhotoById', id);
     },
+    deletePhoto(id) {
+      this.$store.dispatch('deletePhotoById', id);
+    },
   },
 };
 </script>
 
 <style scoped>
+.image {
+  text-align: center;
+  margin-bottom: 10px;
+}
 img {
-  max-height: 135px;
-  max-width: 200px;
-  padding: 10px 10px;
+  height: 123px;
+  width: 185px;
   cursor: pointer;
+  padding-bottom: 10px;
 }
 
 /* Modal styles */
@@ -78,8 +95,8 @@ img {
 }
 
 .modal-container {
-  width: 650px;
-  height: 500px;
+  width: 750px;
+  height: 600px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
@@ -91,11 +108,14 @@ img {
 
 .modal-header h3 {
   margin-top: 0;
-  color: #42b983;
+  color: black;
 }
 
 .modal-body {
+  max-height: 400px;
+  max-width: 690px;
   margin: 20px 0;
+  overflow-y: auto;
 }
 
 .modal-default-button {

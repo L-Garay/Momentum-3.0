@@ -73,6 +73,10 @@ export default new Vuex.Store({
       let res = await api.get('photos/' + id);
       commit('setPhoto', res.data);
     },
+    async deletePhotoById({ dispatch, state }, id) {
+      await api.delete('photos/' + id);
+      dispatch('getSavedPhotosByUserId', state.user.id);
+    },
     //#endregion
     //#region --Weather Methods--
     async getWeather({ commit }, coord) {
