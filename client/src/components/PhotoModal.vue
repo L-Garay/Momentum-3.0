@@ -14,7 +14,7 @@
                 :key="photo.id"
                 :src="photo.urls.thumbUrl"
                 alt="should be small"
-                @click="selectPhoto"
+                @click="selectPhoto(photo._id)"
               />
             </slot>
           </div>
@@ -45,7 +45,9 @@ export default {
     },
   },
   methods: {
-    selectPhoto() {},
+    selectPhoto(id) {
+      this.$store.dispatch('getPhotoById', id);
+    },
   },
 };
 </script>
@@ -55,6 +57,7 @@ img {
   max-height: 135px;
   max-width: 200px;
   padding: 10px 10px;
+  cursor: pointer;
 }
 
 /* Modal styles */

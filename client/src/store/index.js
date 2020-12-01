@@ -69,6 +69,10 @@ export default new Vuex.Store({
       let res = await api.get('users/' + id + '/photos');
       commit('setSavedPhotos', res.data);
     },
+    async getPhotoById({ commit }, id) {
+      let res = await api.get('photos/' + id);
+      commit('setPhoto', res.data);
+    },
     //#endregion
     //#region --Weather Methods--
     async getWeather({ commit }, coord) {
