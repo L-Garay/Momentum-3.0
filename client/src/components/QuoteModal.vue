@@ -4,29 +4,16 @@
       <div class="modal-wrapper">
         <div class="modal-container">
           <div class="modal-header">
-            <h3>Saved Photos</h3>
+            <h3>Saved Quotes</h3>
           </div>
 
           <div class="modal-body">
             <slot name="body">
-              <div class="container-fluid">
-                <div class="row">
-                  <div
-                    class="col-4 image"
-                    v-for="photo in savedPhotos"
-                    :key="photo.id"
-                  >
-                    <img
-                      :src="photo.urls.thumbUrl"
-                      alt="should be small"
-                      @click="selectPhoto(photo._id)"
-                    />
-                    <button @click="deletePhoto(photo._id)">
-                      Delete Me
-                    </button>
-                  </div>
-                </div>
-              </div>
+              <ul>
+                <li v-for="quote in savedQuotes" :key="quote.id">
+                  {{ quote.quote }} Author: {{ quote.author }}
+                </li>
+              </ul>
             </slot>
           </div>
 
@@ -34,7 +21,7 @@
             <slot name="footer">
               <button
                 class="modal-default-button"
-                @click="$emit('close-photos-modal')"
+                @click="$emit('close-quotes-modal')"
               >
                 Close
               </button>
@@ -48,38 +35,20 @@
 
 <script>
 export default {
-  name: 'PictureModal',
+  name: 'QuoteModal',
   mounted() {
-    this.$store.dispatch('getSavedPhotosByUserId', this.$store.state.user.id);
+    this.$store.dispatch('getSavedQuotesByUserId', this.$store.state.user.id);
   },
   computed: {
-    savedPhotos() {
-      return this.$store.state.savedPhotos;
+    savedQuotes() {
+      return this.$store.state.savedQuotes;
     },
   },
-  methods: {
-    selectPhoto(id) {
-      this.$store.dispatch('getPhotoById', id);
-    },
-    deletePhoto(id) {
-      this.$store.dispatch('deletePhotoById', id);
-    },
-  },
+  methods: {},
 };
 </script>
 
 <style scoped>
-.image {
-  text-align: center;
-  margin-bottom: 10px;
-}
-img {
-  height: 123px;
-  width: 185px;
-  cursor: pointer;
-  padding-bottom: 10px;
-}
-
 /* Modal styles */
 .modal-mask {
   position: fixed;

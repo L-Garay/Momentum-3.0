@@ -21,8 +21,12 @@ class QuoteService {
   async saveQuote(quote) {
     return await dbContext.Quote.create(quote);
   }
-  async getSaved() {
-    return await dbContext.Quote.find((q) => (q = {}));
+  async getQuotesByUserId(id) {
+    let data = await dbContext.Quote.find({ userId: id });
+    if (!data) {
+      throw new ErrorResponse('Unable to find quote with that userId', 400);
+    }
+    return data;
   }
   async deleteQuote(id) {
     let data = await dbContext.Quote.findByIdAndDelete(id);

@@ -15,6 +15,7 @@ export default new Vuex.Store({
     savedPhotos: [],
     weather: null,
     quote: null,
+    savedQuotes: [],
     user: null,
     users: [],
   },
@@ -35,6 +36,9 @@ export default new Vuex.Store({
     //#region --Quote Methods--
     setQuote(state, quote) {
       state.quote = quote;
+    },
+    setSavedQuotes(state, quotes) {
+      state.savedQuotes = quotes;
     },
     //#endregion
     //#region --User Methods--
@@ -102,9 +106,18 @@ export default new Vuex.Store({
       try {
         let res = await api.get('quotes');
         commit('setQuote', res.data);
+        console.log(res.data);
       } catch (error) {
         console.log(error.toJSON());
       }
+    },
+    async saveQuote({ commit }, savedQuote) {
+      let res = await api.post('quotes', savedQuote);
+      commit('setQuote', res.data);
+    },
+    async getSavedQuotesByUserId({ commit }, id) {
+      let res = await api.get('users/' + id + '/quotes');
+      commit('setSavedQuotes', res.data);
     },
     //#endregion
     //#region --User Methods--

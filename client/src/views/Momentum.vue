@@ -6,7 +6,12 @@
   >
     <div class="container-fluid top">
       <div class="row justify-content-between">
-        <div class="col-4"><settings @openPhotosModal="openPhotosModal" /></div>
+        <div class="col-4">
+          <settings
+            @openPhotosModal="openPhotosModal"
+            @openQuotesModal="openQuotesModal"
+          />
+        </div>
         <div class="col-4 mr-3"><weather /></div>
       </div>
     </div>
@@ -16,7 +21,14 @@
           <clock />
           <greeting />
         </div>
-        <photo-modal v-if="showModal" @close="closePhotosModal" />
+        <photo-modal
+          v-if="showPhotoModal"
+          @close-photos-modal="closePhotosModal"
+        />
+        <quote-modal
+          v-if="showQuoteModal"
+          @close-quotes-modal="closeQuotesModal"
+        />
         <!-- NOTE Can't use bootstrap modal because for some reason I get an error saying the '$' symbol when trying to programatically open/close it using bootstrap's $('#myModal').modal(options) is 'undefined'. I have tried using a cdn directly from jquery, I have tried npm i-ing jquery directly into the project and neither work.  I have tried reodering the cdns, I have tried nmp i-ing bootstrap directly, and neither work.  I have no idea why it's not working. So the workaround is to use a modal made by the vue devs found at https://vuejs.org/v2/examples/modal.html?
           <div
           class="modal"
@@ -72,6 +84,7 @@ import Settings from '@/components/Settings.vue';
 import Clock from '@/components/Clock.vue';
 import Greeting from '@/components/Greeting.vue';
 import PhotoModal from '@/components/PhotoModal.vue';
+import QuoteModal from '@/components/QuoteModal.vue';
 import Vue from 'vue';
 export default {
   name: 'momentum',
@@ -82,11 +95,13 @@ export default {
     Clock,
     Greeting,
     PhotoModal,
+    QuoteModal,
   },
   data() {
     return {
       bus: new Vue(),
-      showModal: false,
+      showPhotoModal: false,
+      showQuoteModal: false,
     };
   },
   mounted() {
@@ -99,10 +114,16 @@ export default {
   },
   methods: {
     openPhotosModal() {
-      this.showModal = true;
+      this.showPhotoModal = true;
     },
     closePhotosModal() {
-      this.showModal = false;
+      this.showPhotoModal = false;
+    },
+    openQuotesModal() {
+      this.showQuoteModal = true;
+    },
+    closeQuotesModal() {
+      this.showQuoteModal = false;
     },
   },
 };

@@ -31,11 +31,23 @@
         <div class="dropdown2">
           <button class="dropbtn2">Quotes</button>
           <div class="dropdown-content2">
-            <button class="btn btn-none btn-sm option-button">
+            <button
+              class="btn btn-none btn-sm option-button"
+              @click="getNewQuote"
+            >
               New Quote
             </button>
-            <button class="btn btn-none btn-sm option-button">
+            <button
+              class="btn btn-none btn-sm option-button"
+              @click="saveQuote"
+            >
               Save Quote
+            </button>
+            <button
+              class="btn btn-none btn-sm option-button"
+              @click="openQuotesModal"
+            >
+              Choose Quote
             </button>
           </div>
         </div>
@@ -95,6 +107,23 @@ export default {
     },
     openPhotosModal() {
       this.$emit('openPhotosModal');
+      document.getElementById('myDropdown').classList.toggle('show');
+    },
+    //#endregion
+    //#region -- Quote Methods--
+    getNewQuote() {
+      this.$store.dispatch('getQuote');
+    },
+    saveQuote() {
+      let savedQuote = {
+        quote: this.$store.state.quote.quote,
+        author: this.$store.state.quote.author,
+        userId: this.$store.state.user.id,
+      };
+      this.$store.dispatch('saveQuote', savedQuote);
+    },
+    openQuotesModal() {
+      this.$emit('openQuotesModal');
       document.getElementById('myDropdown').classList.toggle('show');
     },
     //#endregion

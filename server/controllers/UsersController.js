@@ -1,6 +1,7 @@
 import BaseController from '../utils/BaseController';
 import { userService } from '../services/UserService';
 import { photoService } from '../services/PhotoService';
+import { quoteService } from '../services/QuoteService';
 
 export class UsersController extends BaseController {
   constructor() {
@@ -9,7 +10,8 @@ export class UsersController extends BaseController {
       .post('', this.create)
       .get('', this.getAll)
       .get('/:id', this.getById)
-      .get('/:id/photos', this.getPhotosByUserId);
+      .get('/:id/photos', this.getPhotosByUserId)
+      .get('/:id/quotes', this.getQuotesByUserId);
   }
 
   async create(req, res, next) {
@@ -47,6 +49,14 @@ export class UsersController extends BaseController {
   async getPhotosByUserId(req, res, next) {
     try {
       let data = await photoService.getPhotosByUserId(req.params.id);
+      return res.status(200).send(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getQuotesByUserId(req, res, next) {
+    try {
+      let data = await quoteService.getQuotesByUserId(req.params.id);
       return res.status(200).send(data);
     } catch (error) {
       next(error);
