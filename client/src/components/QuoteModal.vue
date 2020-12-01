@@ -9,8 +9,15 @@
 
           <div class="modal-body">
             <slot name="body">
-              <ul>
-                <li v-for="quote in savedQuotes" :key="quote.id">
+              <h4 v-if="this.$store.state.savedQuotes.length == 0">
+                Save some quotes and see them here!
+              </h4>
+              <ul v-else>
+                <li
+                  v-for="quote in savedQuotes"
+                  :key="quote.id"
+                  @click="selectQuote(quote._id)"
+                >
                   {{ quote.quote }} Author: {{ quote.author }}
                 </li>
               </ul>
@@ -44,11 +51,19 @@ export default {
       return this.$store.state.savedQuotes;
     },
   },
-  methods: {},
+  methods: {
+    selectQuote(id) {
+      this.$store.dispatch('getQuoteById', id);
+    },
+  },
 };
 </script>
 
 <style scoped>
+li:hover {
+  cursor: pointer;
+}
+
 /* Modal styles */
 .modal-mask {
   position: fixed;
@@ -67,8 +82,8 @@ export default {
 }
 
 .modal-container {
-  width: 750px;
-  height: 600px;
+  width: 650px;
+  height: 500px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
@@ -84,8 +99,8 @@ export default {
 }
 
 .modal-body {
-  max-height: 400px;
-  max-width: 690px;
+  max-height: 300px;
+  max-width: 590px;
   margin: 20px 0;
   overflow-y: auto;
 }

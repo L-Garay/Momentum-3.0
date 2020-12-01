@@ -6,7 +6,7 @@ export class QuotesController extends BaseController {
     super('api/quotes');
     this.router
       .get('', this.getQuote)
-      .get('/all', this.getSaved)
+      .get('/:id', this.getQuoteById)
       .post('', this.saveQuote)
       .delete('/:id', this.deleteQuote);
   }
@@ -27,9 +27,9 @@ export class QuotesController extends BaseController {
       next(error);
     }
   }
-  async getSaved(req, res, next) {
+  async getQuoteById(req, res, next) {
     try {
-      let data = await quoteService.getSaved();
+      let data = await quoteService.getQuoteById(req.params.id);
       return res.status(200).send(data);
     } catch (error) {
       next(error);

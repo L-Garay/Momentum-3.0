@@ -28,6 +28,13 @@ class QuoteService {
     }
     return data;
   }
+  async getQuoteById(id) {
+    let data = await dbContext.Quote.findById(id);
+    if (!data) {
+      throw new ErrorResponse('Unable to find quote with that id', 400);
+    }
+    return data;
+  }
   async deleteQuote(id) {
     let data = await dbContext.Quote.findByIdAndDelete(id);
     if (!data) {

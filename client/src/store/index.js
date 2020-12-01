@@ -119,6 +119,10 @@ export default new Vuex.Store({
       let res = await api.get('users/' + id + '/quotes');
       commit('setSavedQuotes', res.data);
     },
+    async getQuoteById({ commit }, id) {
+      let res = await api.get('quotes/' + id);
+      commit('setQuote', res.data);
+    },
     //#endregion
     //#region --User Methods--
     async newUser({ commit }, user) {
