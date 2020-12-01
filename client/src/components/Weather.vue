@@ -15,6 +15,7 @@
         <h1 class="Time">{{ month }} {{ day }}</h1>
         <div>
           <input
+            v-on:blur="onClickOutside"
             ref="focus"
             type="text"
             v-model="city.name"
@@ -110,6 +111,9 @@ export default {
         'December',
       ];
       this.month = month[date.getMonth()];
+    },
+    onClickOutside() {
+      this.city.changeCity = false;
     },
   },
   components: {},
