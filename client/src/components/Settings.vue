@@ -49,6 +49,67 @@
       </li>
     </ul>
   </div>
+  <!--  NOTE This was the original modal, however the way it was setup meant you had to click the button to open AND close the modal, you couldn't click on the screen and have it disappear. However, I liked that when you selected 'Get Photo/Quote' or 'Save Photo/Quote' and the time options, it didn't close; as this allowed the user to quickly get new photos or quotes without having to navigate back to those buttons everytime. So I guess this would come down to user preference. I'm leaving it here to be able to change if needed; both are fully functional.
+
+    <div class="momentum-settings">
+    <div class="dropdown">
+      <button
+        @click="toggleSettings()"
+        v-on:blur="toggleSettings()"
+        class="dropbtn btn-dark"
+      >
+        settings
+      </button>
+      <div id="myDropdown" class="dropdown-content">
+        <div class="dropdown2">
+          <button class="dropbtn2 ">Photos</button>
+          <div class="dropdown-content2">
+            <button
+              class="btn btn-none btn-sm option-button"
+              @click="getNewPhoto"
+            >
+              Get Photo
+            </button>
+            <button
+              class="btn btn-none btn-sm option-button"
+              @click="savePhoto"
+            >
+              Save Photo
+            </button>
+            <button
+              class="btn btn-none btn-sm option-button"
+              @click="openPhotosModal"
+            >
+              Choose Photo
+            </button>
+          </div>
+        </div>
+        <div class="dropdown2">
+          <button class="dropbtn2">Quotes</button>
+          <div class="dropdown-content2">
+            <button class="btn btn-none btn-sm option-button">
+              New Quote
+            </button>
+            <button class="btn btn-none btn-sm option-button">
+              Save Quote
+            </button>
+          </div>
+        </div>
+        <div class="dropdown2">
+          <button class="dropbtn2">Clock</button>
+          <div class="dropdown-content2">
+            <button class="btn btn-none btn-sm option-button">
+              Military Time
+            </button>
+            <button class="btn btn-none btn-sm option-button">
+              Standard Time
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   -->
 </template>
 
 <script>
@@ -127,9 +188,9 @@ export default {
 
 <style scoped>
 p {
-  color: rgb(221, 221, 221);
+  color: rgb(255, 255, 255);
   font-size: 1.3rem;
-  text-shadow: 1px 1px 2px rgb(0, 0, 0);
+  text-shadow: 1px 1px 1px rgb(0, 0, 0);
   margin-top: 10px;
 }
 p:hover {
@@ -213,4 +274,92 @@ li:hover {
   -moz-border-radius: 6px 0 6px 6px;
   border-radius: 6px 0 6px 6px;
 }
+
+/* NOTE These are the styles for the original dropdown template
+
+.momentum-settings {
+  position: fixed;
+}
+.option-button {
+  width: 140px;
+  height: 50px;
+}
+.option-button:hover {
+  background-color: #777;
+  color: #fff;
+}
+.dropbtn {
+  min-width: 75px;
+  color: white;
+  padding: 7px;
+  border-radius: 5px;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+  margin-top: 40px;
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropdown-content {
+  margin-top: 2px;
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+.dropbtn2:hover {
+  background-color: #777;
+  color: #fff;
+}
+.dropdown-content a {
+  color: black;
+  padding: 10px 14px;
+  text-decoration: none;
+  display: block;
+}
+.dropbtn2 {
+  background-color: #fff;
+  min-width: 120px;
+  color: black;
+  padding: 14px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: start;
+}
+.dropdown2 {
+  position: relative;
+  display: inline-block;
+}
+.dropdown-content2 {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 140px;
+  top: 0;
+  margin-left: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+.dropdown-content2 a {
+  color: black;
+  padding: 10px 14px;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+}
+.show {
+  display: block;
+}
+.dropdown2:hover .dropdown-content2 {
+  display: block;
+}
+
+
+ */
 </style>

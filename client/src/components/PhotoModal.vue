@@ -11,7 +11,11 @@
             <slot name="body">
               <div class="container-fluid">
                 <div class="row">
+                  <h4 v-if="this.$store.state.savedPhotos.length == 0">
+                    Save some photos and see them here!
+                  </h4>
                   <div
+                    v-else
                     class="col-4 image"
                     v-for="photo in savedPhotos"
                     :key="photo.id"

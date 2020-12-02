@@ -29,7 +29,6 @@ export default {
 p {
   font-size: 20px;
   color: white;
-  text-shadow: 0px 0px 30px black;
 }
 p:first-child {
   margin: 0;

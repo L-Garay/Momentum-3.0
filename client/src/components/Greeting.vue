@@ -1,6 +1,6 @@
 <template>
-  <div class="greeting" v-if="noUser">
-    Good {{ timeOfDay }},
+  <div class="greeting " v-if="noUser">
+    <h1>Good {{ timeOfDay }},</h1>
     <input
       v-on:blur="onClickOutside"
       ref="focus"
@@ -10,7 +10,7 @@
       v-autowidth="{ maxWidth: '550px', minWidth: '100px', comfortZone: 30 }"
     />
   </div>
-  <div class="greeting d-flex" v-else>
+  <div class="greeting " v-else>
     <h1>Good {{ timeOfDay }}, {{ User.name }}.</h1>
     <div class="dropdown">
       <div id="dLabel" role="button" data-toggle="dropdown" class="btn">
@@ -53,6 +53,7 @@
 
 <script>
 import VueInputAutoWidth from 'vue-input-autowidth';
+import Swal from 'sweetalert2';
 import Vue from 'vue';
 Vue.use(VueInputAutoWidth);
 
@@ -126,8 +127,22 @@ export default {
       // $('.dropdown-toggle').dropdown('show');
     },
     deleteUserById(id) {
-      this.$store.dispatch('deleteUserById', id);
-      this.$store.dispatch('getAllUsers');
+      Swal.fire({
+        title: 'Are you sure?',
+        text:
+          "You won't be able to revert this and all saved photos and quotes will also be deleted!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.$store.dispatch('deleteUserById', id);
+          this.$store.dispatch('getAllUsers');
+          Swal.fire('Deleted!', 'The user has been deleted.', 'success');
+        }
+      });
     },
   },
 };
@@ -139,6 +154,7 @@ export default {
   color: white;
   justify-content: center;
   align-items: center;
+  display: flex;
 }
 h1 {
   text-shadow: 3px 3px 5px black;
@@ -146,26 +162,28 @@ h1 {
 input {
   border: none;
   border-bottom: 1pt solid black;
-  /* max-width: 500px; */
+  height: 50px;
   text-align: center;
   background-color: rgba(169, 169, 169, 0.514);
   color: white;
+  font-size: 2.3rem;
+  text-shadow: 3px 3px 5px black;
 }
 input:focus {
   outline: none;
 }
 div.btn {
-  background-color: rgba(255, 255, 255, 0.61);
+  background-color: transparent;
   border-radius: 50%;
   height: 36px;
 }
 div.btn:hover {
-  background-color: rgba(128, 128, 128, 0.678);
-  border: 1pt solid black;
+  background-color: rgba(128, 128, 128, 0.479);
 }
 i {
-  font-size: 1.25rem;
-  color: black;
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.753);
+  text-shadow: 1pt 1pt 1pt black;
 }
 i:hover {
   cursor: pointer;
@@ -174,7 +192,7 @@ i:hover {
 }
 i.user {
   float: right;
-  color: rgba(255, 0, 0, 0.404);
+  color: rgba(255, 0, 0, 0.507);
   padding-right: 5px;
 }
 i.user:hover {
