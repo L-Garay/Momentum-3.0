@@ -34,6 +34,18 @@
             </li>
           </ul>
         </li>
+        <li class="dropdown-submenu">
+          <a tabindex="-1">Delete user</a>
+          <ul class="dropdown-menu">
+            <li v-for="user in Users" :key="user._id">
+              {{ user.name }}
+              <i
+                class="fas fa-user-times user"
+                @click="deleteUserById(user.id)"
+              ></i>
+            </li>
+          </ul>
+        </li>
       </ul>
     </div>
   </div>
@@ -80,9 +92,6 @@ export default {
       }
       setTimeout(this.getTimeOfDay, 3000 * 10);
     },
-    dropdown() {
-      document.getElementById('usersDropdown').classList.toggle('show');
-    },
     submitNewUser() {
       this.$store.dispatch('newUser', this.user);
       this.noUser = false;
@@ -115,6 +124,10 @@ export default {
     showAllUsersList() {
       this.showAllUsers = true;
       // $('.dropdown-toggle').dropdown('show');
+    },
+    deleteUserById(id) {
+      this.$store.dispatch('deleteUserById', id);
+      this.$store.dispatch('getAllUsers');
     },
   },
 };
@@ -156,12 +169,20 @@ i:hover {
   color: white;
   opacity: 1;
 }
+i.user {
+  float: right;
+  color: rgba(255, 0, 0, 0.404);
+  padding-right: 5px;
+}
+i.user:hover {
+  color: red;
+}
 li {
   padding: 3px 0 3px 5px;
 }
 li:hover {
   cursor: pointer;
-  background-color: rgb(128, 128, 128, 0.5);
+  background-color: rgb(128, 128, 128, 0.2);
 }
 
 /* NOTE Dropdown settings */

@@ -38,6 +38,13 @@ class UserService {
       throw error;
     }
   }
+
+  async deleteUserById(id) {
+    let data = await dbContext.User.findByIdAndDelete(id);
+    if (!data) {
+      throw new ErrorResponse('Cant find user with that id', 400);
+    }
+  }
 }
 
 export const userService = new UserService();

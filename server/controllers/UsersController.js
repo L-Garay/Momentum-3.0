@@ -12,7 +12,8 @@ export class UsersController extends BaseController {
       .get('/:id', this.getById)
       .get('/:id/photos', this.getPhotosByUserId)
       .get('/:id/quotes', this.getQuotesByUserId)
-      .put('', this.updateUserById);
+      .put('', this.updateUserById)
+      .delete('/:id', this.deleteUserById);
   }
 
   async create(req, res, next) {
@@ -67,6 +68,14 @@ export class UsersController extends BaseController {
     try {
       let data = await userService.updateUserById(req.body);
       return res.status(200).send(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async deleteUserById(req, res, next) {
+    try {
+      await userService.deleteUserById(req.params.id);
+      return res.status(200).send('Successfully deleted');
     } catch (error) {
       next(error);
     }
