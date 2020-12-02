@@ -120,7 +120,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .main {
   overflow: hidden;
   z-index: 10;

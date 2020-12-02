@@ -75,10 +75,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .clock {
   font-size: 10rem;
   color: white;
   text-align: center;
+  text-shadow: 3px 3px 5px black;
 }
 </style>

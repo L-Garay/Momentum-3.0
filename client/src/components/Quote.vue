@@ -22,7 +22,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .quote {
   text-align: center;
 }
@@ -33,12 +33,14 @@ p {
 }
 p:first-child {
   margin: 0;
+  text-shadow: 3px 3px 5px black;
 }
 p:last-child {
   opacity: 0.7;
 }
 p:last-child:hover {
   opacity: 1;
+  text-shadow: 3px 3px 5px black;
 }
 @media (max-width: 1024px) {
   p {

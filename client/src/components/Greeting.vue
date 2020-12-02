@@ -135,10 +135,13 @@ export default {
 
 <style scoped>
 .greeting {
-  font-size: 3rem;
+  font-size: 4rem;
   color: white;
   justify-content: center;
   align-items: center;
+}
+h1 {
+  text-shadow: 3px 3px 5px black;
 }
 input {
   border: none;
