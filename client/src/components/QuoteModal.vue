@@ -13,12 +13,10 @@
                 Save some quotes and see them here!
               </h4>
               <ul v-else>
-                <li
-                  v-for="quote in savedQuotes"
-                  :key="quote.id"
-                  @click="selectQuote(quote._id)"
-                >
-                  {{ quote.quote }} Author: {{ quote.author }}
+                <li v-for="quote in savedQuotes" :key="quote.id">
+                  <p @click="selectQuote(quote._id)">
+                    {{ quote.quote }} Author: {{ quote.author }}
+                  </p>
                   <i
                     class="far fa-trash-alt"
                     @click="deleteQuote(quote._id)"
@@ -69,15 +67,18 @@ export default {
 <style scoped>
 li {
   padding: 4px 0px;
+  display: flex;
 }
-li:hover {
+p:hover {
   cursor: pointer;
 }
 i {
   color: rgb(255, 0, 0, 0.3);
+  padding-top: 10px;
 }
 i:hover {
   color: red;
+  cursor: pointer;
 }
 
 /* Modal styles */

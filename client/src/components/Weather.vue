@@ -392,6 +392,7 @@ export default {
   font-weight: 200;
   right: 20px;
   bottom: 15px;
+  cursor: pointer;
 }
 .locationInput {
   z-index: 1000;
