@@ -6,43 +6,52 @@ class UserService {
     try {
       return await dbContext.User.create(user);
     } catch (error) {
-      throw error;
+      throw new ErrorResponse(
+        `Cant create user. Error: ${error}`,
+        error.status
+      );
     }
   }
-  // async get() {
-  //   try {
-  //     // get the last/most recent document from User collection
-  //     return await dbContext.User.findOne({}, { sort: { $natural: -1 } });
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
+
   async getAll() {
     try {
       return await dbContext.User.find((u) => (u = {}));
     } catch (error) {
-      throw error;
+      throw new ErrorResponse(
+        `Cant get all users. Error: ${error}`,
+        error.status
+      );
     }
   }
   async getById(id) {
     try {
       return await dbContext.User.findById(id);
     } catch (error) {
-      throw error;
+      throw new ErrorResponse(
+        `Cant find user with that id ${id}. Error: ${error}`,
+        error.status
+      );
     }
   }
   async updateUserById(user) {
     try {
       return await dbContext.User.findByIdAndUpdate(user.id, user);
     } catch (error) {
-      throw error;
+      throw new ErrorResponse(
+        `Cant find or update user with id ${user.id}. Error: ${error}`,
+        error.status
+      );
     }
   }
 
   async deleteUserById(id) {
-    let data = await dbContext.User.findByIdAndDelete(id);
-    if (!data) {
-      throw new ErrorResponse('Cant find user with that id', 400);
+    try {
+      return await dbContext.User.findByIdAndDelete(id);
+    } catch (error) {
+      throw new ErrorResponse(
+        `Cant delete user with that id ${id}. Error: ${error}`,
+        error.status
+      );
     }
   }
 }

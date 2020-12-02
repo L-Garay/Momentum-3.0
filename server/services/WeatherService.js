@@ -4,46 +4,48 @@ import ErrorResponse from '../utils/ErrorResponse';
 
 class WeatherService {
   async getWeather(coord) {
-    let data = await axios({
-      method: 'GET',
-      url: 'https://community-open-weather-map.p.rapidapi.com/weather',
-      headers: {
-        'content-type': 'application/octet-stream',
-        'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com',
-        'x-rapidapi-key': process.env.X_RAPIDAPI_KEY,
-      },
-      params: {
-        units: 'imperial',
-        lat: coord.lat,
-        lon: coord.lon,
-      },
-    });
-    if (!data) {
+    try {
+      return await axios({
+        method: 'GET',
+        url: 'https://community-open-weather-map.p.rapidapi.com/weather',
+        headers: {
+          'content-type': 'application/octet-stream',
+          'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com',
+          'x-rapidapi-key': process.env.X_RAPIDAPI_KEY,
+        },
+        params: {
+          units: 'imperial',
+          lat: coord.lat,
+          lon: coord.lon,
+        },
+      });
+    } catch (error) {
       throw new ErrorResponse(
-        'Unable to get weather for those coordinates',
-        400
+        `Cant get weather. Error: ${error}`,
+        error.status
       );
     }
-    return data;
   }
   async getNewWeather(city) {
-    let data = await axios({
-      method: 'GET',
-      url: 'https://community-open-weather-map.p.rapidapi.com/weather',
-      headers: {
-        'content-type': 'application/octet-stream',
-        'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com',
-        'x-rapidapi-key': process.env.X_RAPIDAPI_KEY,
-      },
-      params: {
-        units: 'imperial',
-        q: city.name,
-      },
-    });
-    if (!data) {
-      throw new ErrorResponse('Unable to get weather for that city', 400);
-    } else {
-      return data;
+    try {
+      return await axios({
+        method: 'GET',
+        url: 'https://community-open-weather-map.p.rapidapi.com/weather',
+        headers: {
+          'content-type': 'application/octet-stream',
+          'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com',
+          'x-rapidapi-key': process.env.X_RAPIDAPI_KEY,
+        },
+        params: {
+          units: 'imperial',
+          q: city.name,
+        },
+      });
+    } catch (error) {
+      throw new ErrorResponse(
+        `Cant get weather for that city name, ${city}. Error: ${error}`,
+        error.status
+      );
     }
   }
 }

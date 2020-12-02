@@ -10,7 +10,7 @@ class LastUserService {
       }
       return await dbContext.LastUser.create(user);
     } catch (error) {
-      throw error;
+      throw new ErrorResponse(`Can't create that user: ${error}`, error.status);
     }
   }
   async get() {
@@ -18,14 +18,17 @@ class LastUserService {
       // get the last/most recent document from User collection
       return await dbContext.LastUser.findOne({});
     } catch (error) {
-      throw error;
+      throw new ErrorResponse(`Cant find user. Error: ${error}`, error.status);
     }
   }
   async updateUserById(user) {
     try {
       await dbContext.LastUser.findByIdAndUpdate(user.id, user);
     } catch (error) {
-      throw new ErrorResponse('Cant find user with that id', 400);
+      throw new ErrorResponse(
+        `Cant find user with that id ${user.id}. Error: ${error}`,
+        error.status
+      );
     }
   }
 }

@@ -21,34 +21,58 @@ class PhotoService {
       let formatted = await data.json();
       return formatted;
     } catch (error) {
-      throw new ErrorResponse(error, 500);
+      throw new ErrorResponse(`Unable to get a photo. ${error}`, error.status);
     }
   }
   async getAllPhotos() {
-    return await dbContext.Photo.find((p) => (p = {}));
+    try {
+      return await dbContext.Photo.find((p) => (p = {}));
+    } catch (error) {
+      throw new ErrorResponse(
+        `Cant find photos. Error: ${error}`,
+        error.status
+      );
+    }
   }
   async getPhotoById(id) {
-    let data = await dbContext.Photo.findById(id);
-    if (!data) {
-      throw new ErrorResponse('Unable to find photo with that id', 400);
+    try {
+      return await dbContext.Photo.findById(id);
+    } catch (error) {
+      throw new ErrorResponse(
+        `Cant find photo with that id ${id}. Error: ${error}`,
+        error.status
+      );
     }
-    return data;
   }
   async getPhotosByUserId(id) {
-    let data = await dbContext.Photo.find({ userId: id });
-    if (!data) {
-      throw new ErrorResponse('Unable to find photos with that userId', 400);
+    try {
+      return await dbContext.Photo.find({ userId: id });
+    } catch (error) {
+      throw new ErrorResponse(
+        `Cant find photos with that id ${id} Error: ${error}`,
+        error.status
+      );
     }
-    return data;
   }
   async savePhoto(combo) {
-    await unsplash.photos.downloadPhoto(combo.original);
-    return await dbContext.Photo.create(combo.updated);
+    try {
+      await unsplash.photos.downloadPhoto(combo.original);
+      return await dbContext.Photo.create(combo.updated);
+    } catch (error) {
+      throw new ErrorResponse(
+        `Cant find save that photo with id ${combo._id} Error: ${error}`,
+        error.status
+      );
+    }
   }
   async deletePhoto(id) {
-    let data = await dbContext.Photo.findByIdAndDelete(id);
-    if (!data) {
-      throw new ErrorResponse('Unable to find photo with that id', 400);
+    try {
+      let data = await dbContext.Photo.findByIdAndDelete(id);
+    } catch (error) {
+      throw new ErrorResponse(
+        `Cant find photo with that id. Error: ${error}`,
+        error.status
+      );
     }
   }
 }

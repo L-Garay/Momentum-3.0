@@ -4,41 +4,62 @@ import axios from 'axios';
 
 class QuoteService {
   async getQuote() {
-    let data = await axios({
-      method: 'GET',
-      url: 'https://quotable-quotes.p.rapidapi.com/randomQuotes',
-      headers: {
-        'content-type': 'application/octet-stream',
-        'x-rapidapi-host': 'quotable-quotes.p.rapidapi.com',
-        'x-rapidapi-key': process.env.X_RAPIDAPI_KEY,
-      },
-    });
-    if (!data) {
-      throw new ErrorResponse('Unable to get quote', 400);
+    try {
+      let data = await axios({
+        method: 'GET',
+        url: 'https://quotable-quotes.p.rapidapi.com/randomQuotes',
+        headers: {
+          'content-type': 'application/octet-stream',
+          'x-rapidapi-host': 'quotable-quotes.p.rapidapi.com',
+          'x-rapidapi-key': process.env.X_RAPIDAPI_KEY,
+        },
+      });
+      return data;
+    } catch (error) {
+      throw new ErrorResponse(
+        `Cant get a quote. Error: ${error}`,
+        error.status
+      );
     }
-    return data;
   }
   async saveQuote(quote) {
-    return await dbContext.Quote.create(quote);
+    try {
+      return await dbContext.Quote.create(quote);
+    } catch (error) {
+      throw new ErrorResponse(
+        `Cant save that quote. Error: ${error}`,
+        error.status
+      );
+    }
   }
   async getQuotesByUserId(id) {
-    let data = await dbContext.Quote.find({ userId: id });
-    if (!data) {
-      throw new ErrorResponse('Unable to find quote with that userId', 400);
+    try {
+      return await dbContext.Quote.find({ userId: id });
+    } catch (error) {
+      throw new ErrorResponse(
+        `Cant find quotes with userId ${id}. Error: ${error}`,
+        error.status
+      );
     }
-    return data;
   }
   async getQuoteById(id) {
-    let data = await dbContext.Quote.findById(id);
-    if (!data) {
-      throw new ErrorResponse('Unable to find quote with that id', 400);
+    try {
+      return await dbContext.Quote.findById(id);
+    } catch (error) {
+      throw new ErrorResponse(
+        `Cant find quote with that id ${id}. Error: ${error}`,
+        error.status
+      );
     }
-    return data;
   }
   async deleteQuote(id) {
-    let data = await dbContext.Quote.findByIdAndDelete(id);
-    if (!data) {
-      throw new ErrorResponse('Unable to find that quote by the id', 400);
+    try {
+      return await dbContext.Quote.findByIdAndDelete(id);
+    } catch (error) {
+      throw new ErrorResponse(
+        `Unable to delete quote with that id ${id}. Error: ${error}`,
+        error.status
+      );
     }
   }
 }
