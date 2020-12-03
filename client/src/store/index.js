@@ -96,7 +96,7 @@ export default new Vuex.Store({
         let res = await api.post('weather/change', cityName);
         commit('setWeather', res.data);
       } catch (error) {
-        console.log(error.toJSON());
+        console.log(error);
       }
     },
     //#endregion

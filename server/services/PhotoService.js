@@ -21,7 +21,10 @@ class PhotoService {
       let formatted = await data.json();
       return formatted;
     } catch (error) {
-      throw new ErrorResponse(`Unable to get a photo. ${error}`, error.status);
+      throw new ErrorResponse(
+        `Unable to get a photo. ${error}`,
+        error.response.status
+      );
     }
   }
   async getAllPhotos() {
@@ -29,8 +32,8 @@ class PhotoService {
       return await dbContext.Photo.find((p) => (p = {}));
     } catch (error) {
       throw new ErrorResponse(
-        `Cant find photos. Error: ${error}`,
-        error.status
+        `Cant find photos.  ${error}`,
+        error.response.status
       );
     }
   }
@@ -39,8 +42,8 @@ class PhotoService {
       return await dbContext.Photo.findById(id);
     } catch (error) {
       throw new ErrorResponse(
-        `Cant find photo with that id ${id}. Error: ${error}`,
-        error.status
+        `Cant find photo with that id ${id}.  ${error}`,
+        error.response.status
       );
     }
   }
@@ -49,8 +52,8 @@ class PhotoService {
       return await dbContext.Photo.find({ userId: id });
     } catch (error) {
       throw new ErrorResponse(
-        `Cant find photos with that id ${id} Error: ${error}`,
-        error.status
+        `Cant find photos with that id ${id}  ${error}`,
+        error.response.status
       );
     }
   }
@@ -60,8 +63,8 @@ class PhotoService {
       return await dbContext.Photo.create(combo.updated);
     } catch (error) {
       throw new ErrorResponse(
-        `Cant find save that photo with id ${combo._id} Error: ${error}`,
-        error.status
+        `Cant find save that photo with id ${combo._id}  ${error}`,
+        error.response.status
       );
     }
   }
@@ -70,8 +73,8 @@ class PhotoService {
       let data = await dbContext.Photo.findByIdAndDelete(id);
     } catch (error) {
       throw new ErrorResponse(
-        `Cant find photo with that id. Error: ${error}`,
-        error.status
+        `Cant find photo with that id.  ${error}`,
+        error.response.status
       );
     }
   }

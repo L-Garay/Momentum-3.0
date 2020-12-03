@@ -21,8 +21,8 @@ class WeatherService {
       });
     } catch (error) {
       throw new ErrorResponse(
-        `Cant get weather. Error: ${error}`,
-        error.status
+        `Cant get weather.  ${error}`,
+        error.response.status
       );
     }
   }
@@ -42,9 +42,10 @@ class WeatherService {
         },
       });
     } catch (error) {
+      // NOTE usse this method to demonstrate how ErrorResponse isn't working
       throw new ErrorResponse(
-        `Cant get weather for that city name, ${city}. Error: ${error}`,
-        error.status
+        `Cant get weather for that city name, ${city}. ${error}`,
+        error.response.status
       );
     }
   }

@@ -7,8 +7,8 @@ class UserService {
       return await dbContext.User.create(user);
     } catch (error) {
       throw new ErrorResponse(
-        `Cant create user. Error: ${error}`,
-        error.status
+        `Cant create user.  ${error}`,
+        error.response.status
       );
     }
   }
@@ -18,8 +18,8 @@ class UserService {
       return await dbContext.User.find((u) => (u = {}));
     } catch (error) {
       throw new ErrorResponse(
-        `Cant get all users. Error: ${error}`,
-        error.status
+        `Cant get all users.  ${error}`,
+        error.response.status
       );
     }
   }
@@ -28,8 +28,8 @@ class UserService {
       return await dbContext.User.findById(id);
     } catch (error) {
       throw new ErrorResponse(
-        `Cant find user with that id ${id}. Error: ${error}`,
-        error.status
+        `Cant find user with that id ${id}.  ${error}`,
+        error.response.status
       );
     }
   }
@@ -38,8 +38,8 @@ class UserService {
       return await dbContext.User.findByIdAndUpdate(user.id, user);
     } catch (error) {
       throw new ErrorResponse(
-        `Cant find or update user with id ${user.id}. Error: ${error}`,
-        error.status
+        `Cant find or update user with id ${user.id}.  ${error}`,
+        error.response.status
       );
     }
   }
@@ -49,8 +49,8 @@ class UserService {
       return await dbContext.User.findByIdAndDelete(id);
     } catch (error) {
       throw new ErrorResponse(
-        `Cant delete user with that id ${id}. Error: ${error}`,
-        error.status
+        `Cant delete user with that id ${id}.  ${error}`,
+        error.response.status
       );
     }
   }

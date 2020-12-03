@@ -17,8 +17,8 @@ class QuoteService {
       return data;
     } catch (error) {
       throw new ErrorResponse(
-        `Cant get a quote. Error: ${error}`,
-        error.status
+        `Cant get a quote.  ${error}`,
+        error.response.status
       );
     }
   }
@@ -27,8 +27,8 @@ class QuoteService {
       return await dbContext.Quote.create(quote);
     } catch (error) {
       throw new ErrorResponse(
-        `Cant save that quote. Error: ${error}`,
-        error.status
+        `Cant save that quote.  ${error}`,
+        error.response.status
       );
     }
   }
@@ -37,8 +37,8 @@ class QuoteService {
       return await dbContext.Quote.find({ userId: id });
     } catch (error) {
       throw new ErrorResponse(
-        `Cant find quotes with userId ${id}. Error: ${error}`,
-        error.status
+        `Cant find quotes with userId ${id}.  ${error}`,
+        error.response.status
       );
     }
   }
@@ -47,8 +47,8 @@ class QuoteService {
       return await dbContext.Quote.findById(id);
     } catch (error) {
       throw new ErrorResponse(
-        `Cant find quote with that id ${id}. Error: ${error}`,
-        error.status
+        `Cant find quote with that id ${id}.  ${error}`,
+        error.response.status
       );
     }
   }
@@ -57,8 +57,8 @@ class QuoteService {
       return await dbContext.Quote.findByIdAndDelete(id);
     } catch (error) {
       throw new ErrorResponse(
-        `Unable to delete quote with that id ${id}. Error: ${error}`,
-        error.status
+        `Unable to delete quote with that id ${id}.  ${error}`,
+        error.response.status
       );
     }
   }

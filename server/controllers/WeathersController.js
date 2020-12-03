@@ -1,5 +1,6 @@
 import BaseController from '../utils/BaseController';
 import { weatherService } from '../services/WeatherService';
+import ErrorResponse from '../utils/ErrorResponse';
 
 export class WeathersController extends BaseController {
   constructor() {
@@ -20,6 +21,8 @@ export class WeathersController extends BaseController {
       let data = await weatherService.getNewWeather(req.body);
       return res.status(200).send(data.data);
     } catch (error) {
+      // NOTE use this method to demonstrate how ErrorResponse isn't working
+      console.log(error);
       next(error);
     }
   }

@@ -1,11 +1,11 @@
-const express = require('express');
-const dotenv = require('dotenv');
+import express from 'express';
+import dotenv from 'dotenv';
 import DBConfig from './config/DBConfig';
 import Startup from './config/StartupConfig';
 
 // // Load environment variables
 dotenv.config();
-// NOTE I had to move the .env file to the top level, because for some reason I couldn't access process.env.whatever when the .env file was within the config folder.  So moved it out, renamed the folder to db and just called the file .env
+// NOTE I had to move the .env file to the top level, because for some reason I couldn't access process.env.whatever when the .env file was within the config folder.  So moved it out and just called the file .env
 // dotenv.config({ path: './config/config.env' });
 
 // Initial server setup
