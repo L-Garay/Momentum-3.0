@@ -24,14 +24,6 @@ export class UsersController extends BaseController {
       next(error);
     }
   }
-  // async get(req, res, next) {
-  //   try {
-  //     let data = await userService.get();
-  //     return res.status(200).send(data);
-  //   } catch (error) {
-  //     next(error);
-  //   }
-  // }
   async getAll(req, res, next) {
     try {
       let data = await userService.getAll();

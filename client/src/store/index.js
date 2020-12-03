@@ -88,7 +88,7 @@ export default new Vuex.Store({
         let res = await api.post('weather', coord);
         commit('setWeather', res.data);
       } catch (error) {
-        console.log(error.toJSON());
+        console.log(error);
       }
     },
     async getNewWeather({ commit }, cityName) {
@@ -108,7 +108,7 @@ export default new Vuex.Store({
         commit('setQuote', res.data);
         console.log(res.data);
       } catch (error) {
-        console.log(error.toJSON());
+        console.log(error);
       }
     },
     async saveQuote({ commit }, savedQuote) {

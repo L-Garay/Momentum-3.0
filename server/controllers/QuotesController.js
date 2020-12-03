@@ -19,17 +19,17 @@ export class QuotesController extends BaseController {
       next(error);
     }
   }
-  async saveQuote(req, res, next) {
+  async getQuoteById(req, res, next) {
     try {
-      let data = await quoteService.saveQuote(req.body);
+      let data = await quoteService.getQuoteById(req.params.id);
       return res.status(200).send(data);
     } catch (error) {
       next(error);
     }
   }
-  async getQuoteById(req, res, next) {
+  async saveQuote(req, res, next) {
     try {
-      let data = await quoteService.getQuoteById(req.params.id);
+      let data = await quoteService.saveQuote(req.body);
       return res.status(200).send(data);
     } catch (error) {
       next(error);

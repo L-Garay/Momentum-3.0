@@ -22,16 +22,6 @@ class QuoteService {
       );
     }
   }
-  async saveQuote(quote) {
-    try {
-      return await dbContext.Quote.create(quote);
-    } catch (error) {
-      throw new ErrorResponse(
-        `Cant save that quote.  ${error}`,
-        error.response.status
-      );
-    }
-  }
   async getQuotesByUserId(id) {
     try {
       return await dbContext.Quote.find({ userId: id });
@@ -48,6 +38,16 @@ class QuoteService {
     } catch (error) {
       throw new ErrorResponse(
         `Cant find quote with that id ${id}.  ${error}`,
+        error.response.status
+      );
+    }
+  }
+  async saveQuote(quote) {
+    try {
+      return await dbContext.Quote.create(quote);
+    } catch (error) {
+      throw new ErrorResponse(
+        `Cant save that quote.  ${error}`,
         error.response.status
       );
     }

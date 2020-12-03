@@ -17,12 +17,16 @@ export default {
   },
   mounted() {
     this.getTime();
+
+    // These come from the Settings component when the user manually switches the setting
     this.$root.$on('setMilitaryTime', () => {
       this.militaryTimeSelected = true;
     });
     this.$root.$on('setStandardTime', () => {
       this.militaryTimeSelected = false;
     });
+
+    // These come from the Greeting component when the user is switched, and so user preference is switched
     this.$root.$on('checkLastUser', (result) => {
       if (result.militaryTimeSelected == true) {
         this.militaryTimeSelected = true;
@@ -49,7 +53,7 @@ export default {
 
       let time = h + ':' + m;
       this.militaryTime = time;
-      // NOTE change this conditional to check for user preference in future --- right now it is just controlled by dev
+
       if (this.militaryTimeSelected == false) {
         h = this.checkTime(h);
         let session = 'AM';
@@ -63,13 +67,13 @@ export default {
         let time = h + ':' + m + ' ' + session;
         this.time = time;
       }
-      setTimeout(this.getTime, 500);
+      setTimeout(this.getTime, 1000);
     },
-    checkTime(h) {
-      if (h < 10) {
-        h = '0' + h;
+    checkTime(n) {
+      if (n < 10) {
+        n = '0' + n;
       } // add zero in front of numbers < 10
-      return h;
+      return n;
     },
   },
 };
