@@ -163,9 +163,7 @@ export default {
       ];
       this.month = month[date.getMonth()];
     },
-    onClickOutside() {
-      this.city.changeCity = false;
-    },
+
     // Check the weather condition to then style the widget accordingly
     checkCondition() {
       switch (this.$store.state.weather.weather[0].main) {
@@ -229,8 +227,8 @@ export default {
       this.setBackgroundColor();
     },
     setBackgroundColor() {
-      // NOTE THE MAIN BACKGROUND COLOR AND TEXT COLOR DON'T CHANGE BECUASE THE ELEMENT THAT SETS THE COLORS NEVER GET'S RE-RENDERED AFTER NEW CITY IS FOUND...ONLY THE ICON COLOR AND ACTUAL DATA GET'S CHANGED
-      // NOTE WORKAROUND IS TO 'FORCE' CHANGE THE COLORS USING getElementById
+      // NOTE Since the component itself doesn't get re-rendered when a new city is found, had to use getElementById to sort of force change the necessary elements
+
       // Sunny
       if (this.sunny == true && this.$store.state.weather.main.temp > 100) {
         let change = document.getElementById('changeColor');
@@ -295,7 +293,6 @@ export default {
       if (this.fog) {
         let change = document.getElementById('changeColor');
         change.style.backgroundColor = 'lightslategrey';
-        // this.textColor = "white";
         this.iconColor = 'rgb(206, 206, 202)';
         this.locationIconColor = 'rgb(206, 206, 202)';
       }
@@ -304,7 +301,6 @@ export default {
       if (this.mist) {
         let change = document.getElementById('changeColor');
         change.style.backgroundColor = 'lightblue';
-        // this.textColor = "white";
         this.iconColor = ' rgb(172, 172, 172)';
         this.locationIconColor = ' rgb(172, 172, 172)';
       }
@@ -315,6 +311,9 @@ export default {
         this.iconColor = 'black';
         this.locationIconColor = 'black';
       }
+    },
+    onClickOutside() {
+      this.city.changeCity = false;
     },
   },
   components: {},

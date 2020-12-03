@@ -4,10 +4,12 @@ import ErrorResponse from '../utils/ErrorResponse';
 class LastUserService {
   async create(user) {
     try {
+      // If there is one already, find it and delete
       let result = await dbContext.LastUser.findOne({});
       if (result) {
         await dbContext.LastUser.findOneAndDelete({});
       }
+      // Otherwise just create a new one / replace the old one
       return await dbContext.LastUser.create(user);
     } catch (error) {
       throw new ErrorResponse(
@@ -18,7 +20,7 @@ class LastUserService {
   }
   async get() {
     try {
-      // get the last/most recent document from User collection
+      // There should be only one
       return await dbContext.LastUser.findOne({});
     } catch (error) {
       throw new ErrorResponse(

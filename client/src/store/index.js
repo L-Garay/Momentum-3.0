@@ -28,11 +28,13 @@ export default new Vuex.Store({
       state.savedPhotos = photos;
     },
     //#endregion
+
     //#region --Weather Methods--
     setWeather(state, weather) {
       state.weather = weather;
     },
     //#endregion
+
     //#region --Quote Methods--
     setQuote(state, quote) {
       state.quote = quote;
@@ -41,6 +43,7 @@ export default new Vuex.Store({
       state.savedQuotes = quotes;
     },
     //#endregion
+
     //#region --User Methods--
     setUser(state, user) {
       state.user = user;
@@ -60,14 +63,6 @@ export default new Vuex.Store({
         console.log(error.toJSON());
       }
     },
-    async savePhoto({ dispatch, state }, savedPhoto) {
-      let combo = {
-        original: state.photo,
-        updated: savedPhoto,
-      };
-      await api.post('photos', combo);
-      dispatch('getSavedPhotosByUserId', state.user.id);
-    },
     async getSavedPhotosByUserId({ commit }, id) {
       console.log(id);
       let res = await api.get('users/' + id + '/photos');
@@ -77,11 +72,21 @@ export default new Vuex.Store({
       let res = await api.get('photos/' + id);
       commit('setPhoto', res.data);
     },
+    async savePhoto({ dispatch, state }, savedPhoto) {
+      // original is used to send back to unsplash for their method to keep track, updated goes to DB
+      let combo = {
+        original: state.photo,
+        updated: savedPhoto,
+      };
+      await api.post('photos', combo);
+      dispatch('getSavedPhotosByUserId', state.user.id);
+    },
     async deletePhotoById({ dispatch, state }, id) {
       await api.delete('photos/' + id);
       dispatch('getSavedPhotosByUserId', state.user.id);
     },
     //#endregion
+
     //#region --Weather Methods--
     async getWeather({ commit }, coord) {
       try {
@@ -100,6 +105,7 @@ export default new Vuex.Store({
       }
     },
     //#endregion
+
     //#region --Quote Methods--
 
     async getQuote({ commit }) {
@@ -111,10 +117,6 @@ export default new Vuex.Store({
         console.log(error);
       }
     },
-    async saveQuote({ commit }, savedQuote) {
-      let res = await api.post('quotes', savedQuote);
-      commit('setQuote', res.data);
-    },
     async getSavedQuotesByUserId({ commit }, id) {
       let res = await api.get('users/' + id + '/quotes');
       commit('setSavedQuotes', res.data);
@@ -123,11 +125,16 @@ export default new Vuex.Store({
       let res = await api.get('quotes/' + id);
       commit('setQuote', res.data);
     },
+    async saveQuote({ commit }, savedQuote) {
+      let res = await api.post('quotes', savedQuote);
+      commit('setQuote', res.data);
+    },
     async deleteQuote({ dispatch, state }, id) {
       await api.delete('quotes/' + id);
       dispatch('getSavedQuotesByUserId', state.user.id);
     },
     //#endregion
+
     //#region --User Methods--
     async newUser({ commit, dispatch }, user) {
       let res = await api.post('users', user);

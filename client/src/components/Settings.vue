@@ -115,7 +115,6 @@
 <script>
 export default {
   name: 'Settings',
-  props: ['bus'],
   data() {
     return {};
   },
@@ -126,6 +125,7 @@ export default {
     toggleSettings() {
       document.getElementById('myDropdown').classList.toggle('show');
     },
+
     //#region --Photo Methods--
     getNewPhoto() {
       this.$store.dispatch('getPhoto');
@@ -150,9 +150,10 @@ export default {
     },
     openPhotosModal() {
       this.$emit('openPhotosModal');
-      document.getElementById('myDropdown').classList.toggle('show');
+      // document.getElementById('myDropdown').classList.toggle('show');
     },
     //#endregion
+
     //#region -- Quote Methods--
     getNewQuote() {
       this.$store.dispatch('getQuote');
@@ -167,9 +168,10 @@ export default {
     },
     openQuotesModal() {
       this.$emit('openQuotesModal');
-      document.getElementById('myDropdown').classList.toggle('show');
+      // document.getElementById('myDropdown').classList.toggle('show');
     },
     //#endregion
+
     //#region -- Time Methods
     setMilitaryTime() {
       this.$root.$emit('setMilitaryTime');

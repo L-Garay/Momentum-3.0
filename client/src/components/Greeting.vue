@@ -67,7 +67,6 @@ export default {
         name: '',
         militaryTimeSelected: false,
       },
-      showAllUsers: false,
     };
   },
   mounted() {
@@ -93,10 +92,13 @@ export default {
       }
       setTimeout(this.getTimeOfDay, 3000 * 10);
     },
+
     submitNewUser() {
       this.$store.dispatch('newUser', this.user);
       this.noUser = false;
     },
+
+    // Check for last 'logged in' user when first starting the app
     async checkForLastUser() {
       let result = await this.$store.dispatch('getLastUser');
       console.log(result);
@@ -106,26 +108,24 @@ export default {
         this.noUser = false;
         this.$store.state.user = result;
       }
+      // Now that a user has been set (or not), update the time preference (defaults to standard if there is no user)
       this.$root.$emit('checkLastUser', result);
     },
+
     createNewUser() {
       this.noUser = true;
       this.user.name = '';
       this.$nextTick(() => this.$refs.focus.focus());
     },
+
     async getUserById(id) {
       await this.$store.dispatch('getUserById', id);
+      // Let the Clock component know that the user has changed, and pass in the new user and their time prefernce
       let newUser = this.$store.state.user;
       this.$root.$emit('changedUser', newUser);
     },
-    onClickOutside() {
-      this.noUser = false;
-      this.showAllUsers = false;
-    },
-    showAllUsersList() {
-      this.showAllUsers = true;
-      // $('.dropdown-toggle').dropdown('show');
-    },
+
+    // Third party package called SweetAlerts2
     deleteUserById(id) {
       Swal.fire({
         title: 'Are you sure?',
@@ -143,6 +143,10 @@ export default {
           Swal.fire('Deleted!', 'The user has been deleted.', 'success');
         }
       });
+    },
+
+    onClickOutside() {
+      this.noUser = false;
     },
   },
 };
