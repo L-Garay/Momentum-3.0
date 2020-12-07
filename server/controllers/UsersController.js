@@ -2,6 +2,7 @@ import BaseController from '../utils/BaseController';
 import { userService } from '../services/UserService';
 import { photoService } from '../services/PhotoService';
 import { quoteService } from '../services/QuoteService';
+import { todoService } from '../services/TodoService';
 
 export class UsersController extends BaseController {
   constructor() {
@@ -12,6 +13,7 @@ export class UsersController extends BaseController {
       .get('/:id', this.getById)
       .get('/:id/photos', this.getPhotosByUserId)
       .get('/:id/quotes', this.getQuotesByUserId)
+      .get('/:id/todos', this.getTodosByUserId)
       .put('', this.updateUserById)
       .delete('/:id', this.deleteUserById);
   }
@@ -51,6 +53,14 @@ export class UsersController extends BaseController {
   async getQuotesByUserId(req, res, next) {
     try {
       let data = await quoteService.getQuotesByUserId(req.params.id);
+      return res.status(200).send(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getTodosByUserId(req, res, next) {
+    try {
+      let data = await todoService.getTodosByUserId(req.params.id);
       return res.status(200).send(data);
     } catch (error) {
       next(error);
