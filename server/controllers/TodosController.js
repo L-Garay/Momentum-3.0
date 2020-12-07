@@ -1,7 +1,7 @@
 import BaseController from '../utils/BaseController';
 import { todoService } from '../services/TodoService';
 
-export class QuotesController extends BaseController {
+export class TodosController extends BaseController {
   constructor() {
     super('api/todos');
     this.router
