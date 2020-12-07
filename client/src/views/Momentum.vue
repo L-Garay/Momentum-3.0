@@ -6,7 +6,7 @@
   >
     <div class="container-fluid top">
       <div class="row justify-content-between">
-        <div class="col-4">
+        <div class="col-1">
           <settings
             @openPhotosModal="openPhotosModal"
             @openQuotesModal="openQuotesModal"

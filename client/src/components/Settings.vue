@@ -197,26 +197,11 @@ p {
 }
 p:hover {
   color: white;
+  cursor: pointer;
   font-size: 1.4rem;
   text-shadow: 2px 2px 2px black;
 }
-i {
-  font-size: 1.25rem;
-  color: black;
-}
-i:hover {
-  cursor: pointer;
-  color: white;
-  opacity: 1;
-}
-i.user {
-  float: right;
-  color: rgba(255, 0, 0, 0.404);
-  padding-right: 5px;
-}
-i.user:hover {
-  color: red;
-}
+
 li {
   padding: 3px 0 3px 5px;
 }
