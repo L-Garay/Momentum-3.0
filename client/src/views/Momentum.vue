@@ -69,8 +69,11 @@
     </div>
     <div class="container-fluid ">
       <div class="row justify-content-center bottom ">
-        <div class="col-6 ">
+        <div class="col-6 offset-3">
           <quote />
+        </div>
+        <div class="col-3 todoList">
+          <todo />
         </div>
       </div>
     </div>
@@ -85,6 +88,7 @@ import Clock from '@/components/Clock.vue';
 import Greeting from '@/components/Greeting.vue';
 import PhotoModal from '@/components/PhotoModal.vue';
 import QuoteModal from '@/components/QuoteModal.vue';
+import Todo from '@/components/Todo.vue';
 
 export default {
   name: 'momentum',
@@ -96,6 +100,7 @@ export default {
     Greeting,
     PhotoModal,
     QuoteModal,
+    Todo,
   },
   data() {
     return {
@@ -147,5 +152,8 @@ export default {
 .bottom {
   height: 14vh;
   align-items: flex-end;
+}
+.todoList {
+  text-align: end;
 }
 </style>
