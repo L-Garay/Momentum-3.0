@@ -144,6 +144,7 @@ export default new Vuex.Store({
     },
     async getAllUsers({ commit }) {
       let res = await api.get('users');
+      console.log('hit me', res.data);
       commit('setUsers', res.data);
     },
     async getUserById({ commit }, id) {
@@ -160,9 +161,9 @@ export default new Vuex.Store({
       let res = await api.put('users', user);
       commit('setUser', res.data);
     },
-    deleteUserById({ dispatch }, id) {
-      api.delete('users/' + id);
-      // It seems I have to include this here to make this method work, if I just pass in the id it doesn't work...although the method isn't actually hitting this dispatch because it only works when I have the dispatch in the Greeting.vue file's 'deleteUserById()' method. If I remove the getAllUsers from there it doesn't work. Also I have to remove the async/await for some reason.
+    async deleteUserById({ dispatch }, id) {
+      await api.delete('users/' + id);
+
       dispatch('getAllUsers');
     },
     //#endregion
