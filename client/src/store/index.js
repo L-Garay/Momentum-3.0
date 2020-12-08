@@ -18,6 +18,8 @@ export default new Vuex.Store({
     savedQuotes: [],
     user: null,
     users: [],
+    todos: [],
+    completedTodos: [],
   },
   mutations: {
     //#region --Photo Methods--
@@ -50,6 +52,22 @@ export default new Vuex.Store({
     },
     setUsers(state, users) {
       state.users = users;
+    },
+    //#endregion
+
+    //#region --Todo Methods--
+    setTodos(state, todos) {
+      let completedArr = [];
+      let todoArr = [];
+      todos.forEach((t) => {
+        if (t.completed == true) {
+          completedArr.push(t);
+        } else if (t.completed == false) {
+          todoArr.push(t);
+        }
+      });
+      state.todos = todoArr;
+      state.completedTodos = completedArr;
     },
     //#endregion
   },
@@ -165,6 +183,17 @@ export default new Vuex.Store({
       await api.delete('users/' + id);
 
       dispatch('getAllUsers');
+    },
+    //#endregion
+
+    //#region --Todo Methods--
+    async submitTodo({ dispatch }, todo) {
+      await api.post('todos', todo);
+      dispatch('getTodosByUserId', todo.userId);
+    },
+    async getTodosByUserId({ commit }, id) {
+      let res = await api.get('users/' + id + '/todos');
+      commit('setTodos', res.data);
     },
     //#endregion
   },

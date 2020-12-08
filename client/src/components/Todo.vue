@@ -5,10 +5,44 @@
     </div>
     <div v-if="showDropdown" id="todoDropdown">
       <div class="content">
-        <h5>Todo List</h5>
-        <p>content will go here</p>
-        <p>more content</p>
-        <p>even more content</p>
+        <div class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            {{ todoListSelected }}
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <p class="dropdown-item" @click="todoListSelected = 'Todos'">
+              Todos
+            </p>
+            <p class="dropdown-item" @click="todoListSelected = 'Completed'">
+              Completed
+            </p>
+            <p class="dropdown-item">
+              This will be a v-for every user created list
+            </p>
+          </div>
+        </div>
+        <div class="todoItems">
+          <div class="todos" v-if="todoListSelected == 'Todos'">
+            <p v-for="todo in Todos" :key="todo._id">
+              {{ todo.description }}
+            </p>
+          </div>
+          <div
+            class="completedTodos"
+            v-else-if="todoListSelected == 'Completed'"
+          >
+            <p v-for="todo in CompletedTodos" :key="todo.id">
+              {{ todo.description }}
+            </p>
+          </div>
+        </div>
       </div>
       <div class="input">
         <button @click="toggleInputBox" v-if="showInputBox == false">
@@ -44,10 +78,22 @@ export default {
       showInputBox: false,
       todo: {
         description: '',
-        complete: false,
+        completed: false,
         userId: '',
       },
+      todoListSelected: 'Todos',
     };
+  },
+  mounted() {
+    this.$store.dispatch('getTodosByUserId', this.$store.state.user.id);
+  },
+  computed: {
+    Todos() {
+      return this.$store.state.todos;
+    },
+    CompletedTodos() {
+      return this.$store.state.completedTodos;
+    },
   },
   methods: {
     toggleDropdown() {
@@ -55,6 +101,7 @@ export default {
         this.showDropdown = false;
       } else if (this.showDropdown == false) {
         this.showDropdown = true;
+        this.$store.dispatch('getTodosByUserId', this.$store.state.user.id);
       }
     },
     toggleInputBox() {
@@ -62,7 +109,14 @@ export default {
         this.showInputBox = false;
       } else if (this.showInputBox == false) {
         this.showInputBox = true;
+        this.$nextTick(() => this.$refs.focus.focus());
       }
+    },
+    submitTodo() {
+      this.todo.userId = this.$store.state.user.id;
+      this.$store.dispatch('submitTodo', this.todo);
+      this.todo.description = '';
+      this.showInputBox = false;
     },
     onClickOutside() {
       this.showInputBox = false;
@@ -110,5 +164,13 @@ button {
   border-radius: 10px 10px 10px 10px;
   border: none;
   margin-top: 10px;
+}
+
+p.dropdown-item {
+  margin-bottom: 0;
+}
+p.dropdown-item:hover {
+  cursor: pointer;
+  background-color: rgba(128, 128, 128, 0.39);
 }
 </style>

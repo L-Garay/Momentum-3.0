@@ -18,7 +18,7 @@ class TodoService {
     } catch (error) {
       throw new ErrorResponse(
         `Cant find save that photo with id ${todo._id}  ${error}`,
-        error.response.status
+        404
       );
     }
   }
