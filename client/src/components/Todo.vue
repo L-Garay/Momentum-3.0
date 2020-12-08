@@ -26,6 +26,22 @@
             <p class="dropdown-item">
               This will be a v-for every user created list
             </p>
+            <p class="dropdown-item" v-if="showListInput == false">
+              Create a new list
+            </p>
+            <input
+              v-on:blur="onClickOutside"
+              ref="listFocus"
+              type="text"
+              v-model="list.name"
+              v-on:keyup.enter="submitList"
+              v-autowidth="{
+                maxWidth: '150px',
+                minWidth: '50px',
+                comfortZone: 10,
+              }"
+              v-else
+            />
           </div>
         </div>
         <div class="todoItems">
@@ -45,12 +61,12 @@
         </div>
       </div>
       <div class="input">
-        <button @click="toggleInputBox" v-if="showInputBox == false">
+        <button @click="toggleInputBox" v-if="showTodoInput == false">
           Create a new Todo
         </button>
         <input
           v-on:blur="onClickOutside"
-          ref="focus"
+          ref="todoFocus"
           type="text"
           v-model="todo.description"
           v-on:keyup.enter="submitTodo"
@@ -75,13 +91,20 @@ export default {
   data() {
     return {
       showDropdown: false,
-      showInputBox: false,
+      showTodoInput: false,
+      showListInput: false,
       todo: {
         description: '',
         completed: false,
         userId: '',
+        listId: '',
       },
       todoListSelected: 'Todos',
+      list: {
+        name: '',
+        todos: [],
+        userId: '',
+      },
     };
   },
   mounted() {
@@ -109,7 +132,7 @@ export default {
         this.showInputBox = false;
       } else if (this.showInputBox == false) {
         this.showInputBox = true;
-        this.$nextTick(() => this.$refs.focus.focus());
+        this.$nextTick(() => this.$refs.todoFocus.focus());
       }
     },
     submitTodo() {
@@ -119,7 +142,8 @@ export default {
       this.showInputBox = false;
     },
     onClickOutside() {
-      this.showInputBox = false;
+      this.showTodoInput = false;
+      this.showListInput = false;
     },
   },
 };

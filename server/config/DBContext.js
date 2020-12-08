@@ -3,6 +3,7 @@ import QuoteSchema from '../models/Quote';
 import UserSchema from '../models/User';
 import LastUserSchema from '../models/LastUser';
 import TodoSchema from '../models/Todo';
+import TodoListSchema from '../models/TodoList';
 import mongoose from 'mongoose';
 
 class DbContext {
@@ -11,6 +12,7 @@ class DbContext {
   // User = mongoose.model('User', UserSchema);
   LastUser = mongoose.model('LastUser', LastUserSchema);
   Todo = mongoose.model('Todo', TodoSchema);
+  TodoList = mongoose.model('TodoList', TodoListSchema);
 }
 
 export const dbContext = new DbContext();
