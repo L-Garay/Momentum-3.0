@@ -34,7 +34,7 @@ class TodoListService {
   }
   async deleteTodoList(id) {
     try {
-      let data = await dbContext.TodoList.findByIdAndDelete(id);
+      return await dbContext.TodoList.findByIdAndDelete(id);
     } catch (error) {
       throw new ErrorResponse(
         `Cant find photo with that id.  ${error}`,

@@ -18,27 +18,44 @@
               {{ todoListSelected }}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <p class="dropdown-item" @click="todoListSelected = 'Todos'">
-                Todos
-              </p>
-              <p class="dropdown-item" @click="todoListSelected = 'Completed'">
-                Completed
-              </p>
-              <p
-                class="dropdown-item"
+              <div class="customLists">
+                <p class="dropdown-item" @click="todoListSelected = 'Todos'">
+                  Todos
+                </p>
+              </div>
+              <div class="customLists">
+                <p
+                  class="dropdown-item"
+                  @click="todoListSelected = 'Completed'"
+                >
+                  Completed
+                </p>
+              </div>
+              <div
+                class="d-flex customLists"
                 v-for="todoList in TodoLists"
                 :key="todoList.id"
-                @click="selectCustomTodoList(todoList)"
               >
-                {{ todoList.name }}
-              </p>
-              <p
-                class="dropdown-item"
-                v-if="showListInput == false"
-                @click="toggleListInput"
-              >
-                Create a new list <i class="fas fa-plus"></i>
-              </p>
+                <p
+                  class="dropdown-item"
+                  @click="selectCustomTodoList(todoList)"
+                >
+                  {{ todoList.name }}
+                </p>
+                <i
+                  class="fas fa-trash-alt"
+                  @click="deleteTodoList(todoList)"
+                ></i>
+              </div>
+              <div class="customLists">
+                <p
+                  class="dropdown-item"
+                  v-if="showListInput == false"
+                  @click="toggleListInput"
+                >
+                  Create a new list <i class="fas fa-plus"></i>
+                </p>
+              </div>
             </div>
           </div>
           <div class="listInput">
@@ -200,6 +217,7 @@ export default {
     },
   },
   methods: {
+    //#region --Toggle Methods--
     toggleDropdown() {
       if (this.showDropdown) {
         this.showDropdown = false;
@@ -225,6 +243,13 @@ export default {
         this.$nextTick(() => this.$refs.listFocus.focus());
       }
     },
+    onClickOutside() {
+      this.showTodoInput = false;
+      this.showListInput = false;
+    },
+    //#endregion
+
+    //#region --Todo Methods--
     submitTodo() {
       this.todo.userId = this.$store.state.user.id;
       if (
@@ -239,7 +264,6 @@ export default {
         this.todo.listId = list._id;
         this.$store.dispatch('submitCustomTodo', this.todo);
       }
-
       this.todo.description = '';
       this.showTodoInput = false;
     },
@@ -258,6 +282,9 @@ export default {
         this.$store.dispatch('deleteTodo', todo);
       }
     },
+    //#endregion
+
+    //#region --List Methods--
     submitList() {
       this.list.userId = this.$store.state.user.id;
       this.$store.dispatch('submitList', this.list);
@@ -268,10 +295,10 @@ export default {
       this.todoListSelected = todoList.name;
       this.$store.dispatch('getTodosByListId', todoList._id);
     },
-    onClickOutside() {
-      this.showTodoInput = false;
-      this.showListInput = false;
+    deleteTodoList(todoList) {
+      this.$store.dispatch('deleteTodoList', todoList);
     },
+    //#endregion
   },
 };
 </script>
@@ -295,6 +322,9 @@ h4 {
   z-index: 1;
   bottom: 100%;
   right: 0%;
+}
+div.customLists:hover {
+  background-color: rgba(128, 128, 128, 0.39);
 }
 .content {
   color: white;
@@ -322,7 +352,7 @@ p.dropdown-item {
 }
 p.dropdown-item:hover {
   cursor: pointer;
-  background-color: rgba(128, 128, 128, 0.39);
+  background-color: rgba(128, 128, 128, 0.03);
 }
 
 .listInput {
@@ -342,6 +372,7 @@ i.fas.fa-trash-alt {
 }
 i.fas.fa-trash-alt:hover {
   color: red;
+  cursor: pointer;
 }
 
 i.far.fa-square.fa-sm:hover::before,

@@ -253,6 +253,10 @@ export default new Vuex.Store({
       let res = await api.get('users/' + id + '/todoLists');
       commit('setTodoLists', res.data);
     },
+    async deleteTodoList({ dispatch }, todoList) {
+      await api.delete('todoLists/' + todoList._id);
+      dispatch('getTodoListsByUserId', todoList.userId);
+    },
     //#endregion
   },
   modules: {},
