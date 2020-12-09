@@ -12,6 +12,13 @@ class TodoService {
       );
     }
   }
+  async getTodosByListId(id) {
+    try {
+      return await dbContext.Todo.find({ listId: id });
+    } catch (error) {
+      throw new ErrorResponse(`Can't do that`, error.response.status);
+    }
+  }
   async saveTodo(todo) {
     try {
       return await dbContext.Todo.create(todo);
