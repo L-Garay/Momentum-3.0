@@ -20,8 +20,9 @@ export default new Vuex.Store({
     users: [],
     todos: [],
     completedTodos: [],
-    usersTodoLists: [],
     customListTodos: [],
+    customListTodosDontUse: [],
+    usersTodoLists: [],
   },
   mutations: {
     //#region --Photo Methods--
@@ -73,7 +74,16 @@ export default new Vuex.Store({
       });
       state.todos = todoArr;
       state.completedTodos = completedArr;
-      state.customListTodos = customListTodos;
+      state.customListTodosDontUse = customListTodos;
+      state.customListTodosDontUse.forEach((t) => {
+        if (t.completed == true) {
+          let todoIndexToRemove = state.customListTodos.findIndex(
+            (todo) => todo._id == t._id
+          );
+          state.customListTodos.splice(todoIndexToRemove, 1);
+          state.completedTodos.push(t);
+        }
+      });
     },
     setCustomTodos(state, todos) {
       state.customListTodos = todos;
@@ -206,6 +216,10 @@ export default new Vuex.Store({
       await api.post('todos', todo);
       dispatch('getTodosByUserId', todo.userId);
     },
+    async submitCustomTodo({ dispatch }, todo) {
+      await api.post('todos', todo);
+      dispatch('getTodosByListId', todo.listId);
+    },
     async getTodosByUserId({ commit }, id) {
       let res = await api.get('users/' + id + '/todos');
       commit('setTodos', res.data);
@@ -213,6 +227,10 @@ export default new Vuex.Store({
     async getTodosByListId({ commit }, id) {
       let res = await api.get('todoLists/' + id + '/todos');
       commit('setCustomTodos', res.data);
+    },
+    async updateTodo({ dispatch }, todo) {
+      await api.put('todos/' + todo._id, todo);
+      dispatch('getTodosByUserId', todo.userId);
     },
     //#endregion
 

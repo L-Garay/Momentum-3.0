@@ -60,22 +60,67 @@
         </div>
         <div class="todoItems">
           <div class="todos" v-if="todoListSelected == 'Todos'">
-            <p v-for="todo in Todos" :key="todo._id">
-              {{ todo.description }}
-            </p>
+            <div class="descriptions" v-for="todo in Todos" :key="todo._id">
+              <i
+                class="far fa-square fa-sm"
+                v-if="todo.completed == false"
+                @click="updateTodo(todo)"
+              ></i
+              ><i
+                class="fas fa-check-square fa-sm"
+                v-else
+                @click="updateTodo(todo)"
+              ></i>
+              <p>
+                {{ todo.description }}
+              </p>
+            </div>
           </div>
           <div
             class="completedTodos"
             v-else-if="todoListSelected == 'Completed'"
           >
-            <p v-for="todo in CompletedTodos" :key="todo.id">
-              {{ todo.description }}
-            </p>
+            <div
+              class="descriptions"
+              v-for="todo in CompletedTodos"
+              :key="todo.id"
+            >
+              <i
+                class="far fa-square fa-sm"
+                v-if="todo.completed == false"
+                @click="updateTodo(todo)"
+              ></i
+              ><i
+                class="fas fa-check-square fa-sm"
+                v-else
+                @click="updateTodo(todo)"
+              ></i>
+              <p>
+                {{ todo.description }}
+              </p>
+            </div>
           </div>
-          <div class="customListTodos" v-else>
-            <p v-for="todo in CustomListTodos" :key="todo.id">
-              {{ todo.description }}
-            </p>
+          <div
+            class="customListTodos"
+            v-for="todo in CustomListTodos"
+            :key="todo.id"
+            v-else
+          >
+            <div class="descriptions">
+              <i
+                class="far fa-square fa-sm"
+                v-if="todo.completed == false"
+                @click="updateTodo(todo)"
+              ></i
+              ><i
+                class="fas fa-check-square fa-sm"
+                v-else
+                @click="updateTodo(todo)"
+              ></i>
+              <p>
+                {{ todo.description }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -182,11 +227,19 @@ export default {
           (list) => list.name == this.todoListSelected
         );
         this.todo.listId = list._id;
-        this.$store.dispatch('submitTodo', this.todo);
+        this.$store.dispatch('submitCustomTodo', this.todo);
       }
 
       this.todo.description = '';
       this.showTodoInput = false;
+    },
+    updateTodo(todo) {
+      if (todo.completed == true) {
+        todo.completed = false;
+      } else {
+        todo.completed = true;
+      }
+      this.$store.dispatch('updateTodo', todo);
     },
     submitList() {
       this.list.userId = this.$store.state.user.id;
@@ -257,5 +310,16 @@ p.dropdown-item:hover {
 
 .listInput {
   padding: 13px 0 0 20px;
+}
+.descriptions {
+  display: flex;
+}
+i.far,
+i.fas {
+  padding: 6.5px 12px 0 5px;
+}
+i.far.fa-square.fa-sm:hover::before,
+i.fas.fa-check-square.fa-sm:hover::before {
+  cursor: pointer;
 }
 </style>
