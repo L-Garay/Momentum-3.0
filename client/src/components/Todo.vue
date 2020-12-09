@@ -61,19 +61,22 @@
         <div class="todoItems">
           <div class="todos" v-if="todoListSelected == 'Todos'">
             <div class="descriptions" v-for="todo in Todos" :key="todo._id">
-              <i
-                class="far fa-square fa-sm"
-                v-if="todo.completed == false"
-                @click="updateTodo(todo)"
-              ></i
-              ><i
-                class="fas fa-check-square fa-sm"
-                v-else
-                @click="updateTodo(todo)"
-              ></i>
-              <p>
-                {{ todo.description }}
-              </p>
+              <div class="seperate d-flex">
+                <i
+                  class="far fa-square fa-sm"
+                  v-if="todo.completed == false"
+                  @click="updateTodo(todo)"
+                ></i
+                ><i
+                  class="fas fa-check-square fa-sm"
+                  v-else
+                  @click="updateTodo(todo)"
+                ></i>
+                <p>
+                  {{ todo.description }}
+                </p>
+              </div>
+              <i class="fas fa-trash-alt fa-sm" @click="deleteTodo(todo)"></i>
             </div>
           </div>
           <div
@@ -85,19 +88,23 @@
               v-for="todo in CompletedTodos"
               :key="todo.id"
             >
-              <i
-                class="far fa-square fa-sm"
-                v-if="todo.completed == false"
-                @click="updateTodo(todo)"
-              ></i
-              ><i
-                class="fas fa-check-square fa-sm"
-                v-else
-                @click="updateTodo(todo)"
-              ></i>
-              <p>
-                {{ todo.description }}
-              </p>
+              <div class="seperate d-flex">
+                <i
+                  class="far fa-square fa-sm"
+                  v-if="todo.completed == false"
+                  @click="updateTodo(todo)"
+                ></i
+                ><i
+                  class="fas fa-check-square fa-sm"
+                  v-else
+                  @click="updateTodo(todo)"
+                ></i>
+                <p>
+                  {{ todo.description }}
+                </p>
+              </div>
+
+              <i class="fas fa-trash-alt fa-sm" @click="deleteTodo(todo)"></i>
             </div>
           </div>
           <div
@@ -107,19 +114,22 @@
             v-else
           >
             <div class="descriptions">
-              <i
-                class="far fa-square fa-sm"
-                v-if="todo.completed == false"
-                @click="updateTodo(todo)"
-              ></i
-              ><i
-                class="fas fa-check-square fa-sm"
-                v-else
-                @click="updateTodo(todo)"
-              ></i>
-              <p>
-                {{ todo.description }}
-              </p>
+              <div class="seperate d-flex">
+                <i
+                  class="far fa-square fa-sm"
+                  v-if="todo.completed == false"
+                  @click="updateTodo(todo)"
+                ></i
+                ><i
+                  class="fas fa-check-square fa-sm"
+                  v-else
+                  @click="updateTodo(todo)"
+                ></i>
+                <p>
+                  {{ todo.description }}
+                </p>
+              </div>
+              <i class="fas fa-trash-alt fa-sm" @click="deleteTodo(todo)"></i>
             </div>
           </div>
         </div>
@@ -241,6 +251,13 @@ export default {
       }
       this.$store.dispatch('updateTodo', todo);
     },
+    deleteTodo(todo) {
+      if (todo.listId !== null) {
+        this.$store.dispatch('deleteCustomTodo', todo);
+      } else {
+        this.$store.dispatch('deleteTodo', todo);
+      }
+    },
     submitList() {
       this.list.userId = this.$store.state.user.id;
       this.$store.dispatch('submitList', this.list);
@@ -313,13 +330,23 @@ p.dropdown-item:hover {
 }
 .descriptions {
   display: flex;
+  justify-content: space-between;
 }
+
 i.far,
 i.fas {
   padding: 6.5px 12px 0 5px;
 }
+i.fas.fa-trash-alt {
+  color: rgba(255, 0, 0, 0.384);
+}
+i.fas.fa-trash-alt:hover {
+  color: red;
+}
+
 i.far.fa-square.fa-sm:hover::before,
-i.fas.fa-check-square.fa-sm:hover::before {
+i.fas.fa-check-square.fa-sm:hover::before,
+i.fas.fa-trash-alt.fa-sm:hover::before {
   cursor: pointer;
 }
 </style>

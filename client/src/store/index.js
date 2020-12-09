@@ -72,9 +72,11 @@ export default new Vuex.Store({
           todoArr.push(t);
         }
       });
+      // NOTE This method will recieve every single todo a user has, regardless of if it belongs to a custom list or not. However, in reality we only care about the todos without a listId property (the ones with a listId will be handled by the 'setCustomTodos' method), and so to ensure that the customTodosArray is not overwritten and filled with ALL custom todos I created essentialy a fake or dump array to store ALL custom todos.
       state.todos = todoArr;
       state.completedTodos = completedArr;
       state.customListTodosDontUse = customListTodos;
+      // NOTE after updating a todo's completed property it will run this method. We want to check to see if any of the newly fetched custom todos are completed or not, if they are, remove them from the customListTodos array and insert it into the completedTodos array
       state.customListTodosDontUse.forEach((t) => {
         if (t.completed == true) {
           let todoIndexToRemove = state.customListTodos.findIndex(
@@ -231,6 +233,14 @@ export default new Vuex.Store({
     async updateTodo({ dispatch }, todo) {
       await api.put('todos/' + todo._id, todo);
       dispatch('getTodosByUserId', todo.userId);
+    },
+    async deleteTodo({ dispatch }, todo) {
+      await api.delete('todos/' + todo._id);
+      dispatch('getTodosByUserId', todo.userId);
+    },
+    async deleteCustomTodo({ dispatch }, todo) {
+      await api.delete('todos/' + todo._id);
+      dispatch('getTodosByListId', todo.listId);
     },
     //#endregion
 

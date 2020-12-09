@@ -41,7 +41,7 @@ class TodoService {
   }
   async deleteTodo(id) {
     try {
-      let data = await dbContext.Todo.findByIdAndDelete(id);
+      return await dbContext.Todo.findByIdAndDelete(id);
     } catch (error) {
       throw new ErrorResponse(
         `Cant find photo with that id.  ${error}`,
