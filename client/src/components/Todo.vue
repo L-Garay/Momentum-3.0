@@ -304,14 +304,16 @@ export default {
 </script>
 
 <style scoped>
-.todoList {
-  position: relative;
-  display: inline-block;
-}
+/* Toggle the modal */
 h4 {
   color: white;
   padding: 0 15px 10px 0;
   cursor: pointer;
+}
+/* Modal top level */
+.todoList {
+  position: relative;
+  display: inline-block;
 }
 #todoDropdown {
   background-color: lightslategray;
@@ -323,22 +325,9 @@ h4 {
   bottom: 100%;
   right: 0%;
 }
+/* List button and list styling */
 div.customLists:hover {
   background-color: rgba(128, 128, 128, 0.39);
-}
-.content {
-  color: white;
-  text-align: start;
-  height: 275px;
-}
-h5 {
-  color: white;
-  border-bottom: 1pt solid white;
-  padding-left: 5px;
-}
-.input {
-  text-align: center;
-  height: 50px;
 }
 button {
   background-color: red;
@@ -346,7 +335,6 @@ button {
   border: none;
   margin-top: 10px;
 }
-
 p.dropdown-item {
   margin-bottom: 0;
 }
@@ -354,7 +342,11 @@ p.dropdown-item:hover {
   cursor: pointer;
   background-color: rgba(128, 128, 128, 0.03);
 }
-
+/* List input styling */
+.input {
+  text-align: center;
+  height: 50px;
+}
 .listInput {
   padding: 13px 0 0 20px;
 }
@@ -362,7 +354,13 @@ p.dropdown-item:hover {
   display: flex;
   justify-content: space-between;
 }
-
+/* Todo list styling */
+.content {
+  color: white;
+  text-align: start;
+  height: 275px;
+}
+/* Font awesome styling */
 i.far,
 i.fas {
   padding: 6.5px 12px 0 5px;
