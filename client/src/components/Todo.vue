@@ -1,9 +1,6 @@
 <template>
   <div class="todoList">
-    <div class="toggleBtn">
-      <h4 @click="toggleDropdown">Todos</h4>
-    </div>
-    <div v-if="showDropdown" id="todoDropdown">
+    <div id="todoDropdown">
       <div class="content">
         <div class="header d-flex">
           <div class="dropdown">
@@ -60,6 +57,7 @@
           </div>
           <div class="listInput">
             <input
+              class="listInputBox"
               v-on:blur="onClickOutside"
               ref="listFocus"
               type="text"
@@ -77,7 +75,17 @@
         </div>
         <div class="todoItems">
           <div class="todos" v-if="todoListSelected == 'Todos'">
-            <div class="descriptions" v-for="todo in Todos" :key="todo._id">
+            <div class="noTodos" v-if="this.$store.state.todos.length == 0">
+              <p>
+                You don't have any todos, click the button below to create one.
+              </p>
+            </div>
+            <div
+              v-else
+              class="descriptions"
+              v-for="todo in Todos"
+              :key="todo._id"
+            >
               <div class="seperate d-flex">
                 <i
                   class="far fa-square fa-sm"
@@ -101,6 +109,15 @@
             v-else-if="todoListSelected == 'Completed'"
           >
             <div
+              class="noTodos"
+              v-if="this.$store.state.completedTodos.length == 0"
+            >
+              <p>
+                You don't have any completed todos, time to get to work!
+              </p>
+            </div>
+            <div
+              v-else
               class="descriptions"
               v-for="todo in CompletedTodos"
               :key="todo.id"
@@ -120,17 +137,23 @@
                   {{ todo.description }}
                 </p>
               </div>
-
               <i class="fas fa-trash-alt fa-sm" @click="deleteTodo(todo)"></i>
             </div>
           </div>
-          <div
-            class="customListTodos"
-            v-for="todo in CustomListTodos"
-            :key="todo.id"
-            v-else
-          >
-            <div class="descriptions">
+          <div class="customListTodos" v-else>
+            <div
+              class="noTodos"
+              v-if="this.$store.state.customListTodos.length == 0"
+            >
+              <p>
+                You don't have any todos, click the button below to create one.
+              </p>
+            </div>
+            <div
+              class="descriptions"
+              v-for="todo in CustomListTodos"
+              :key="todo.id"
+            >
               <div class="seperate d-flex">
                 <i
                   class="far fa-square fa-sm"
@@ -152,7 +175,11 @@
         </div>
       </div>
       <div class="input">
-        <button @click="toggleTodoInput" v-if="showTodoInput == false">
+        <button
+          class="createBtn"
+          @click="toggleTodoInput"
+          v-if="showTodoInput == false"
+        >
           Create a new Todo
         </button>
         <input
@@ -182,7 +209,6 @@ export default {
   name: 'Todo',
   data() {
     return {
-      showDropdown: false,
       showTodoInput: false,
       showListInput: false,
       todo: {
@@ -201,6 +227,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch('getTodosByUserId', this.$store.state.user.id);
+    this.$store.dispatch('getTodoListsByUserId', this.$store.state.user.id);
   },
   computed: {
     Todos() {
@@ -217,16 +244,6 @@ export default {
     },
   },
   methods: {
-    //#region --Toggle Methods--
-    toggleDropdown() {
-      if (this.showDropdown) {
-        this.showDropdown = false;
-      } else if (this.showDropdown == false) {
-        this.showDropdown = true;
-        this.$store.dispatch('getTodosByUserId', this.$store.state.user.id);
-        this.$store.dispatch('getTodoListsByUserId', this.$store.state.user.id);
-      }
-    },
     toggleTodoInput() {
       if (this.showTodoInput) {
         this.showTodoInput = false;
@@ -304,36 +321,37 @@ export default {
 </script>
 
 <style scoped>
-/* Toggle the modal */
-h4 {
-  color: white;
-  padding: 0 15px 10px 0;
-  cursor: pointer;
-}
 /* Modal top level */
-.todoList {
-  position: relative;
-  display: inline-block;
-}
 #todoDropdown {
-  background-color: lightslategray;
+  background-color: rgba(245, 245, 245, 0.815);
   border: 1pt solid black;
   width: 350px;
   height: 325px;
   position: absolute;
-  z-index: 1;
-  bottom: 100%;
-  right: 0%;
+  z-index: 5;
+  bottom: 50px;
+  right: 12px;
+}
+/* Header section styling */
+.header {
+  border-bottom: 1pt solid black;
+  padding-bottom: 7pt;
 }
 /* List button and list styling */
 div.customLists:hover {
   background-color: rgba(128, 128, 128, 0.39);
 }
-button {
-  background-color: red;
-  border-radius: 10px 10px 10px 10px;
-  border: none;
-  margin-top: 10px;
+button.btn {
+  background-color: transparent;
+  border-radius: 5px 5px 5px 5px;
+  border: 1pt solid black;
+  margin: 10px 0 0 7px;
+  color: black;
+}
+button.btn:hover {
+  background-color: darkgray;
+  color: white;
+  box-shadow: 3pt 3pt 5pt black;
 }
 p.dropdown-item {
   margin-bottom: 0;
@@ -342,23 +360,50 @@ p.dropdown-item:hover {
   cursor: pointer;
   background-color: rgba(128, 128, 128, 0.03);
 }
-/* List input styling */
-.input {
-  text-align: center;
-  height: 50px;
+.dropdown-menu {
+  max-height: 185px;
+  overflow-y: auto;
 }
+/* List input styling */
+
 .listInput {
   padding: 13px 0 0 20px;
 }
+/* Todo list styling */
 .descriptions {
   display: flex;
   justify-content: space-between;
 }
-/* Todo list styling */
 .content {
-  color: white;
+  color: black;
   text-align: start;
   height: 275px;
+}
+.todoItems {
+  max-height: 210px;
+  padding-top: 5px;
+  overflow-y: auto;
+}
+.noTodos {
+  text-align: center;
+  margin-top: 75px;
+  padding: 0 12px;
+}
+/* Create todo button styling */
+.input {
+  text-align: center;
+  height: 50px;
+}
+button.createBtn {
+  color: black;
+  background-color: transparent;
+  border: 1pt solid black;
+  border-radius: 5px 5px 5px 5px;
+}
+button.createBtn:hover {
+  background-color: darkgray;
+  color: white;
+  box-shadow: 3pt 3pt 5pt black;
 }
 /* Font awesome styling */
 i.far,
