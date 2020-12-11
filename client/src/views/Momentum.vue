@@ -72,8 +72,12 @@
         <div class="col-6 offset-3">
           <quote />
         </div>
-        <div class="col-3 todoList">
-          <todo />
+        <div class="col-1 offset-2 todoList">
+          <p class="toggleTodos" @click="toggleTodos">Todos</p>
+          <transition name="fade">
+            <div v-if="showTodosModal">
+              <todo /></div
+          ></transition>
         </div>
       </div>
     </div>
@@ -106,6 +110,7 @@ export default {
     return {
       showPhotoModal: false,
       showQuoteModal: false,
+      showTodosModal: false,
     };
   },
   mounted() {
@@ -128,6 +133,13 @@ export default {
     },
     closeQuotesModal() {
       this.showQuoteModal = false;
+    },
+    toggleTodos() {
+      if (this.showTodosModal == true) {
+        this.showTodosModal = false;
+      } else {
+        this.showTodosModal = true;
+      }
     },
   },
 };
@@ -154,6 +166,23 @@ export default {
   align-items: flex-end;
 }
 .todoList {
-  text-align: end;
+  text-align: center;
+}
+p.toggleTodos {
+  color: white;
+  font-size: 20px;
+  text-shadow: 3px 3px 3px black;
+}
+p.toggleTodos:hover {
+  cursor: pointer;
+  font-size: 25px;
+  text-shadow: 5px 5px 3px black;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
