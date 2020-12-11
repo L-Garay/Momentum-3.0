@@ -10,6 +10,7 @@
           <settings
             @openPhotosModal="openPhotosModal"
             @openQuotesModal="openQuotesModal"
+            @toggleCalculator="toggleCalculator"
           />
         </div>
         <div class="col-4 mr-3"><weather /></div>
@@ -29,6 +30,10 @@
           v-if="showQuoteModal"
           @close-quotes-modal="closeQuotesModal"
         />
+        <div class="col-3">
+          <!-- <calculator /> -->
+          <calculator v-if="showCalculator" class="calculator" />
+        </div>
         <!-- NOTE Can't use bootstrap modal because for some reason I get an error saying the '$' symbol when trying to programatically open/close it using bootstrap's $('#myModal').modal(options) is 'undefined'. I have tried using a cdn directly from jquery, I have tried npm i-ing jquery directly into the project and neither work.  I have tried reordering the cdns, I have tried nmp i-ing bootstrap directly, and neither work.  I have no idea why it's not working. So the workaround is to use a modal made by the vue devs found at https://vuejs.org/v2/examples/modal.html?
           <div
           class="modal"
@@ -93,6 +98,7 @@ import Greeting from '@/components/Greeting.vue';
 import PhotoModal from '@/components/PhotoModal.vue';
 import QuoteModal from '@/components/QuoteModal.vue';
 import Todo from '@/components/Todo.vue';
+import Calculator from '@/components/Calculator.vue';
 
 export default {
   name: 'momentum',
@@ -105,12 +111,14 @@ export default {
     PhotoModal,
     QuoteModal,
     Todo,
+    Calculator,
   },
   data() {
     return {
       showPhotoModal: false,
       showQuoteModal: false,
       showTodosModal: false,
+      showCalculator: false,
     };
   },
   mounted() {
@@ -141,6 +149,13 @@ export default {
         this.showTodosModal = true;
       }
     },
+    toggleCalculator() {
+      if (this.showCalculator == false) {
+        this.showCalculator = true;
+      } else {
+        this.showCalculator = false;
+      }
+    },
   },
 };
 </script>
@@ -165,6 +180,14 @@ export default {
   height: 14vh;
   align-items: flex-end;
 }
+
+/* Calculator component styling */
+.calculator {
+  margin-top: -50px;
+  float: right;
+}
+
+/* Todo component styling */
 .todoList {
   text-align: center;
 }
