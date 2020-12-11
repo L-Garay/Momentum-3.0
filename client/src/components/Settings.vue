@@ -47,6 +47,7 @@
           </li>
         </ul>
       </li>
+      <li @click="toggleCalculator">Toggle Calculator</li>
     </ul>
   </div>
   <!--  NOTE This was the original modal, however the way it was setup meant you had to click the button to open AND close the modal, you couldn't click on the screen and have it disappear. However, I liked that when you selected 'Get Photo/Quote' or 'Save Photo/Quote' and the time options, it didn't close; as this allowed the user to quickly get new photos or quotes without having to navigate back to those buttons everytime. So I guess this would come down to user preference. I'm leaving it here to be able to change if needed; both are fully functional.
@@ -182,6 +183,12 @@ export default {
       this.$root.$emit('setStandardTime');
       this.$store.state.user.militaryTimeSelected = false;
       this.$store.dispatch('updateUserById', this.$store.state.user);
+    },
+    //#endregion
+
+    //#region --Calculator Methods--
+    toggleCalculator() {
+      this.$emit('toggleCalculator');
     },
     //#endregion
   },
