@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'Sports Compoenent',
+  name: 'SportsCompoenent',
 };
 </script>
 

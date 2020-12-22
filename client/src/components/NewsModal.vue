@@ -118,10 +118,10 @@ h2:hover {
 }
 
 .modal-body {
-  max-height: 400px;
-  max-width: 690px;
+  max-height: 500px;
+  max-width: 900px;
   margin: 20px 0;
-  overflow-y: auto;
+  /* overflow-y: auto; */
 }
 
 .modal-default-button {
