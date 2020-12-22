@@ -11,6 +11,7 @@
             @openPhotosModal="openPhotosModal"
             @openQuotesModal="openQuotesModal"
             @toggleCalculator="toggleCalculator"
+            @openNewsModal="openNewsModal"
           />
         </div>
         <div class="col-4 mr-3"><weather /></div>
@@ -30,6 +31,7 @@
           v-if="showQuoteModal"
           @close-quotes-modal="closeQuotesModal"
         />
+        <news-modal v-if="showNewsModal" @close-news-modal="closeNewsModal" />
         <div class="col-3">
           <!-- <calculator /> -->
           <calculator v-if="showCalculator" class="calculator" />
@@ -99,6 +101,7 @@ import PhotoModal from '@/components/PhotoModal.vue';
 import QuoteModal from '@/components/QuoteModal.vue';
 import Todo from '@/components/Todo.vue';
 import Calculator from '@/components/Calculator.vue';
+import NewsModal from '@/components/NewsModal.vue';
 
 export default {
   name: 'momentum',
@@ -112,6 +115,7 @@ export default {
     QuoteModal,
     Todo,
     Calculator,
+    NewsModal,
   },
   data() {
     return {
@@ -119,6 +123,7 @@ export default {
       showQuoteModal: false,
       showTodosModal: false,
       showCalculator: false,
+      showNewsModal: false,
     };
   },
   mounted() {
@@ -141,6 +146,12 @@ export default {
     },
     closeQuotesModal() {
       this.showQuoteModal = false;
+    },
+    openNewsModal() {
+      this.showNewsModal = true;
+    },
+    closeNewsModal() {
+      this.showNewsModal = false;
     },
     toggleTodos() {
       if (this.showTodosModal == true) {
