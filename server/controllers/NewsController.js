@@ -20,8 +20,6 @@ export class NewsController extends BaseController {
       let data = await newsService.getNewNews(req.body);
       return res.status(200).send(data.data);
     } catch (error) {
-      // NOTE use this method to demonstrate how ErrorResponse isn't working
-      console.log(error);
       next(error);
     }
   }

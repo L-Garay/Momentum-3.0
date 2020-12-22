@@ -51,8 +51,8 @@ export default {
   },
   data() {
     return {
-      showNews: false,
-      showFinance: true,
+      showNews: true,
+      showFinance: false,
       showSports: false,
     };
   },
@@ -120,7 +120,8 @@ h2:hover {
 .modal-body {
   max-height: 500px;
   max-width: 900px;
-  margin: 20px 0;
+  padding-top: 0;
+
   /* overflow-y: auto; */
 }
 

@@ -103,9 +103,8 @@ export default new Vuex.Store({
     //#region --News Methods--
     setNews(state, news) {
       state.newsWithPicture = news.slice(0, 20);
-      console.log('with', state.newsWithPicture);
+
       state.newsNoPicture = news.slice(20);
-      console.log('no', state.newsNoPicture);
     },
     //#endregion
   },
@@ -269,6 +268,12 @@ export default new Vuex.Store({
     //#region --News Methods--
     async getNews({ commit }) {
       let res = await api.get('news');
+      commit('setNews', res.data.value);
+    },
+    async getNewNews({ commit }, news) {
+      console.log(news.query);
+      let res = await api.post('news/change', news.query);
+
       commit('setNews', res.data.value);
     },
     //#endregion
