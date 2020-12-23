@@ -23,6 +23,8 @@ export default new Vuex.Store({
     customListTodos: [],
     customListTodosDontUse: [],
     usersTodoLists: [],
+    newsWithPicture: [],
+    newsNoPicture: [],
   },
   mutations: {
     //#region --Photo Methods--
@@ -97,6 +99,14 @@ export default new Vuex.Store({
       state.usersTodoLists = todoLists;
     },
     //#endregion
+
+    //#region --News Methods--
+    setNews(state, news) {
+      state.newsWithPicture = news.slice(0, 20);
+
+      state.newsNoPicture = news.slice(20);
+    },
+    //#endregion
   },
   actions: {
     //#region --Photo Methods--
@@ -152,12 +162,10 @@ export default new Vuex.Store({
     //#endregion
 
     //#region --Quote Methods--
-
     async getQuote({ commit }) {
       try {
         let res = await api.get('quotes');
         commit('setQuote', res.data);
-        console.log(res.data);
       } catch (error) {
         console.log(error);
       }
@@ -189,7 +197,6 @@ export default new Vuex.Store({
     },
     async getAllUsers({ commit }) {
       let res = await api.get('users');
-      console.log('hit me', res.data);
       commit('setUsers', res.data);
     },
     async getUserById({ commit }, id) {
@@ -208,7 +215,6 @@ export default new Vuex.Store({
     },
     async deleteUserById({ dispatch }, id) {
       await api.delete('users/' + id);
-
       dispatch('getAllUsers');
     },
     //#endregion
@@ -256,6 +262,19 @@ export default new Vuex.Store({
     async deleteTodoList({ dispatch }, todoList) {
       await api.delete('todoLists/' + todoList._id);
       dispatch('getTodoListsByUserId', todoList.userId);
+    },
+    //#endregion
+
+    //#region --News Methods--
+    async getNews({ commit }) {
+      let res = await api.get('news');
+      commit('setNews', res.data.value);
+    },
+    async getNewNews({ commit }, news) {
+      console.log(news.query);
+      let res = await api.post('news/change', news.query);
+
+      commit('setNews', res.data.value);
     },
     //#endregion
   },

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { dbContext } from '../config/DBContext';
 import ErrorResponse from '../utils/ErrorResponse';
 
 class WeatherService {
