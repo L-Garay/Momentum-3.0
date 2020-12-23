@@ -22,13 +22,12 @@ class NewsService {
     }
   }
   async getNewNews(query) {
-    console.log(query);
     try {
       return await axios({
         method: 'GET',
         url: 'https://bing-news-search1.p.rapidapi.com/news/search',
         params: {
-          q: query,
+          q: query.query,
           freshness: 'Month',
           textFormat: 'Raw',
           safeSearch: 'Off',

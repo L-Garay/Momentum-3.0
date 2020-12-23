@@ -2,7 +2,17 @@
   <transition name="modal">
     <div class="modal-mask">
       <div class="modal-wrapper">
-        <div class="modal-container">
+        <!-- <div
+          class="modal-container"
+          :style="{ 'background-image': 'url(' + backgroundImgUrl + ')' }"
+          NOTE For some reason, background doesn't work when trying to point to picture in assests folder, but if point to the actual photo path on the unsplash website, it works. See also main Momentum.vue for how it works to get main background image (also pointing to a direct path, not locally stored photo).
+        > -->
+        <div
+          class="modal-container"
+          :style="{
+            'background-image': 'url(' + backgroundImgUrl + ')',
+          }"
+        >
           <div class="modal-header">
             <h2 @click="toggleNews">News</h2>
             <h2 @click="toggleFinance">Finance</h2>
@@ -54,6 +64,9 @@ export default {
       showNews: true,
       showFinance: false,
       showSports: false,
+      // NOTE As alluded to earlier, instead of this variable pointing to pictures saved in the assets folder, it appears it needs to be pointed at a direct path to the picture from unsplash.
+      backgroundImgUrl:
+        'https://images.unsplash.com/photo-1460494936962-50da3863c15b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1055&q=80',
     };
   },
   mounted() {},
@@ -63,16 +76,22 @@ export default {
       this.showNews = true;
       this.showFinance = false;
       this.showSports = false;
+      this.backgroundImgUrl =
+        'https://images.unsplash.com/photo-1460494936962-50da3863c15b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1055&q=80';
     },
     toggleFinance() {
       this.showNews = false;
       this.showFinance = true;
       this.showSports = false;
+      this.backgroundImgUrl =
+        'https://images.pexels.com/photos/210607/pexels-photo-210607.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940';
     },
     toggleSports() {
       this.showNews = false;
       this.showFinance = false;
       this.showSports = true;
+      this.backgroundImgUrl =
+        'https://images.unsplash.com/photo-1522778119026-d647f0596c20?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80';
     },
   },
 };
@@ -105,11 +124,15 @@ h2:hover {
   height: 700px;
   margin: 0px auto;
   padding: 20px 30px;
-  background-color: #fff;
+  /* background-color: rgb(230, 46, 46); */
+  /* background-image: url('../assets/Skyline.jpg'); */
+  background-size: cover;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
   font-family: Helvetica, Arial, sans-serif;
+  color: white;
+  text-shadow: 1pt 1pt 2pt black;
 }
 
 .modal-header h3 {
