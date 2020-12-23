@@ -17,7 +17,12 @@
           class="pictureContent"
         >
           <a :href="news.webSearchUrl" target="_blank">
-            <img :src="news.image.url" alt="No image available" />
+            <img
+              v-if="fetchedNewNews"
+              :src="news.image.url"
+              alt="No image available"
+            />
+            <img v-else :src="news.image.url" alt="No image available" />
             <h5>{{ news.name }}</h5>
           </a>
         </div>
@@ -43,13 +48,14 @@ export default {
   name: 'NewsCompoenent',
   data() {
     return {
+      fetchedNewNews: false,
       news: {
         query: '',
       },
     };
   },
   mounted() {
-    this.$store.dispatch('getNews');
+    // this.$store.dispatch('getNews');
   },
   computed: {
     NewsWithPicture() {
@@ -62,12 +68,13 @@ export default {
   methods: {
     submitNewsQuery() {
       if (this.news.query !== '') {
-        console.log(this.news.query);
         this.$store.dispatch('getNewNews', this.news);
         this.news.query = '';
       } else {
         this.news.query = '';
       }
+      this.fetchedNewNews = true;
+      console.log(this.fetchedNewNews);
     },
   },
 };
@@ -75,8 +82,10 @@ export default {
 
 <style scoped>
 .newsSection {
-  width: 830px;
+  width: 890px;
   height: 500px;
+  background-color: rgba(169, 169, 169, 0.596);
+  color: white;
 }
 .input {
   text-align: center;
@@ -109,13 +118,16 @@ export default {
 }
 .textContent {
   max-height: 440px;
-  padding-right: 30px;
+  width: 275px;
+  padding-right: 10px;
   overflow-y: auto;
 }
 a {
-  color: black;
+  color: white;
+  text-shadow: 1pt 1pt 2pt black;
 }
 a:hover {
   color: blue;
+  text-shadow: 1pt 1pt 2pt white;
 }
 </style>

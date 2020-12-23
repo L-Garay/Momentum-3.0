@@ -103,7 +103,6 @@ export default new Vuex.Store({
     //#region --News Methods--
     setNews(state, news) {
       state.newsWithPicture = news.slice(0, 20);
-
       state.newsNoPicture = news.slice(20);
     },
     //#endregion
@@ -271,10 +270,23 @@ export default new Vuex.Store({
       commit('setNews', res.data.value);
     },
     async getNewNews({ commit }, news) {
-      console.log(news.query);
-      let res = await api.post('news/change', news.query);
-
-      commit('setNews', res.data.value);
+      let res = await api.post('news/change', news);
+      let customArr = [];
+      res.data.value.forEach((n) => {
+        if (Object.prototype.hasOwnProperty.call(n, 'image')) {
+          n.image.url = n.image.thumbnail.contentUrl;
+          n.webSearchUrl = n.url;
+          customArr.unshift(n);
+        } else {
+          n.image = {
+            url:
+              'https://www.conchovalleyhomepage.com/wp-content/uploads/sites/83/2020/05/BREAKING-NEWS-GENERIC-1.jpg?w=100&h=100&crop=1',
+          };
+          n.webSearchUrl = n.url;
+          customArr.push(n);
+        }
+      });
+      commit('setNews', customArr);
     },
     //#endregion
   },
