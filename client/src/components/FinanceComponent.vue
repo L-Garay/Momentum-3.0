@@ -40,17 +40,31 @@
       <div class="newsSection container-fluid">
         <!-- This is where the list for the news articles will go, goal is to create a mini-pagination effect to loop through articles -->
         <div class="row">
-          <div class="col">
-            <p>Trending News</p>
+          <div class="col newsHeader">
+            <h4>Trending News</h4>
           </div>
-          <div class="col-10 newsTitles">
-            <p v-for="news in financeNews" :key="news.title">
-              {{ news.title }}
-            </p>
+          <div class="col-12 newsTitles">
+            <ul>
+              <li v-for="news in financeNews" :key="news.title">
+                <a :href="news.link" target="_blank">
+                  {{ news.title }}
+                </a>
+              </li>
+            </ul>
           </div>
           <div class="col pagination">
-            <div class="left">Left</div>
-            <div class="right">Right</div>
+            <div class="left" @click="previousNews" v-if="firstNews == false">
+              <i class="fas fa-chevron-left"></i> Previous
+            </div>
+            <div class="unable" v-else-if="firstNews == true">
+              <i class="fas fa-chevron-left"></i> Previous
+            </div>
+            <div class="right" @click="nextNews" v-if="lastNews == false">
+              Next <i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="unable" v-else-if="lastNews == true">
+              Next <i class="fas fa-chevron-right"></i>
+            </div>
           </div>
         </div>
       </div>
@@ -62,17 +76,50 @@
 export default {
   name: 'FinanceCompoenent',
   data() {
-    return {};
+    return {
+      firstNews: true,
+      lastNews: false,
+    };
   },
   mounted() {
     // this.$store.dispatch('getFinanceNews');
   },
   computed: {
     financeNews() {
-      return this.$store.state.firstFinanceNews;
+      this.checkNews();
+      return this.$store.state.currentFinanceNews;
     },
   },
-  methods: {},
+  methods: {
+    checkNews() {
+      if (this.$store.state.currentFinanceNews.length < 10) {
+        this.lastNews = true;
+        this.firstNews = false;
+        console.log(this.firstNews);
+        console.log(this.lastNews);
+      } else if (
+        this.$store.state.currentFinanceNews[0] ==
+        this.$store.state.allFinanceNews[0]
+      ) {
+        this.firstNews = true;
+        this.lastNews = false;
+        console.log(this.firstNews);
+        console.log(this.lastNews);
+      }
+    },
+    nextNews() {
+      if (this.firstNews == true) {
+        this.firstNews = false;
+      }
+      this.$store.dispatch('nextNews');
+    },
+    previousNews() {
+      if (this.lastNews == true) {
+        this.lastNews == false;
+      }
+      this.$store.dispatch('previousNews');
+    },
+  },
 };
 </script>
 
@@ -91,18 +138,57 @@ export default {
   display: flex;
 }
 .mainViewSection {
+  width: 600px;
 }
 .newsSection {
+  max-width: 250px;
   display: flex;
   flex-direction: column;
   border-left: 1pt solid white;
 }
+.newsHeader {
+  text-align: center;
+}
+.newsHeader h4 {
+  margin-bottom: 0;
+  padding: 5px 0;
+  border-bottom: 1pt solid white;
+}
 .newsTitles {
   font-size: 13px;
-  max-height: 375px;
+  max-height: 365px;
   overflow-y: auto;
+}
+ul {
+  padding-left: 10px;
+  margin-bottom: 5px;
+}
+li {
+  margin: 4px 0;
+}
+a {
+  color: white;
+}
+a:hover {
+  color: white;
+  text-decoration-color: blue;
+  text-shadow: 1pt 1pt 2pt blue;
 }
 .pagination {
   display: flex;
+  justify-content: space-between;
+  border-top: 1pt solid white;
+  padding: 5px 0 0 15px;
+}
+.left:hover,
+.right:hover {
+  cursor: pointer;
+  color: lightgray;
+}
+.unable {
+  color: gray;
+}
+.unable:hover {
+  cursor: default;
 }
 </style>
