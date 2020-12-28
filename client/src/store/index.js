@@ -25,6 +25,8 @@ export default new Vuex.Store({
     usersTodoLists: [],
     newsWithPicture: [],
     newsNoPicture: [],
+    firstFinanceNews: [],
+    extraFinanceNews: [],
   },
   mutations: {
     //#region --Photo Methods--
@@ -104,6 +106,15 @@ export default new Vuex.Store({
     setNews(state, news) {
       state.newsWithPicture = news.slice(0, 20);
       state.newsNoPicture = news.slice(20);
+    },
+    //#endregion
+
+    //#region --Finance Methods--
+    setFinanceNews(state, news) {
+      state.firstFinanceNews = news.slice(0, 10);
+      state.extraFinanceNews = news.slice(10);
+      console.log(state.firstFinanceNews);
+      console.log(state.extraFinanceNews);
     },
     //#endregion
   },
@@ -287,6 +298,13 @@ export default new Vuex.Store({
         }
       });
       commit('setNews', customArr);
+    },
+    //#endregion
+
+    //#region --Finance Methods--
+    async getFinanceNews({ commit }) {
+      let res = await api.get('finance/news');
+      commit('setFinanceNews', res.data);
     },
     //#endregion
   },
