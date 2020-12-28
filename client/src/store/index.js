@@ -25,8 +25,8 @@ export default new Vuex.Store({
     usersTodoLists: [],
     newsWithPicture: [],
     newsNoPicture: [],
-    firstFinanceNews: [],
-    extraFinanceNews: [],
+    currentFinanceNews: [],
+    allFinanceNews: [],
   },
   mutations: {
     //#region --Photo Methods--
@@ -111,10 +111,18 @@ export default new Vuex.Store({
 
     //#region --Finance Methods--
     setFinanceNews(state, news) {
-      state.firstFinanceNews = news.slice(0, 10);
-      state.extraFinanceNews = news.slice(10);
-      console.log(state.firstFinanceNews);
-      console.log(state.extraFinanceNews);
+      state.currentFinanceNews = news.slice(0, 10);
+      state.allFinanceNews = news;
+    },
+    setNewFinanceNews(state, indexes) {
+      console.log('before the swtich', state.currentFinanceNews);
+      console.log(state.allFinanceNews);
+      state.currentFinanceNews = state.allFinanceNews.slice(
+        indexes.start,
+        indexes.finish
+      );
+      console.log('after the swtich', state.currentFinanceNews);
+      console.log(state.allFinanceNews);
     },
     //#endregion
   },
@@ -305,6 +313,27 @@ export default new Vuex.Store({
     async getFinanceNews({ commit }) {
       let res = await api.get('finance/news');
       commit('setFinanceNews', res.data);
+    },
+    nextNews({ commit, state }) {
+      let lastElementIndex = state.currentFinanceNews.length - 1;
+      let newsToFind = state.currentFinanceNews[lastElementIndex];
+      let indexOfNewsToFind = state.allFinanceNews.indexOf(newsToFind);
+
+      let indexes = {
+        start: indexOfNewsToFind + 1,
+        finish: indexOfNewsToFind + 11,
+      };
+      commit('setNewFinanceNews', indexes);
+    },
+    previousNews({ commit, state }) {
+      let newsToFind = state.currentFinanceNews[0];
+      let indexOfNewsToFind = state.allFinanceNews.indexOf(newsToFind);
+
+      let indexes = {
+        start: indexOfNewsToFind - 10,
+        finish: indexOfNewsToFind,
+      };
+      commit('setNewFinanceNews', indexes);
     },
     //#endregion
   },
