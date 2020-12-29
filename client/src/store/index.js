@@ -27,6 +27,9 @@ export default new Vuex.Store({
     newsNoPicture: [],
     currentFinanceNews: [],
     allFinanceNews: [],
+    financeWinners: [],
+    financeLosers: [],
+    financeWinnersLosers: [],
   },
   mutations: {
     //#region --Photo Methods--
@@ -124,6 +127,16 @@ export default new Vuex.Store({
       console.log('after the swtich', state.currentFinanceNews);
       console.log(state.allFinanceNews);
     },
+    setWinners(state, winners) {
+      state.financeWinners = winners;
+    },
+    setLosers(state, losers) {
+      state.financeLosers = losers;
+    },
+    setWinnersLosers(state, combined) {
+      state.financeWinnersLosers = combined;
+    },
+
     //#endregion
   },
   actions: {
@@ -334,6 +347,27 @@ export default new Vuex.Store({
         finish: indexOfNewsToFind,
       };
       commit('setNewFinanceNews', indexes);
+    },
+    async getWinnersLosers({ commit }) {
+      let win = await api.get('finance/win');
+      let lose = await api.get('finance/lose');
+      commit('setWinners', win.data.quotes);
+      console.log('winners', win.data.quotes);
+      commit('setLosers', lose.data.quotes);
+      console.log('losers', lose.data.quotes);
+      let combined = [];
+      combined.push(win.data.quotes);
+      combined.push(lose.data.quotes.reverse());
+      let combinedFlat = combined.flat();
+      combinedFlat.forEach((s) => {
+        if (Math.sign(s.regularMarketChangePercent) == 1) {
+          s.positive = true;
+        } else if (Math.sign(s.regularMarketChangePercent) == -1) {
+          s.positive = false;
+        }
+      });
+      console.log('combined', combinedFlat);
+      commit('setWinnersLosers', combinedFlat);
     },
     //#endregion
   },

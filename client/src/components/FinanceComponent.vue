@@ -11,31 +11,30 @@
     </div>
     <div class="bodySection">
       <div class="mainViewSection">
-        <div class="fake">
-          <h5>fake header for now</h5>
-          <p>
-            fake text for now. Lorem ipsum dolor sit amet consectetur,
-            adipisicing elit. Aliquid doloremque, possimus consequuntur
-            accusantium ipsa architecto reiciendis pariatur voluptatibus? Cum
-            voluptate in hic enim mollitia pariatur saepe ducimus molestias quo
-            aut.
-          </p>
-        </div>
-        <div class="fake2">
-          <h4>kdjfkd</h4>
-          <p>fake fake lorem</p>
-          <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae esse
-            adipisci quis ea dolor, animi fugit dolore velit vel. Nam voluptas
-            enim sapiente voluptatem dicta harum voluptatum minima similique
-            nostrum. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            Ipsa labore quis repellat fugiat sint, distinctio quae. Modi, animi!
-            Magni libero repellendus quibusdam aperiam reprehenderit consequatur
-            ipsam ipsa eos animi ipsum! Lorem ipsum, dolor sit amet.
-          </p>
-        </div>
-
         <!-- This is where the data for the different header elements/topics will appear. This is also where the data for a specific stock will be displayed when a user clicks on a stock (may end up creating a little mini component to handle specified stock data) -->
+        <div class="winnersLosers">
+          <div class="mainSectionHeader">
+            <h4>Day Winners and Losers</h4>
+          </div>
+          <div class="winLoseTable">
+            <table>
+              <tr>
+                <th>Symbol</th>
+                <th>Stock Name</th>
+                <th>Current Price</th>
+                <th>Day High</th>
+                <th>Day Low</th>
+                <th>% Change</th>
+                <th>Exchange Name</th>
+              </tr>
+              <finance-table
+                v-for="stock in financeWinnersLosers"
+                :key="stock.symbol"
+                :stockData="stock"
+              />
+            </table>
+          </div>
+        </div>
       </div>
       <div class="newsSection container-fluid">
         <!-- This is where the list for the news articles will go, goal is to create a mini-pagination effect to loop through articles -->
@@ -73,8 +72,12 @@
 </template>
 
 <script>
+import FinanceTable from '@/components/FinanceWinLoseTable.vue';
 export default {
   name: 'FinanceCompoenent',
+  components: {
+    FinanceTable,
+  },
   data() {
     return {
       firstNews: true,
@@ -88,6 +91,15 @@ export default {
     financeNews() {
       this.checkNews();
       return this.$store.state.currentFinanceNews;
+    },
+    financeWinners() {
+      return this.$store.state.financeWinners;
+    },
+    financeLosers() {
+      return this.$store.state.financeLosers;
+    },
+    financeWinnersLosers() {
+      return this.$store.state.financeWinnersLosers;
     },
   },
   methods: {
@@ -140,6 +152,28 @@ export default {
 .mainViewSection {
   width: 600px;
 }
+.mainSectionHeader h4 {
+  text-align: center;
+  position: relative;
+  padding-bottom: 5px;
+}
+.mainSectionHeader h4::after {
+  position: absolute;
+  content: '';
+  width: 60%;
+  height: 2px;
+  left: 20%;
+  bottom: 0;
+  background: white;
+}
+
+/* Winners/Losers styling */
+.winLoseTable {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* News section styling */
 .newsSection {
   max-width: 250px;
   display: flex;
