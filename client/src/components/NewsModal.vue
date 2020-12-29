@@ -72,6 +72,7 @@ export default {
   mounted() {
     // this.$store.dispatch('getNews');
     this.$store.dispatch('getFinanceNews');
+    this.$store.dispatch('getWinnersLosers');
   },
   computed: {},
   methods: {
