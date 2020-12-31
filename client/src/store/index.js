@@ -25,11 +25,16 @@ export default new Vuex.Store({
     usersTodoLists: [],
     newsWithPicture: [],
     newsNoPicture: [],
-    currentFinanceNews: [],
-    allFinanceNews: [],
-    financeWinners: [],
-    financeLosers: [],
-    financeWinnersLosers: [],
+    finance: {
+      currentFinanceNews: [],
+      allFinanceNews: [],
+      // financeWinners: [],
+      // financeLosers: [],
+      financeWinnersLosers: [],
+      undervalued: [],
+      technology: [],
+      growers: [],
+    },
   },
   mutations: {
     //#region --Photo Methods--
@@ -118,23 +123,28 @@ export default new Vuex.Store({
       state.allFinanceNews = news;
     },
     setNewFinanceNews(state, indexes) {
-      console.log('before the swtich', state.currentFinanceNews);
-      console.log(state.allFinanceNews);
-      state.currentFinanceNews = state.allFinanceNews.slice(
+      state.finance.currentFinanceNews = state.finance.allFinanceNews.slice(
         indexes.start,
         indexes.finish
       );
-      console.log('after the swtich', state.currentFinanceNews);
-      console.log(state.allFinanceNews);
     },
-    setWinners(state, winners) {
-      state.financeWinners = winners;
-    },
-    setLosers(state, losers) {
-      state.financeLosers = losers;
-    },
+    // setWinners(state, winners) {
+    //   state.financeWinners = winners;
+    // },
+    // setLosers(state, losers) {
+    //   state.financeLosers = losers;
+    // },
     setWinnersLosers(state, combined) {
-      state.financeWinnersLosers = combined;
+      state.finance.financeWinnersLosers = combined;
+    },
+    setUndervalued(state, stocks) {
+      state.finance.undervalued = stocks;
+    },
+    setTechnology(state, stocks) {
+      state.finance.technology = stocks;
+    },
+    setGrowers(state, stocks) {
+      state.finance.growers = stocks;
     },
 
     //#endregion
@@ -351,10 +361,8 @@ export default new Vuex.Store({
     async getWinnersLosers({ commit }) {
       let win = await api.get('finance/win');
       let lose = await api.get('finance/lose');
-      commit('setWinners', win.data.quotes);
-      console.log('winners', win.data.quotes);
-      commit('setLosers', lose.data.quotes);
-      console.log('losers', lose.data.quotes);
+      // commit('setWinners', win.data.quotes);
+      // commit('setLosers', lose.data.quotes);
       let combined = [];
       combined.push(win.data.quotes);
       combined.push(lose.data.quotes.reverse());
@@ -366,8 +374,31 @@ export default new Vuex.Store({
           s.positive = false;
         }
       });
-      console.log('combined', combinedFlat);
       commit('setWinnersLosers', combinedFlat);
+    },
+    async getUndervalued({ commit }) {
+      let res = await api.get('finance/undervalued');
+      res.data.quotes.forEach((s) => {
+        s.twoHundredDayAverage = s.twoHundredDayAverage.toFixed(2);
+        s.fiftyDayAverage = s.fiftyDayAverage.toFixed(2);
+      });
+      commit('setUndervalued', res.data.quotes);
+    },
+    async getTechnology({ commit }) {
+      let res = await api.get('finance/technology');
+      res.data.quotes.forEach((s) => {
+        s.twoHundredDayAverage = s.twoHundredDayAverage.toFixed(2);
+        s.fiftyDayAverage = s.fiftyDayAverage.toFixed(2);
+      });
+      commit('setTechnology', res.data.quotes);
+    },
+    async getGrowers({ commit }) {
+      let res = await api.get('finance/growers');
+      res.data.quotes.forEach((s) => {
+        s.twoHundredDayAverage = s.twoHundredDayAverage.toFixed(2);
+        s.fiftyDayAverage = s.fiftyDayAverage.toFixed(2);
+      });
+      commit('setGrowers', res.data.quotes);
     },
     //#endregion
   },
