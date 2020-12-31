@@ -2,13 +2,13 @@
   <tr>
     <td>{{ stockData.symbol }}</td>
     <td>{{ stockData.longName }}</td>
-    <td>{{ stockData.regularMarketPrice }}</td>
-    <td>{{ stockData.fiftyDayAverage }}</td>
-    <td>{{ stockData.twoHundredDayAverage }}</td>
+    <td>{{ stockData.regularMarketPrice.toFixed(2) }}</td>
+    <td>{{ stockData.fiftyDayAverage.toFixed(2) }}</td>
+    <td>{{ stockData.twoHundredDayAverage.toFixed(2) }}</td>
     <td class="range">
       {{ stockData.fiftyTwoWeekRange }}
     </td>
-    <td>{{ stockData.epsTrailingTwelveMonths }}</td>
+    <td>{{ stockData.epsTrailingTwelveMonths.toFixed(2) }}</td>
   </tr>
 </template>
 

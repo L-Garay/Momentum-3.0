@@ -4,8 +4,8 @@
       <h4>Day Winners and Losers</h4>
       <p>
         Some of the day's biggest movers, both positive and negative, based on
-        the percent change of the price of the stock today compared to atclosing
-        yesterday.
+        the percent change of the price of the stock today compared to at
+        closing yesterday.
       </p>
     </div>
     <div class="winLoseTable">

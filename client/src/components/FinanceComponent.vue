@@ -13,9 +13,9 @@
       <div class="mainViewSection">
         <!-- NOTE the 'main view' area, where the different tabs' data will be displayed -->
         <finance-win-lose v-if="show.winLose" />
-        <finance-undervalued v-else-if="show.undervalued" />
-        <finance-technology v-else-if="show.technology" />
-        <finance-growers v-else-if="show.growers" />
+        <finance-tab v-if="show.undervalued" :componentData="undervalued" />
+        <finance-tab v-if="show.technology" :componentData="technology" />
+        <finance-tab v-if="show.growers" :componentData="growers" />
       </div>
       <div class="newsSection container-fluid">
         <!-- This is where the list for the news articles will go, goal is to create a mini-pagination effect to loop through articles -->
@@ -54,17 +54,13 @@
 
 <script>
 import FinanceWinLose from '@/components/FinanceWinLose.vue';
-import FinanceUndervalued from '@/components/FinanceUndervalued.vue';
-import FinanceTechnology from '@/components/FinanceTechnology.vue';
-import FinanceGrowers from '@/components/FinanceGrowers.vue';
+import FinanceTab from '@/components/FinanceTabs.vue';
 
 export default {
   name: 'FinanceCompoenent',
   components: {
     FinanceWinLose,
-    FinanceUndervalued,
-    FinanceTechnology,
-    FinanceGrowers,
+    FinanceTab,
   },
   data() {
     return {
@@ -76,15 +72,37 @@ export default {
         technology: false,
         growers: false,
       },
+      winLose: {
+        title: 'Winners/Losers',
+        desc:
+          'Some of the days biggest movers, both positive and negative, based on the percent change of the price of the stock today compared to at closing yesterday.',
+        type: 'winLose',
+      },
+      technology: {
+        title: 'Technology Stocks',
+        desc:
+          'These are some techonology stocks whose earnings growth is greater than 25%.',
+        type: 'technology',
+      },
+      undervalued: {
+        title: 'Potentially undervalued stocks',
+        desc:
+          'These are some stocks whose earnings have grown more than 25%, and have a relatively low Price-to-Earnings Ratio (which is good) which means that they may be currently undervalued.',
+        type: 'undervalued',
+      },
+      growers: {
+        title: 'Small Cap Stocks',
+        desc:
+          'These are some other small cap stocks whose earnings growth percentage is greater than 25%.',
+        type: 'growers',
+      },
     };
   },
-  mounted() {
-    // this.$store.dispatch('getFinanceNews');
-  },
+  mounted() {},
   computed: {
     financeNews() {
       this.checkNews();
-      return this.$store.state.currentFinanceNews;
+      return this.$store.state.finance.currentFinanceNews;
     },
   },
   methods: {
@@ -92,16 +110,12 @@ export default {
       if (this.$store.state.finance.currentFinanceNews.length < 10) {
         this.lastNews = true;
         this.firstNews = false;
-        console.log(this.firstNews);
-        console.log(this.lastNews);
       } else if (
-        this.$store.state.finances.currentFinanceNews[0] ==
-        this.$store.state.finances.allFinanceNews[0]
+        this.$store.state.finance.currentFinanceNews[0] ==
+        this.$store.state.finance.allFinanceNews[0]
       ) {
         this.firstNews = true;
         this.lastNews = false;
-        console.log(this.firstNews);
-        console.log(this.lastNews);
       }
     },
     nextNews() {
@@ -156,7 +170,8 @@ export default {
 .navbar {
 }
 .navbar p {
-  margin: 7px 0;
+  font-size: 18px;
+  margin: 5px 0;
 }
 .navbar p:hover {
   cursor: pointer;

@@ -33,6 +33,17 @@
 
           <div class="modal-footer">
             <slot name="footer">
+              <p v-if="showNews" class="sourceLink">
+                Powered by
+                <a href="https://www.bing.com/" target="_blank">Bing</a>
+              </p>
+              <p v-if="showFinance" class="sourceLink">
+                Powered by
+                <a href="https://finance.yahoo.com/" target="_blank"
+                  >Yahoo Finance</a
+                >
+              </p>
+              <p v-if="showSports" class="sourceLink">Powered by</p>
               <button
                 class="modal-default-button"
                 @click="$emit('close-news-modal')"
@@ -155,6 +166,10 @@ h2:hover {
   /* overflow-y: auto; */
 }
 
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+}
 .modal-default-button {
   float: right;
 }

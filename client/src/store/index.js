@@ -119,8 +119,8 @@ export default new Vuex.Store({
 
     //#region --Finance Methods--
     setFinanceNews(state, news) {
-      state.currentFinanceNews = news.slice(0, 10);
-      state.allFinanceNews = news;
+      state.finance.currentFinanceNews = news.slice(0, 10);
+      state.finance.allFinanceNews = news;
     },
     setNewFinanceNews(state, indexes) {
       state.finance.currentFinanceNews = state.finance.allFinanceNews.slice(
@@ -338,9 +338,9 @@ export default new Vuex.Store({
       commit('setFinanceNews', res.data);
     },
     nextNews({ commit, state }) {
-      let lastElementIndex = state.currentFinanceNews.length - 1;
-      let newsToFind = state.currentFinanceNews[lastElementIndex];
-      let indexOfNewsToFind = state.allFinanceNews.indexOf(newsToFind);
+      let lastElementIndex = state.finance.currentFinanceNews.length - 1;
+      let newsToFind = state.finance.currentFinanceNews[lastElementIndex];
+      let indexOfNewsToFind = state.finance.allFinanceNews.indexOf(newsToFind);
 
       let indexes = {
         start: indexOfNewsToFind + 1,
@@ -349,8 +349,8 @@ export default new Vuex.Store({
       commit('setNewFinanceNews', indexes);
     },
     previousNews({ commit, state }) {
-      let newsToFind = state.currentFinanceNews[0];
-      let indexOfNewsToFind = state.allFinanceNews.indexOf(newsToFind);
+      let newsToFind = state.finance.currentFinanceNews[0];
+      let indexOfNewsToFind = state.finance.allFinanceNews.indexOf(newsToFind);
 
       let indexes = {
         start: indexOfNewsToFind - 10,
@@ -378,26 +378,14 @@ export default new Vuex.Store({
     },
     async getUndervalued({ commit }) {
       let res = await api.get('finance/undervalued');
-      res.data.quotes.forEach((s) => {
-        s.twoHundredDayAverage = s.twoHundredDayAverage.toFixed(2);
-        s.fiftyDayAverage = s.fiftyDayAverage.toFixed(2);
-      });
       commit('setUndervalued', res.data.quotes);
     },
     async getTechnology({ commit }) {
       let res = await api.get('finance/technology');
-      res.data.quotes.forEach((s) => {
-        s.twoHundredDayAverage = s.twoHundredDayAverage.toFixed(2);
-        s.fiftyDayAverage = s.fiftyDayAverage.toFixed(2);
-      });
       commit('setTechnology', res.data.quotes);
     },
     async getGrowers({ commit }) {
       let res = await api.get('finance/growers');
-      res.data.quotes.forEach((s) => {
-        s.twoHundredDayAverage = s.twoHundredDayAverage.toFixed(2);
-        s.fiftyDayAverage = s.fiftyDayAverage.toFixed(2);
-      });
       commit('setGrowers', res.data.quotes);
     },
     //#endregion
