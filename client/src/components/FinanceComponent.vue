@@ -78,13 +78,11 @@ export default {
       },
     };
   },
-  mounted() {
-    // this.$store.dispatch('getFinanceNews');
-  },
+  mounted() {},
   computed: {
     financeNews() {
       this.checkNews();
-      return this.$store.state.currentFinanceNews;
+      return this.$store.state.finance.currentFinanceNews;
     },
   },
   methods: {
@@ -92,16 +90,12 @@ export default {
       if (this.$store.state.finance.currentFinanceNews.length < 10) {
         this.lastNews = true;
         this.firstNews = false;
-        console.log(this.firstNews);
-        console.log(this.lastNews);
       } else if (
-        this.$store.state.finances.currentFinanceNews[0] ==
-        this.$store.state.finances.allFinanceNews[0]
+        this.$store.state.finance.currentFinanceNews[0] ==
+        this.$store.state.finance.allFinanceNews[0]
       ) {
         this.firstNews = true;
         this.lastNews = false;
-        console.log(this.firstNews);
-        console.log(this.lastNews);
       }
     },
     nextNews() {
