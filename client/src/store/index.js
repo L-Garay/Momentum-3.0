@@ -378,26 +378,14 @@ export default new Vuex.Store({
     },
     async getUndervalued({ commit }) {
       let res = await api.get('finance/undervalued');
-      res.data.quotes.forEach((s) => {
-        s.twoHundredDayAverage = s.twoHundredDayAverage.toFixed(2);
-        s.fiftyDayAverage = s.fiftyDayAverage.toFixed(2);
-      });
       commit('setUndervalued', res.data.quotes);
     },
     async getTechnology({ commit }) {
       let res = await api.get('finance/technology');
-      res.data.quotes.forEach((s) => {
-        s.twoHundredDayAverage = s.twoHundredDayAverage.toFixed(2);
-        s.fiftyDayAverage = s.fiftyDayAverage.toFixed(2);
-      });
       commit('setTechnology', res.data.quotes);
     },
     async getGrowers({ commit }) {
       let res = await api.get('finance/growers');
-      res.data.quotes.forEach((s) => {
-        s.twoHundredDayAverage = s.twoHundredDayAverage.toFixed(2);
-        s.fiftyDayAverage = s.fiftyDayAverage.toFixed(2);
-      });
       commit('setGrowers', res.data.quotes);
     },
     //#endregion
