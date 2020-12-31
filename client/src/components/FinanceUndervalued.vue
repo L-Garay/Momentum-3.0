@@ -1,26 +1,27 @@
 <template>
-  <div class="winnersLosers">
+  <div class="undervalued">
     <div class="header">
-      <h4>Day Winners and Losers</h4>
+      <h4>Potentially undervalued stocks</h4>
       <p>
-        Some of the day's biggest movers, both positive and negative, based on
-        the percent change of the price of the stock today compared to atclosing
-        yesterday.
+        These are some stocks whose earnings have grown more than 25%, and have
+        a relatively low Price-to-Earnings Ratio (which is good) which means
+        that they may be currently undervalued.
       </p>
     </div>
-    <div class="winLoseTable">
+    <div class="undervaluedTable">
       <table>
         <tr>
           <th>Symbol</th>
           <th>Stock Name</th>
           <th>Current Price</th>
-          <th>Day High</th>
-          <th>Day Low</th>
-          <th>% Change</th>
-          <th>Exchange Name</th>
+          <th>50d Avg</th>
+          <th>200d Avg</th>
+          <th class="range">52wk Rng</th>
+          <th>52wk EPS</th>
         </tr>
+        <!-- NOTE CHANGE ME BELOW -->
         <finance-table
-          v-for="stock in financeWinnersLosers"
+          v-for="stock in Undervalued"
           :key="stock.symbol"
           :stockData="stock"
         />
@@ -30,20 +31,21 @@
 </template>
 
 <script>
-import FinanceTable from '@/components/FinanceWinLoseTable.vue';
+import FinanceTable from '@/components/FinanceTable.vue';
 export default {
-  name: 'FinanceWinLose',
-  components: { FinanceTable },
+  name: 'FinanceUndervalued',
+  components: {
+    FinanceTable,
+  },
   computed: {
-    financeWinnersLosers() {
-      return this.$store.state.finance.financeWinnersLosers;
+    Undervalued() {
+      return this.$store.state.finance.undervalued;
     },
   },
 };
 </script>
 
 <style scoped>
-/* Winners/Losers styling */
 .header {
   text-align: center;
 }
@@ -65,7 +67,10 @@ export default {
   bottom: 0;
   background: white;
 }
-.winLoseTable {
+.range {
+  width: 80px;
+}
+.undervaluedTable {
   max-height: 370px;
   overflow-y: auto;
 }
