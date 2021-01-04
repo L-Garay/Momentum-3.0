@@ -39,6 +39,21 @@ class LastUserService {
       );
     }
   }
+  async deleteUserById(id) {
+    try {
+      let lastUser = await dbContext.LastUser.findOne({});
+      if (lastUser._id == id) {
+        return await dbContext.LastUser.findByIdAndDelete(id);
+      } else {
+        return 'Ids do not match';
+      }
+    } catch (error) {
+      throw new ErrorResponse(
+        `Cant find user with that id ${user.id}.  ${error}`,
+        error.response.status
+      );
+    }
+  }
 }
 
 export const lastUserService = new LastUserService();

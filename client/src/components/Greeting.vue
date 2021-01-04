@@ -96,6 +96,7 @@ export default {
     submitNewUser() {
       this.$store.dispatch('newUser', this.user);
       this.noUser = false;
+      this.user.name = '';
     },
 
     // Check for last 'logged in' user when first starting the app
@@ -141,6 +142,7 @@ export default {
           this.$store.dispatch('deleteUserById', id);
           this.$store.dispatch('getAllUsers');
           Swal.fire('Deleted!', 'The user has been deleted.', 'success');
+          this.noUser = true;
         }
       });
     },

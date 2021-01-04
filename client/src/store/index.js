@@ -68,6 +68,9 @@ export default new Vuex.Store({
     setUsers(state, users) {
       state.users = users;
     },
+    resetUser(state) {
+      state.user = null;
+    },
     //#endregion
 
     //#region --Todo Methods--
@@ -239,6 +242,9 @@ export default new Vuex.Store({
     async getAllUsers({ commit }) {
       let res = await api.get('users');
       commit('setUsers', res.data);
+      if (res.data.length == 0) {
+        commit('resetUser');
+      }
     },
     async getUserById({ commit }, id) {
       let res = await api.get('users/' + id);
