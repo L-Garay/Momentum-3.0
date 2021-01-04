@@ -9,6 +9,41 @@
       v-on:keyup.enter="submitNewUser"
       v-autowidth="{ maxWidth: '550px', minWidth: '100px', comfortZone: 30 }"
     />
+    <div class="dropdown" v-if="this.$store.state.users.length !== 0">
+      <div id="dLabel" role="button" data-toggle="dropdown" class="btn">
+        <i class="fas fa-ellipsis-h"></i>
+      </div>
+      <ul
+        class="dropdown-menu multi-level"
+        role="menu"
+        aria-labelledby="dropdownMenu"
+      >
+        <li class="dropdown-submenu">
+          <a tabindex="-1">Change user</a>
+          <ul class="dropdown-menu">
+            <li
+              v-for="user in Users"
+              :key="user._id"
+              @click="getUserById(user._id)"
+            >
+              {{ user.name }}
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown-submenu">
+          <a tabindex="-1">Delete user</a>
+          <ul class="dropdown-menu">
+            <li v-for="user in Users" :key="user._id">
+              {{ user.name }}
+              <i
+                class="fas fa-user-times user"
+                @click="deleteUserById(user.id)"
+              ></i>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
   </div>
   <div class="greeting " v-else>
     <h1>Good {{ timeOfDay }}, {{ User.name }}.</h1>
@@ -66,6 +101,7 @@ export default {
       user: {
         name: '',
         militaryTimeSelected: false,
+        createdTodoLists: [],
       },
     };
   },
@@ -76,6 +112,7 @@ export default {
   },
   computed: {
     User() {
+      this.checkUsers();
       return this.$store.state.user;
     },
     Users() {
@@ -124,6 +161,9 @@ export default {
       // Let the Clock component know that the user has changed, and pass in the new user and their time prefernce
       let newUser = this.$store.state.user;
       this.$root.$emit('changedUser', newUser);
+      if (this.noUser == true) {
+        this.noUser = false;
+      }
     },
 
     // Third party package called SweetAlerts2
@@ -137,16 +177,19 @@ export default {
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!',
-      }).then((result) => {
+      }).then(async (result) => {
         if (result.isConfirmed) {
-          this.$store.dispatch('deleteUserById', id);
-          this.$store.dispatch('getAllUsers');
+          await this.$store.dispatch('deleteUserById', id);
+          this.checkUsers();
           Swal.fire('Deleted!', 'The user has been deleted.', 'success');
-          this.noUser = true;
         }
       });
     },
-
+    checkUsers() {
+      if (this.$store.state.user == null) {
+        this.noUser = true;
+      }
+    },
     onClickOutside() {
       this.noUser = false;
     },
