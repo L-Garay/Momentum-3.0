@@ -8,10 +8,7 @@ class UserService {
       // return await dbContext.User.create(user);
       return await User.create(user);
     } catch (error) {
-      throw new ErrorResponse(
-        `Cant create user.  ${error}`,
-        error.response.status
-      );
+      throw new ErrorResponse(`Cant create user.  ${error}`, 500);
     }
   }
 

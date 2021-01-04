@@ -63,10 +63,10 @@ export default new Vuex.Store({
 
     //#region --User Methods--
     setUser(state, user) {
-      state.user = user;
+      state.user = user || {};
     },
     setUsers(state, users) {
-      state.users = users;
+      state.users = users || [];
     },
     resetUser(state) {
       state.user = null;
@@ -242,9 +242,6 @@ export default new Vuex.Store({
     async getAllUsers({ commit }) {
       let res = await api.get('users');
       commit('setUsers', res.data);
-      if (res.data.length == 0) {
-        commit('resetUser');
-      }
     },
     async getUserById({ commit }, id) {
       let res = await api.get('users/' + id);
@@ -262,7 +259,14 @@ export default new Vuex.Store({
     },
     async deleteUserById({ dispatch }, id) {
       await api.delete('users/' + id);
-      dispatch('getAllUsers');
+      dispatch('getAllUsers').then(() => {
+        dispatch('checkIfLastUser');
+      });
+    },
+    checkIfLastUser({ commit, state }) {
+      if (state.users.length == 0) {
+        commit('resetUser');
+      }
     },
     //#endregion
 

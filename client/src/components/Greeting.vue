@@ -66,6 +66,7 @@ export default {
       user: {
         name: '',
         militaryTimeSelected: false,
+        createdTodoLists: [],
       },
     };
   },
@@ -76,6 +77,7 @@ export default {
   },
   computed: {
     User() {
+      this.checkUsers();
       return this.$store.state.user;
     },
     Users() {
@@ -137,16 +139,19 @@ export default {
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!',
-      }).then((result) => {
+      }).then(async (result) => {
         if (result.isConfirmed) {
-          this.$store.dispatch('deleteUserById', id);
-          this.$store.dispatch('getAllUsers');
+          await this.$store.dispatch('deleteUserById', id);
+          this.checkUsers();
           Swal.fire('Deleted!', 'The user has been deleted.', 'success');
-          this.noUser = true;
         }
       });
     },
-
+    checkUsers() {
+      if (this.$store.state.user == null) {
+        this.noUser = true;
+      }
+    },
     onClickOutside() {
       this.noUser = false;
     },
