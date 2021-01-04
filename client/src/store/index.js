@@ -260,11 +260,11 @@ export default new Vuex.Store({
     async deleteUserById({ dispatch }, id) {
       await api.delete('users/' + id);
       dispatch('getAllUsers').then(() => {
-        dispatch('checkIfLastUser');
+        dispatch('resetUser', id);
       });
     },
-    checkIfLastUser({ commit, state }) {
-      if (state.users.length == 0) {
+    resetUser({ commit, state }, id) {
+      if (state.users.length == 0 || state.user.id == id) {
         commit('resetUser');
       }
     },
