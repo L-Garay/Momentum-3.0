@@ -1,5 +1,6 @@
 import BaseController from '../utils/BaseController';
 import { userService } from '../services/UserService';
+import { lastUserService } from '../services/LastUserService';
 import { photoService } from '../services/PhotoService';
 import { quoteService } from '../services/QuoteService';
 import { todoService } from '../services/TodoService';
@@ -87,6 +88,7 @@ export class UsersController extends BaseController {
   async deleteUserById(req, res, next) {
     try {
       await userService.deleteUserById(req.params.id);
+      await lastUserService.deleteUserById(req.params.id);
       return res.status(200).send('Successfully deleted');
     } catch (error) {
       next(error);
