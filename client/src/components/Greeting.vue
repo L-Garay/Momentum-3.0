@@ -1,15 +1,15 @@
 <template>
-  <div class="greeting " v-if="noUser">
+  <div class="greeting " v-if="NoUser">
     <h1>Good {{ timeOfDay }},</h1>
     <input
       v-on:blur="onClickOutside"
-      ref="focusMe"
+      ref="focus"
       type="text"
       v-model="user.name"
       v-on:keyup.enter="submitNewUser"
       v-autowidth="{ maxWidth: '550px', minWidth: '100px', comfortZone: 30 }"
     />
-    <div class="dropdown" v-if="this.$store.state.users.length !== 0">
+    <div class="dropdown" v-if="UserCount > 0">
       <div id="dLabel" role="button" data-toggle="dropdown" class="btn">
         <i class="fas fa-ellipsis-h"></i>
       </div>
@@ -18,7 +18,7 @@
         role="menu"
         aria-labelledby="dropdownMenu"
       >
-        <li class="dropdown-submenu" v-if="show.change">
+        <li class="dropdown-submenu" v-if="ShowChange">
           <a tabindex="-1">Change user</a>
           <ul class="dropdown-menu">
             <li
@@ -57,7 +57,7 @@
         aria-labelledby="dropdownMenu"
       >
         <li v-if="show.create" @click="createNewUser">Create new user</li>
-        <li class="dropdown-submenu" v-if="show.change">
+        <li class="dropdown-submenu" v-if="ShowChange">
           <a tabindex="-1">Change user</a>
           <ul class="dropdown-menu">
             <li
@@ -96,7 +96,7 @@ export default {
   name: 'Greeting',
   data() {
     return {
-      noUser: true,
+      noUser: this.$store.state.noUser,
       timeOfDay: 'evening',
       user: {
         name: '',
@@ -105,27 +105,40 @@ export default {
       },
       show: {
         create: true,
-        change: true,
+        change: this.$store.state.userShowChange,
         delete: true,
       },
+      userCount: this.$store.state.userCount,
     };
+  },
+  beforeMount() {
+    this.checkForLastUser();
   },
   mounted() {
     this.getTimeOfDay();
-    this.checkForLastUser();
-    // this.$store.dispatch('getAllUsers');
+    console.log(this.userCount);
+    this.$store.dispatch('showChange');
   },
   computed: {
     User() {
-      this.checkUser();
+      // this.checkUsers();
       return this.$store.state.user;
     },
     Users() {
-      this.checkUsers();
+      // this.checkUsers();
       return this.$store.state.users;
     },
     ChangeUsers() {
       return this.$store.state.changeUser;
+    },
+    NoUser() {
+      return this.$store.state.noUser;
+    },
+    ShowChange() {
+      return this.$store.state.userShowChange;
+    },
+    UserCount() {
+      return this.$store.state.userCount;
     },
   },
   methods: {
@@ -141,28 +154,30 @@ export default {
 
     submitNewUser() {
       this.$store.dispatch('newUser', this.user);
-      this.noUser = false;
+      // this.$store.state.noUser = false;
       this.user.name = '';
     },
 
     // Check for last 'logged in' user when first starting the app
     async checkForLastUser() {
+      console.log('check for last user');
       let result = await this.$store.dispatch('getLastUser');
       if (result === undefined) {
-        this.noUser = true;
+        this.$store.state.noUser = true;
       } else if (result) {
-        this.noUser = false;
+        this.$store.state.noUser = false;
         this.$store.state.user = result;
+        this.$root.$emit('checkLastUser', result);
       }
       // Now that a user has been set (or not), update the time preference (defaults to standard if there is no user)
-      this.$root.$emit('checkLastUser', result);
+      console.log('from check for last user, getAllUsers');
       this.$store.dispatch('getAllUsers');
     },
 
     createNewUser() {
-      this.noUser = true;
+      this.$store.state.noUser = true;
       this.user.name = '';
-      this.$nextTick(() => this.$refs.focusMe.focus());
+      this.$nextTick(() => this.$refs.focus.focus());
     },
 
     async getUserById(id) {
@@ -170,9 +185,9 @@ export default {
       // Let the Clock component know that the user has changed, and pass in the new user and their time prefernce
       let newUser = this.$store.state.user;
       this.$root.$emit('changedUser', newUser);
-      if (this.noUser == true) {
-        this.noUser = false;
-      }
+      // if (this.$store.state.noUser == true) {
+      //   this.$store.state.noUser = false;
+      // }
     },
 
     // Third party package called SweetAlerts2
@@ -190,48 +205,46 @@ export default {
         if (result.isConfirmed) {
           await this.$store.dispatch('deleteUserById', id);
           console.log('from delete');
-          this.checkUsers();
+          // this.checkUsers();
           Swal.fire('Deleted!', 'The user has been deleted.', 'success');
         }
       });
     },
-    checkUser() {
-      console.log('hit USER');
-      let user = this.$store.state.user;
-      let users = this.$store.state.users;
-      console.log('USER user', user);
-      console.log(' USER before', this.noUser);
-      if (user == null) {
-        this.noUser = true;
-      }
-      console.log('USER after', this.noUser);
-      if (users.length == 1 && user._id == users[0]._id) {
-        this.show.change = false;
-      } else if (users.length > 1) {
-        this.show.change = true;
-      }
-    },
-    checkUsers() {
-      console.log('hit USERS');
-      let user = this.$store.state.user;
-      let users = this.$store.state.users;
-      console.log('USERS user', user);
-      console.log('USERS before', this.noUser);
-      if (user == null) {
-        this.noUser = true;
-      } else {
-        this.noUser = false;
-      }
-      console.log('USERS after', this.noUser);
-      if (users.length == 1 && user._id == users[0]._id) {
-        this.show.change = false;
-      } else if (users.length > 1) {
-        this.show.change = true;
-      }
-    },
+    // checkUser() {
+    //   console.log('hit USER');
+    //   let user = this.$store.state.user;
+    //   let users = this.$store.state.users;
+    //   console.log('USER user', user);
+    //   console.log(' USER before', this.noUser);
+    //   if (user == null) {
+    //     this.noUser = true;
+    //   }
+    //   console.log('USER after', this.noUser);
+    //   if (users.length == 1 && user._id == users[0]._id) {
+    //     this.show.change = false;
+    //   } else if (users.length > 1) {
+    //     this.show.change = true;
+    //   }
+    // },
+    // checkUsers() {
+    //   console.log('hit USERS');
+    //   let user = this.$store.state.user;
+    //   let users = this.$store.state.users;
+    //   this.$store.state.userCount = users.length;
+    //   if (user == null) {
+    //     this.$store.state.noUser = true;
+    //   } else {
+    //     this.$store.state.noUser = false;
+    //   }
+    //   if (users.length == 1 && user._id == users[0]._id) {
+    //     this.show.change = false;
+    //   } else if (users.length > 1) {
+    //     this.show.change = true;
+    //   }
+    // },
     onClickOutside() {
       this.user.name = '';
-      this.noUser = false;
+      this.$store.state.noUser = false;
     },
   },
 };

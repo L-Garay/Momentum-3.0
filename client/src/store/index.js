@@ -19,6 +19,9 @@ export default new Vuex.Store({
     user: null,
     users: [],
     changeUser: [],
+    noUser: true,
+    userCount: 0,
+    userShowChange: true,
     todos: [],
     completedTodos: [],
     customListTodos: [],
@@ -65,21 +68,32 @@ export default new Vuex.Store({
     //#region --User Methods--
     setUser(state, user) {
       state.user = user || {};
+      if (state.noUser == true) {
+        state.noUser = false;
+      }
     },
     setUsers(state, users) {
-      let notCurrentUser = users.filter((u) => {
-        if (u._id == state.user._id) {
-          return false;
-        } else {
-          return true;
-        }
-      });
-      state.changeUser = notCurrentUser || [];
+      state.userCount = 0;
+      if (state.user) {
+        let notCurrentUser = users.filter((u) => {
+          if (u._id == state.user._id) {
+            return false;
+          } else {
+            return true;
+          }
+        });
+        state.changeUser = notCurrentUser || [];
+      }
       state.users = users || [];
+      users.forEach(() => {
+        state.userCount += 1;
+      });
+      console.log('setUsers, finished');
     },
     resetUser(state) {
       console.log('commit resetUser');
       state.user = null;
+      state.noUser = true;
       console.log('commit resetUser user', state.user);
     },
     //#endregion
@@ -250,9 +264,10 @@ export default new Vuex.Store({
       commit('setUser', res.data);
       dispatch('getAllUsers');
     },
-    async getAllUsers({ commit }) {
+    async getAllUsers({ commit, dispatch }) {
       let res = await api.get('users');
       commit('setUsers', res.data);
+      dispatch('showChange');
     },
     async getUserById({ commit, dispatch }, id) {
       let res = await api.get('users/' + id);
@@ -269,11 +284,13 @@ export default new Vuex.Store({
       let res = await api.put('users', user);
       commit('setUser', res.data);
     },
-    async deleteUserById({ dispatch }, id) {
+    async deleteUserById({ dispatch, state }, id) {
       await api.delete('users/' + id);
       dispatch('getAllUsers').then(() => {
         dispatch('resetUser', id);
+        dispatch('showChange', id);
       });
+      state.userCount -= 1;
     },
     resetUser({ commit, state }, id) {
       console.log('hit reset user');
@@ -281,6 +298,13 @@ export default new Vuex.Store({
       console.log('resetUser user', state.user);
       if (state.users.length == 0 || state.user.id == id) {
         commit('resetUser');
+      }
+    },
+    showChange({ state }) {
+      if (state.users.length == 1 && state.user._id == state.users[0]._id) {
+        state.userShowChange = false;
+      } else if (state.users.length > 1) {
+        state.userShowChange = true;
       }
     },
     //#endregion
