@@ -18,6 +18,7 @@ export default new Vuex.Store({
     savedQuotes: [],
     user: null,
     users: [],
+    changeUser: [],
     todos: [],
     completedTodos: [],
     customListTodos: [],
@@ -66,10 +67,20 @@ export default new Vuex.Store({
       state.user = user || {};
     },
     setUsers(state, users) {
+      let notCurrentUser = users.filter((u) => {
+        if (u._id == state.user._id) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+      state.changeUser = notCurrentUser || [];
       state.users = users || [];
     },
     resetUser(state) {
+      console.log('commit resetUser');
       state.user = null;
+      console.log('commit resetUser user', state.user);
     },
     //#endregion
 
@@ -243,10 +254,11 @@ export default new Vuex.Store({
       let res = await api.get('users');
       commit('setUsers', res.data);
     },
-    async getUserById({ commit }, id) {
+    async getUserById({ commit, dispatch }, id) {
       let res = await api.get('users/' + id);
       await api.post('lastuser', res.data);
       commit('setUser', res.data);
+      dispatch('getAllUsers');
     },
     async getLastUser() {
       let res = await api.get('lastuser');
@@ -264,6 +276,9 @@ export default new Vuex.Store({
       });
     },
     resetUser({ commit, state }, id) {
+      console.log('hit reset user');
+      console.log('length', state.users.length);
+      console.log('resetUser user', state.user);
       if (state.users.length == 0 || state.user.id == id) {
         commit('resetUser');
       }

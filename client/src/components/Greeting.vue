@@ -3,7 +3,7 @@
     <h1>Good {{ timeOfDay }},</h1>
     <input
       v-on:blur="onClickOutside"
-      ref="focus"
+      ref="focusMe"
       type="text"
       v-model="user.name"
       v-on:keyup.enter="submitNewUser"
@@ -18,11 +18,11 @@
         role="menu"
         aria-labelledby="dropdownMenu"
       >
-        <li class="dropdown-submenu">
+        <li class="dropdown-submenu" v-if="show.change">
           <a tabindex="-1">Change user</a>
           <ul class="dropdown-menu">
             <li
-              v-for="user in Users"
+              v-for="user in ChangeUsers"
               :key="user._id"
               @click="getUserById(user._id)"
             >
@@ -30,7 +30,7 @@
             </li>
           </ul>
         </li>
-        <li class="dropdown-submenu">
+        <li class="dropdown-submenu" v-if="show.delete">
           <a tabindex="-1">Delete user</a>
           <ul class="dropdown-menu">
             <li v-for="user in Users" :key="user._id">
@@ -56,12 +56,12 @@
         role="menu"
         aria-labelledby="dropdownMenu"
       >
-        <li @click="createNewUser">Create new user</li>
-        <li class="dropdown-submenu">
+        <li v-if="show.create" @click="createNewUser">Create new user</li>
+        <li class="dropdown-submenu" v-if="show.change">
           <a tabindex="-1">Change user</a>
           <ul class="dropdown-menu">
             <li
-              v-for="user in Users"
+              v-for="user in ChangeUsers"
               :key="user._id"
               @click="getUserById(user._id)"
             >
@@ -69,7 +69,7 @@
             </li>
           </ul>
         </li>
-        <li class="dropdown-submenu">
+        <li class="dropdown-submenu" v-if="show.delete">
           <a tabindex="-1">Delete user</a>
           <ul class="dropdown-menu">
             <li v-for="user in Users" :key="user._id">
@@ -103,20 +103,29 @@ export default {
         militaryTimeSelected: false,
         createdTodoLists: [],
       },
+      show: {
+        create: true,
+        change: true,
+        delete: true,
+      },
     };
   },
   mounted() {
     this.getTimeOfDay();
     this.checkForLastUser();
-    this.$store.dispatch('getAllUsers');
+    // this.$store.dispatch('getAllUsers');
   },
   computed: {
     User() {
-      this.checkUsers();
+      this.checkUser();
       return this.$store.state.user;
     },
     Users() {
+      this.checkUsers();
       return this.$store.state.users;
+    },
+    ChangeUsers() {
+      return this.$store.state.changeUser;
     },
   },
   methods: {
@@ -139,7 +148,6 @@ export default {
     // Check for last 'logged in' user when first starting the app
     async checkForLastUser() {
       let result = await this.$store.dispatch('getLastUser');
-      console.log(result);
       if (result === undefined) {
         this.noUser = true;
       } else if (result) {
@@ -148,12 +156,13 @@ export default {
       }
       // Now that a user has been set (or not), update the time preference (defaults to standard if there is no user)
       this.$root.$emit('checkLastUser', result);
+      this.$store.dispatch('getAllUsers');
     },
 
     createNewUser() {
       this.noUser = true;
       this.user.name = '';
-      this.$nextTick(() => this.$refs.focus.focus());
+      this.$nextTick(() => this.$refs.focusMe.focus());
     },
 
     async getUserById(id) {
@@ -180,17 +189,48 @@ export default {
       }).then(async (result) => {
         if (result.isConfirmed) {
           await this.$store.dispatch('deleteUserById', id);
+          console.log('from delete');
           this.checkUsers();
           Swal.fire('Deleted!', 'The user has been deleted.', 'success');
         }
       });
     },
-    checkUsers() {
-      if (this.$store.state.user == null) {
+    checkUser() {
+      console.log('hit USER');
+      let user = this.$store.state.user;
+      let users = this.$store.state.users;
+      console.log('USER user', user);
+      console.log(' USER before', this.noUser);
+      if (user == null) {
         this.noUser = true;
+      }
+      console.log('USER after', this.noUser);
+      if (users.length == 1 && user._id == users[0]._id) {
+        this.show.change = false;
+      } else if (users.length > 1) {
+        this.show.change = true;
+      }
+    },
+    checkUsers() {
+      console.log('hit USERS');
+      let user = this.$store.state.user;
+      let users = this.$store.state.users;
+      console.log('USERS user', user);
+      console.log('USERS before', this.noUser);
+      if (user == null) {
+        this.noUser = true;
+      } else {
+        this.noUser = false;
+      }
+      console.log('USERS after', this.noUser);
+      if (users.length == 1 && user._id == users[0]._id) {
+        this.show.change = false;
+      } else if (users.length > 1) {
+        this.show.change = true;
       }
     },
     onClickOutside() {
+      this.user.name = '';
       this.noUser = false;
     },
   },
