@@ -75,7 +75,10 @@
         </div>
         <div class="todoItems">
           <div class="todos" v-if="todoListSelected == 'Todos'">
-            <div class="noTodos" v-if="this.$store.state.todos.length == 0">
+            <div
+              class="noTodos"
+              v-if="this.$store.state.todo.todos.length == 0"
+            >
               <p>
                 You don't have any todos, click the button below to create one.
               </p>
@@ -110,7 +113,7 @@
           >
             <div
               class="noTodos"
-              v-if="this.$store.state.completedTodos.length == 0"
+              v-if="this.$store.state.todo.completedTodos.length == 0"
             >
               <p>
                 You don't have any completed todos, time to get to work!
@@ -143,7 +146,7 @@
           <div class="customListTodos" v-else>
             <div
               class="noTodos"
-              v-if="this.$store.state.customListTodos.length == 0"
+              v-if="this.$store.state.todo.customListTodos.length == 0"
             >
               <p>
                 You don't have any todos, click the button below to create one.
@@ -226,24 +229,28 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch('getTodosByUserId', this.$store.state.user.id);
-    this.$store.dispatch('getTodoListsByUserId', this.$store.state.user.id);
+    this.$store.dispatch('getTodosByUserId', this.$store.state.user.user.id);
+    this.$store.dispatch(
+      'getTodoListsByUserId',
+      this.$store.state.user.user.id
+    );
   },
   computed: {
     Todos() {
-      return this.$store.state.todos;
+      return this.$store.state.todo.todos;
     },
     CompletedTodos() {
-      return this.$store.state.completedTodos;
+      return this.$store.state.todo.completedTodos;
     },
     TodoLists() {
-      return this.$store.state.usersTodoLists;
+      return this.$store.state.todo.usersTodoLists;
     },
     CustomListTodos() {
-      return this.$store.state.customListTodos;
+      return this.$store.state.todo.customListTodos;
     },
   },
   methods: {
+    //#region --Helper Methods--
     toggleTodoInput() {
       if (this.showTodoInput) {
         this.showTodoInput = false;
@@ -268,14 +275,14 @@ export default {
 
     //#region --Todo Methods--
     submitTodo() {
-      this.todo.userId = this.$store.state.user.id;
+      this.todo.userId = this.$store.state.user.user.id;
       if (
         this.todoListSelected == 'Completed' ||
         this.todoListSelected == 'Todos'
       ) {
         this.$store.dispatch('submitTodo', this.todo);
       } else {
-        let list = this.$store.state.usersTodoLists.find(
+        let list = this.$store.state.todo.usersTodoLists.find(
           (list) => list.name == this.todoListSelected
         );
         this.todo.listId = list._id;
@@ -303,7 +310,7 @@ export default {
 
     //#region --List Methods--
     submitList() {
-      this.list.userId = this.$store.state.user.id;
+      this.list.userId = this.$store.state.user.user.id;
       this.$store.dispatch('submitList', this.list);
       this.list.name = '';
       this.showListInput = false;
