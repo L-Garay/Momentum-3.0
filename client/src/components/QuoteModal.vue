@@ -9,7 +9,7 @@
 
           <div class="modal-body">
             <slot name="body">
-              <h4 v-if="this.$store.state.savedQuotes.length == 0">
+              <h4 v-if="this.$store.state.quote.savedQuotes.length == 0">
                 Save some quotes and see them here!
               </h4>
               <ul v-else>
@@ -46,11 +46,14 @@
 export default {
   name: 'QuoteModal',
   mounted() {
-    this.$store.dispatch('getSavedQuotesByUserId', this.$store.state.user.id);
+    this.$store.dispatch(
+      'getSavedQuotesByUserId',
+      this.$store.state.user.user.id
+    );
   },
   computed: {
     savedQuotes() {
-      return this.$store.state.savedQuotes;
+      return this.$store.state.quote.savedQuotes;
     },
   },
   methods: {
