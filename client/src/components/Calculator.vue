@@ -51,6 +51,7 @@ export default {
     };
   },
   methods: {
+    // Toggling component methods
     openCalculator() {
       this.showCalculator = true;
       this.hideCalculator = false;
@@ -63,6 +64,7 @@ export default {
       this.width = 60;
       this.height = 60;
     },
+    // Calculator methods
     clear() {
       this.display = '0';
       this.currentNumbers = [];
@@ -148,6 +150,7 @@ export default {
 </script>
 
 <style scoped>
+/* Main calculator component wrapper styling */
 .calculator {
   border: solid 2pt black;
   background-color: white;
@@ -163,11 +166,17 @@ export default {
 .toggle {
   text-align: center;
 }
+.toggle div {
+  cursor: pointer;
+  margin-top: 10px;
+}
 p {
   color: black;
   cursor: pointer;
   margin: 3px 0;
 }
+
+/* Calculator styling */
 .calculatorBody {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -188,15 +197,15 @@ p {
   margin: 5px 0 3px 0;
   padding-right: 5px;
 }
-.zero {
-  grid-column: 1 / 3;
-  background-color: rgb(75, 75, 75);
-}
 .btn {
   color: white;
   cursor: pointer;
   text-align: center;
   margin: 2pt;
+}
+.zero {
+  grid-column: 1 / 3;
+  background-color: rgb(75, 75, 75);
 }
 .operator {
   background-color: orange;
@@ -207,9 +216,5 @@ p {
 .special {
   background-color: lightgray;
   color: black;
-}
-.toggle div {
-  cursor: pointer;
-  margin-top: 10px;
 }
 </style>
