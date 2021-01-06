@@ -16,12 +16,14 @@ export default new Vuex.Store({
     weather: null,
     quote: null,
     savedQuotes: [],
-    user: null,
-    users: [],
-    changeUser: [],
-    noUser: true,
-    userCount: 0,
-    userShowChange: true,
+    user: {
+      user: null,
+      users: [],
+      changeUser: [],
+      noUser: true,
+      userCount: 0,
+      userShowChange: true,
+    },
     todos: [],
     completedTodos: [],
     customListTodos: [],
@@ -32,8 +34,6 @@ export default new Vuex.Store({
     finance: {
       currentFinanceNews: [],
       allFinanceNews: [],
-      // financeWinners: [],
-      // financeLosers: [],
       financeWinnersLosers: [],
       undervalued: [],
       technology: [],
@@ -67,34 +67,35 @@ export default new Vuex.Store({
 
     //#region --User Methods--
     setUser(state, user) {
-      state.user = user || {};
-      if (state.noUser == true) {
-        state.noUser = false;
+      state.user.user = user || {};
+      if (state.user.noUser == true) {
+        state.user.noUser = false;
       }
     },
     setUsers(state, users) {
-      state.userCount = 0;
-      if (state.user) {
+      state.user.userCount = 0;
+      if (state.user.user) {
         let notCurrentUser = users.filter((u) => {
-          if (u._id == state.user._id) {
+          if (u._id == state.user.user._id) {
             return false;
           } else {
             return true;
           }
         });
-        state.changeUser = notCurrentUser || [];
+        state.user.changeUser = notCurrentUser || [];
+        state.user.users = users || [];
+      } else if (!state.user.user) {
+        // This is for the situation where a 'logged in' user deletes themself but there is still other/another user in the database, so the 'lastUser' was also deleted and the next time the app starts up, no initial user will be set, so the only option is to create a new one, choose the other users or delete them, without this, none of the lists would be populated
+        state.user.changeUser = users || [];
+        state.user.users = users || [];
       }
-      state.users = users || [];
       users.forEach(() => {
-        state.userCount += 1;
+        state.user.userCount += 1;
       });
-      console.log('setUsers, finished');
     },
     resetUser(state) {
-      console.log('commit resetUser');
-      state.user = null;
-      state.noUser = true;
-      console.log('commit resetUser user', state.user);
+      state.user.user = null;
+      state.user.noUser = true;
     },
     //#endregion
 
@@ -290,21 +291,21 @@ export default new Vuex.Store({
         dispatch('resetUser', id);
         dispatch('showChange', id);
       });
-      state.userCount -= 1;
+      state.user.userCount -= 1;
     },
     resetUser({ commit, state }, id) {
-      console.log('hit reset user');
-      console.log('length', state.users.length);
-      console.log('resetUser user', state.user);
-      if (state.users.length == 0 || state.user.id == id) {
+      if (state.user.users.length == 0 || state.user.user.id == id) {
         commit('resetUser');
       }
     },
     showChange({ state }) {
-      if (state.users.length == 1 && state.user._id == state.users[0]._id) {
-        state.userShowChange = false;
-      } else if (state.users.length > 1) {
-        state.userShowChange = true;
+      if (
+        state.user.users.length == 1 &&
+        state.user.user._id == state.user.users[0]._id
+      ) {
+        state.user.userShowChange = false;
+      } else if (state.user.users.length > 1) {
+        state.user.userShowChange = true;
       }
     },
     //#endregion

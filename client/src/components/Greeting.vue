@@ -1,5 +1,6 @@
 <template>
-  <div class="greeting " v-if="NoUser">
+  <!-- NOTE Template for when there is no currently 'logged in' user -->
+  <div class="greeting " v-if="User.noUser">
     <h1>Good {{ timeOfDay }},</h1>
     <input
       v-on:blur="onClickOutside"
@@ -9,7 +10,7 @@
       v-on:keyup.enter="submitNewUser"
       v-autowidth="{ maxWidth: '550px', minWidth: '100px', comfortZone: 30 }"
     />
-    <div class="dropdown" v-if="UserCount > 0">
+    <div class="dropdown" v-if="User.userCount > 0">
       <div id="dLabel" role="button" data-toggle="dropdown" class="btn">
         <i class="fas fa-ellipsis-h"></i>
       </div>
@@ -18,7 +19,7 @@
         role="menu"
         aria-labelledby="dropdownMenu"
       >
-        <li class="dropdown-submenu" v-if="ShowChange">
+        <li class="dropdown-submenu" v-if="User.userShowChange">
           <a tabindex="-1">Change user</a>
           <ul class="dropdown-menu">
             <li
@@ -30,7 +31,7 @@
             </li>
           </ul>
         </li>
-        <li class="dropdown-submenu" v-if="show.delete">
+        <li class="dropdown-submenu">
           <a tabindex="-1">Delete user</a>
           <ul class="dropdown-menu">
             <li v-for="user in Users" :key="user._id">
@@ -45,8 +46,9 @@
       </ul>
     </div>
   </div>
+  <!-- NOTE Below is template for when there is a user 'logged in' -->
   <div class="greeting " v-else>
-    <h1>Good {{ timeOfDay }}, {{ User.name }}.</h1>
+    <h1>Good {{ timeOfDay }}, {{ User.user.name }}.</h1>
     <div class="dropdown">
       <div id="dLabel" role="button" data-toggle="dropdown" class="btn">
         <i class="fas fa-ellipsis-h"></i>
@@ -56,8 +58,8 @@
         role="menu"
         aria-labelledby="dropdownMenu"
       >
-        <li v-if="show.create" @click="createNewUser">Create new user</li>
-        <li class="dropdown-submenu" v-if="ShowChange">
+        <li @click="createNewUser">Create new user</li>
+        <li class="dropdown-submenu" v-if="User.userShowChange">
           <a tabindex="-1">Change user</a>
           <ul class="dropdown-menu">
             <li
@@ -69,7 +71,7 @@
             </li>
           </ul>
         </li>
-        <li class="dropdown-submenu" v-if="show.delete">
+        <li class="dropdown-submenu">
           <a tabindex="-1">Delete user</a>
           <ul class="dropdown-menu">
             <li v-for="user in Users" :key="user._id">
@@ -96,19 +98,12 @@ export default {
   name: 'Greeting',
   data() {
     return {
-      noUser: this.$store.state.noUser,
       timeOfDay: 'evening',
       user: {
         name: '',
         militaryTimeSelected: false,
         createdTodoLists: [],
       },
-      show: {
-        create: true,
-        change: this.$store.state.userShowChange,
-        delete: true,
-      },
-      userCount: this.$store.state.userCount,
     };
   },
   beforeMount() {
@@ -116,29 +111,17 @@ export default {
   },
   mounted() {
     this.getTimeOfDay();
-    console.log(this.userCount);
     this.$store.dispatch('showChange');
   },
   computed: {
     User() {
-      // this.checkUsers();
       return this.$store.state.user;
     },
     Users() {
-      // this.checkUsers();
-      return this.$store.state.users;
+      return this.$store.state.user.users;
     },
     ChangeUsers() {
-      return this.$store.state.changeUser;
-    },
-    NoUser() {
-      return this.$store.state.noUser;
-    },
-    ShowChange() {
-      return this.$store.state.userShowChange;
-    },
-    UserCount() {
-      return this.$store.state.userCount;
+      return this.$store.state.user.changeUser;
     },
   },
   methods: {
@@ -152,44 +135,35 @@ export default {
       setTimeout(this.getTimeOfDay, 3000 * 10);
     },
 
-    submitNewUser() {
-      this.$store.dispatch('newUser', this.user);
-      // this.$store.state.noUser = false;
-      this.user.name = '';
-    },
-
     // Check for last 'logged in' user when first starting the app
     async checkForLastUser() {
-      console.log('check for last user');
       let result = await this.$store.dispatch('getLastUser');
       if (result === undefined) {
-        this.$store.state.noUser = true;
+        this.$store.state.user.noUser = true;
       } else if (result) {
-        this.$store.state.noUser = false;
-        this.$store.state.user = result;
+        this.$store.state.user.noUser = false;
+        this.$store.state.user.user = result;
         this.$root.$emit('checkLastUser', result);
       }
       // Now that a user has been set (or not), update the time preference (defaults to standard if there is no user)
-      console.log('from check for last user, getAllUsers');
       this.$store.dispatch('getAllUsers');
     },
-
     createNewUser() {
-      this.$store.state.noUser = true;
+      this.$store.state.user.noUser = true;
       this.user.name = '';
       this.$nextTick(() => this.$refs.focus.focus());
+    },
+    submitNewUser() {
+      this.$store.dispatch('newUser', this.user);
+      this.user.name = '';
     },
 
     async getUserById(id) {
       await this.$store.dispatch('getUserById', id);
       // Let the Clock component know that the user has changed, and pass in the new user and their time prefernce
-      let newUser = this.$store.state.user;
+      let newUser = this.$store.state.user.user;
       this.$root.$emit('changedUser', newUser);
-      // if (this.$store.state.noUser == true) {
-      //   this.$store.state.noUser = false;
-      // }
     },
-
     // Third party package called SweetAlerts2
     deleteUserById(id) {
       Swal.fire({
@@ -204,47 +178,13 @@ export default {
       }).then(async (result) => {
         if (result.isConfirmed) {
           await this.$store.dispatch('deleteUserById', id);
-          console.log('from delete');
-          // this.checkUsers();
           Swal.fire('Deleted!', 'The user has been deleted.', 'success');
         }
       });
     },
-    // checkUser() {
-    //   console.log('hit USER');
-    //   let user = this.$store.state.user;
-    //   let users = this.$store.state.users;
-    //   console.log('USER user', user);
-    //   console.log(' USER before', this.noUser);
-    //   if (user == null) {
-    //     this.noUser = true;
-    //   }
-    //   console.log('USER after', this.noUser);
-    //   if (users.length == 1 && user._id == users[0]._id) {
-    //     this.show.change = false;
-    //   } else if (users.length > 1) {
-    //     this.show.change = true;
-    //   }
-    // },
-    // checkUsers() {
-    //   console.log('hit USERS');
-    //   let user = this.$store.state.user;
-    //   let users = this.$store.state.users;
-    //   this.$store.state.userCount = users.length;
-    //   if (user == null) {
-    //     this.$store.state.noUser = true;
-    //   } else {
-    //     this.$store.state.noUser = false;
-    //   }
-    //   if (users.length == 1 && user._id == users[0]._id) {
-    //     this.show.change = false;
-    //   } else if (users.length > 1) {
-    //     this.show.change = true;
-    //   }
-    // },
     onClickOutside() {
       this.user.name = '';
-      this.$store.state.noUser = false;
+      this.$store.state.user.noUser = false;
     },
   },
 };
