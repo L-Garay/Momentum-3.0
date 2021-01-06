@@ -1,29 +1,36 @@
 <template>
-  <div class="calculator">
-    <div class="toggle">
-      <p @click="toggleCalculator">Toggle calculator</p>
+  <div
+    class="calculator"
+    :class="{ unopenedCalc: hideCalculator }"
+    :style="{ width: width + 'px', height: height + 'px' }"
+  >
+    <div class="toggle" v-if="hideCalculator">
+      <div @click="openCalculator"><i class="fas fa-calculator fa-2x"></i></div>
+    </div>
+    <div class="toggle" v-if="showCalculator">
+      <p @click="closeCalculator">Toggle calculator</p>
     </div>
     <div v-if="showCalculator" class="calculatorBody">
       <div class="display">{{ display }}</div>
-      <div class="btn" @click="clear">A/C</div>
-      <div class="btn" @click="switchSign">+/-</div>
-      <div class="btn" @click="percent">%</div>
-      <div class="btn" @click="divide">/</div>
-      <div class="btn" @click="append('7')">7</div>
-      <div class="btn" @click="append('8')">8</div>
-      <div class="btn" @click="append('9')">9</div>
-      <div class="btn" @click="multiply">X</div>
-      <div class="btn" @click="append('4')">4</div>
-      <div class="btn" @click="append('5')">5</div>
-      <div class="btn" @click="append('6')">6</div>
-      <div class="btn" @click="subtract">-</div>
-      <div class="btn" @click="append('1')">1</div>
-      <div class="btn" @click="append('2')">2</div>
-      <div class="btn" @click="append('3')">3</div>
-      <div class="btn" @click="add">+</div>
+      <div class="btn special" @click="clear">A/C</div>
+      <div class="btn special" @click="switchSign">+/-</div>
+      <div class="btn special" @click="percent">%</div>
+      <div class="btn operator" @click="divide">/</div>
+      <div class="btn  number" @click="append('7')">7</div>
+      <div class="btn  number" @click="append('8')">8</div>
+      <div class="btn  number" @click="append('9')">9</div>
+      <div class="btn operator" @click="multiply">X</div>
+      <div class="btn  number" @click="append('4')">4</div>
+      <div class="btn  number" @click="append('5')">5</div>
+      <div class="btn  number" @click="append('6')">6</div>
+      <div class="btn operator" @click="subtract">-</div>
+      <div class="btn  number" @click="append('1')">1</div>
+      <div class="btn  number" @click="append('2')">2</div>
+      <div class="btn  number" @click="append('3')">3</div>
+      <div class="btn operator" @click="add">+</div>
       <div class="btn zero" @click="append('0')">0</div>
-      <div class="btn" @click="decimal">.</div>
-      <div class="btn" @click="equals">=</div>
+      <div class="btn  number" @click="decimal">.</div>
+      <div class="btn operator" @click="equals">=</div>
     </div>
   </div>
 </template>
@@ -34,20 +41,30 @@ export default {
   data() {
     return {
       showCalculator: false,
+      hideCalculator: true,
       display: '0',
       currentNumbers: [],
       previousNumber: undefined,
       operator: undefined,
+      width: 60,
+      height: 60,
     };
   },
   methods: {
-    toggleCalculator() {
-      if (this.showCalculator == false) {
-        this.showCalculator = true;
-      } else {
-        this.showCalculator = false;
-      }
+    // Toggling component methods
+    openCalculator() {
+      this.showCalculator = true;
+      this.hideCalculator = false;
+      this.width = 315;
+      this.height = 320;
     },
+    closeCalculator() {
+      this.showCalculator = false;
+      this.hideCalculator = true;
+      this.width = 60;
+      this.height = 60;
+    },
+    // Calculator methods
     clear() {
       this.display = '0';
       this.currentNumbers = [];
@@ -133,18 +150,33 @@ export default {
 </script>
 
 <style scoped>
+/* Main calculator component wrapper styling */
 .calculator {
-  border: solid 2pt red;
+  border: solid 2pt black;
   background-color: white;
-  width: 315px;
+}
+.unopenedCalc {
+  border: solid 1pt black;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.unopenedCalc:hover {
+  border: solid 2pt black;
+  background-color: white;
 }
 .toggle {
   text-align: center;
 }
-p {
-  color: red;
+.toggle div {
   cursor: pointer;
+  margin-top: 10px;
 }
+p {
+  color: black;
+  cursor: pointer;
+  margin: 3px 0;
+}
+
+/* Calculator styling */
 .calculatorBody {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -152,22 +184,37 @@ p {
   margin: auto;
   font-size: 25px;
   width: 275px;
-  border: 1pt solid green;
-  margin-bottom: 20px;
+  border: 1.5pt solid grey;
   padding: 0 7px 7px 7px;
+  background-color: black;
+  color: white;
 }
 .display {
   grid-column: 1 / 5;
   text-align: end;
   font-size: 20px;
+  background-color: grey;
+  margin: 5px 0 3px 0;
+  padding-right: 5px;
+}
+.btn {
+  color: white;
+  cursor: pointer;
+  text-align: center;
+  margin: 2pt;
 }
 .zero {
   grid-column: 1 / 3;
+  background-color: rgb(75, 75, 75);
 }
-.btn {
-  cursor: pointer;
-  border: 1pt solid black;
+.operator {
+  background-color: orange;
+}
+.number {
+  background-color: rgb(75, 75, 75);
+}
+.special {
+  background-color: lightgray;
   color: black;
-  text-align: center;
 }
 </style>
