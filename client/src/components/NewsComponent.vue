@@ -59,10 +59,10 @@ export default {
   },
   computed: {
     NewsWithPicture() {
-      return this.$store.state.newsWithPicture;
+      return this.$store.state.news.newsWithPicture;
     },
     NewsNoPicture() {
-      return this.$store.state.newsNoPicture;
+      return this.$store.state.news.newsNoPicture;
     },
   },
   methods: {

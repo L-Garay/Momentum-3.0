@@ -2,7 +2,7 @@
   <div
     class="momentum"
     id="backgroundImg"
-    :style="{ 'background-image': 'url(' + photo.urls.regular + ')' }"
+    :style="{ 'background-image': 'url(' + Photo.urls.regular + ')' }"
   >
     <div class="container-fluid top">
       <div class="row justify-content-between">
@@ -130,8 +130,8 @@ export default {
     this.$store.dispatch('getPhoto');
   },
   computed: {
-    photo() {
-      return this.$store.state.photo;
+    Photo() {
+      return this.$store.state.photo.photo;
     },
   },
   methods: {

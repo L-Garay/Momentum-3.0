@@ -134,19 +134,19 @@ export default {
     },
     savePhoto() {
       let savedPhoto = {
-        id: this.$store.state.photo.id,
-        width: this.$store.state.photo.width,
-        height: this.$store.state.photo.height,
+        id: this.$store.state.photo.photo.id,
+        width: this.$store.state.photo.photo.width,
+        height: this.$store.state.photo.photo.height,
         urls: {
-          fullUrl: this.$store.state.photo.urls.full,
-          regular: this.$store.state.photo.urls.regular,
-          thumbUrl: this.$store.state.photo.urls.thumb,
+          fullUrl: this.$store.state.photo.photo.urls.full,
+          regular: this.$store.state.photo.photo.urls.regular,
+          thumbUrl: this.$store.state.photo.photo.urls.thumb,
         },
-        downloadLocation: this.$store.state.photo.links.download_location,
-        userName: this.$store.state.photo.user.username,
-        name: this.$store.state.photo.user.name,
-        unsplashLink: this.$store.state.photo.links.html,
-        userId: this.$store.state.user.id,
+        downloadLocation: this.$store.state.photo.photo.links.download_location,
+        userName: this.$store.state.photo.photo.user.username,
+        name: this.$store.state.photo.photo.user.name,
+        unsplashLink: this.$store.state.photo.photo.links.html,
+        userId: this.$store.state.user.user.id,
       };
       this.$store.dispatch('savePhoto', savedPhoto);
     },
@@ -162,9 +162,9 @@ export default {
     },
     saveQuote() {
       let savedQuote = {
-        quote: this.$store.state.quote.quote,
-        author: this.$store.state.quote.author,
-        userId: this.$store.state.user.id,
+        quote: this.$store.state.quote.quote.quote,
+        author: this.$store.state.quote.quote.author,
+        userId: this.$store.state.user.user.id,
       };
       this.$store.dispatch('saveQuote', savedQuote);
     },
@@ -177,13 +177,13 @@ export default {
     //#region -- Time Methods
     setMilitaryTime() {
       this.$root.$emit('setMilitaryTime');
-      this.$store.state.user.militaryTimeSelected = true;
-      this.$store.dispatch('updateUserById', this.$store.state.user);
+      this.$store.state.user.user.militaryTimeSelected = true;
+      this.$store.dispatch('updateUserById', this.$store.state.user.user);
     },
     setStandardTime() {
       this.$root.$emit('setStandardTime');
-      this.$store.state.user.militaryTimeSelected = false;
-      this.$store.dispatch('updateUserById', this.$store.state.user);
+      this.$store.state.user.user.militaryTimeSelected = false;
+      this.$store.dispatch('updateUserById', this.$store.state.user.user);
     },
     //#endregion
 

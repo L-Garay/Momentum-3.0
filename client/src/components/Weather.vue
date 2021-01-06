@@ -9,30 +9,30 @@
         <h1 class="Condition">
           <div v-if="sunny">
             <i class="fas fa-sun icon" :style="{ color: iconColor }"></i>
-            {{ weather.weather[0].main }}
+            {{ Weather.weather[0].main }}
           </div>
           <div v-else-if="rain">
             <i
               class="fas fa-cloud-showers-heavy icon"
               :style="{ color: iconColor }"
             ></i>
-            {{ weather.weather[0].main }}
+            {{ Weather.weather[0].main }}
           </div>
           <div v-else-if="cloudy">
             <i class="fas fa-cloud icon" :style="{ color: iconColor }"></i>
-            {{ weather.weather[0].main }}
+            {{ Weather.weather[0].main }}
           </div>
           <div v-else-if="snow">
             <i class="far fa-snowflake icon" :style="{ color: iconColor }"></i>
-            {{ weather.weather[0].main }}
+            {{ Weather.weather[0].main }}
           </div>
           <div v-else-if="fog">
             <i class="fas fa-smog icon" :style="{ color: iconColor }"></i>
-            {{ weather.weather[0].main }}
+            {{ Weather.weather[0].main }}
           </div>
           <div v-else-if="mist">
             <i class="fas fa-smog icon" :style="{ color: iconColor }"></i>
-            {{ weather.weather[0].main }}
+            {{ Wather.weather[0].main }}
           </div>
           <div v-else>
             <i class="fas fa-question icon" :style="{ color: iconColor }"></i>
@@ -40,7 +40,7 @@
           </div>
         </h1>
         <h1 class="Temp">
-          {{ Math.round(weather.main.temp) }}
+          {{ Math.round(Weather.main.temp) }}
           <span id="F">&#8457;</span>
         </h1>
         <h1 class="Time">{{ month }} {{ day }}</h1>
@@ -64,7 +64,7 @@
               class="fas fa-map-marker-alt locationIcon"
               :style="{ color: locationIconColor }"
             ></i>
-            {{ weather.name }}
+            {{ Weather.name }}
           </h1>
         </div>
       </div>
@@ -112,8 +112,8 @@ export default {
     this.getDate();
   },
   computed: {
-    weather() {
-      return this.$store.state.weather;
+    Weather() {
+      return this.$store.state.weather.weather;
     },
   },
   methods: {
@@ -166,7 +166,7 @@ export default {
 
     // Check the weather condition to then style the widget accordingly
     checkCondition() {
-      switch (this.$store.state.weather.weather[0].main) {
+      switch (this.$store.state.weather.weather.weather[0].main) {
         case 'Clear':
           this.sunny = true;
           this.cloudy = false;
@@ -230,27 +230,30 @@ export default {
       // NOTE Since the component itself doesn't get re-rendered when a new city is found, had to use getElementById to sort of force change the necessary elements
 
       // Sunny
-      if (this.sunny == true && this.$store.state.weather.main.temp > 100) {
+      if (
+        this.sunny == true &&
+        this.$store.state.weather.weather.main.temp > 100
+      ) {
         let change = document.getElementById('changeColor');
         change.style.backgroundColor = 'rgb(248, 78, 35)';
         this.iconColor = 'rgb(252, 196, 15)';
       } else if (
         this.sunny == true &&
-        this.$store.state.weather.main.temp >= 70
+        this.$store.state.weather.weather.main.temp >= 70
       ) {
         let change = document.getElementById('changeColor');
         change.style.backgroundColor = 'rgb(248, 181, 35)';
         this.iconColor = 'rgb(252, 62, 29)';
       } else if (
         this.sunny == true &&
-        this.$store.state.weather.main.temp > 50
+        this.$store.state.weather.weather.main.temp > 50
       ) {
         let change = document.getElementById('changeColor');
         change.style.backgroundColor = 'rgb(253, 253, 61)';
         this.iconColor = 'rgb(252, 155, 29)';
       } else if (
         this.sunny == true &&
-        this.$store.state.weather.main.temp > 0
+        this.$store.state.weather.weather.main.temp > 0
       ) {
         // this.backgroundColor = "rgb(241, 241, 126)";
         // this.iconColor = "rgb(252, 161, 41)";
@@ -259,7 +262,7 @@ export default {
         this.iconColor = 'rgb(252, 161, 41)';
       } else if (
         this.sunny == true &&
-        this.$store.state.weather.main.temp <= 0
+        this.$store.state.weather.weather.main.temp <= 0
       ) {
         let change = document.getElementById('changeColor');
         change.style.backgroundColor = 'rgb(241, 241, 188)';

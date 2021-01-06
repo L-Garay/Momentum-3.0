@@ -11,7 +11,7 @@
             <slot name="body">
               <div class="container-fluid">
                 <div class="row">
-                  <h4 v-if="this.$store.state.savedPhotos.length == 0">
+                  <h4 v-if="this.$store.state.photo.savedPhotos.length == 0">
                     Save some photos and see them here!
                   </h4>
                   <div
@@ -54,11 +54,14 @@
 export default {
   name: 'PictureModal',
   mounted() {
-    this.$store.dispatch('getSavedPhotosByUserId', this.$store.state.user.id);
+    this.$store.dispatch(
+      'getSavedPhotosByUserId',
+      this.$store.state.user.user.id
+    );
   },
   computed: {
     savedPhotos() {
-      return this.$store.state.savedPhotos;
+      return this.$store.state.photo.savedPhotos;
     },
   },
   methods: {

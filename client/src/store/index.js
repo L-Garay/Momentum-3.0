@@ -11,11 +11,17 @@ let base = window.location.host.includes('localhost:8080')
 let api = axios.create({ baseURL: base + 'api/' });
 export default new Vuex.Store({
   state: {
-    photo: null,
-    savedPhotos: [],
-    weather: null,
-    quote: null,
-    savedQuotes: [],
+    photo: {
+      photo: null,
+      savedPhotos: [],
+    },
+    weather: {
+      weather: null,
+    },
+    quote: {
+      quote: null,
+      savedQuotes: [],
+    },
     user: {
       user: null,
       users: [],
@@ -31,8 +37,10 @@ export default new Vuex.Store({
       customListTodosDontUse: [],
       usersTodoLists: [],
     },
-    newsWithPicture: [],
-    newsNoPicture: [],
+    news: {
+      newsWithPicture: [],
+      newsNoPicture: [],
+    },
     finance: {
       currentFinanceNews: [],
       allFinanceNews: [],
@@ -45,25 +53,25 @@ export default new Vuex.Store({
   mutations: {
     //#region --Photo Methods--
     setPhoto(state, photo) {
-      state.photo = photo;
+      state.photo.photo = photo;
     },
     setSavedPhotos(state, photos) {
-      state.savedPhotos = photos;
+      state.photo.savedPhotos = photos;
     },
     //#endregion
 
     //#region --Weather Methods--
     setWeather(state, weather) {
-      state.weather = weather;
+      state.weather.weather = weather;
     },
     //#endregion
 
     //#region --Quote Methods--
     setQuote(state, quote) {
-      state.quote = quote;
+      state.quote.quote = quote;
     },
     setSavedQuotes(state, quotes) {
-      state.savedQuotes = quotes;
+      state.quote.savedQuotes = quotes;
     },
     //#endregion
 
@@ -143,8 +151,8 @@ export default new Vuex.Store({
 
     //#region --News Methods--
     setNews(state, news) {
-      state.newsWithPicture = news.slice(0, 20);
-      state.newsNoPicture = news.slice(20);
+      state.news.newsWithPicture = news.slice(0, 20);
+      state.news.newsNoPicture = news.slice(20);
     },
     //#endregion
 
@@ -202,15 +210,15 @@ export default new Vuex.Store({
     async savePhoto({ dispatch, state }, savedPhoto) {
       // original is used to send back to unsplash for their method to keep track, updated goes to DB
       let combo = {
-        original: state.photo,
+        original: state.photo.photo,
         updated: savedPhoto,
       };
       await api.post('photos', combo);
-      dispatch('getSavedPhotosByUserId', state.user.id);
+      dispatch('getSavedPhotosByUserId', state.user.user.id);
     },
     async deletePhotoById({ dispatch, state }, id) {
       await api.delete('photos/' + id);
-      dispatch('getSavedPhotosByUserId', state.user.id);
+      dispatch('getSavedPhotosByUserId', state.user.user.id);
     },
     //#endregion
 
@@ -256,7 +264,7 @@ export default new Vuex.Store({
     },
     async deleteQuote({ dispatch, state }, id) {
       await api.delete('quotes/' + id);
-      dispatch('getSavedQuotesByUserId', state.user.id);
+      dispatch('getSavedQuotesByUserId', state.user.user.id);
     },
     //#endregion
 
