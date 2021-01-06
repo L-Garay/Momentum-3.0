@@ -24,11 +24,13 @@ export default new Vuex.Store({
       userCount: 0,
       userShowChange: true,
     },
-    todos: [],
-    completedTodos: [],
-    customListTodos: [],
-    customListTodosDontUse: [],
-    usersTodoLists: [],
+    todo: {
+      todos: [],
+      completedTodos: [],
+      customListTodos: [],
+      customListTodosDontUse: [],
+      usersTodoLists: [],
+    },
     newsWithPicture: [],
     newsNoPicture: [],
     finance: {
@@ -114,28 +116,28 @@ export default new Vuex.Store({
         }
       });
       // NOTE This method will recieve every single todo a user has, regardless of if it belongs to a custom list or not. However, in reality we only care about the todos without a listId property (the ones with a listId will be handled by the 'setCustomTodos' method), and so to ensure that the customTodosArray is not overwritten and filled with ALL custom todos I created essentialy a fake or dump array to store ALL custom todos.
-      state.todos = todoArr;
-      state.completedTodos = completedArr;
-      state.customListTodosDontUse = customListTodos;
+      state.todo.todos = todoArr;
+      state.todo.completedTodos = completedArr;
+      state.todo.customListTodosDontUse = customListTodos;
       // NOTE after updating a todo's completed property it will run this method. We want to check to see if any of the newly fetched custom todos are completed or not, if they are, remove them from the customListTodos array and insert it into the completedTodos array
-      state.customListTodosDontUse.forEach((t) => {
+      state.todo.customListTodosDontUse.forEach((t) => {
         if (t.completed == true) {
-          let todoIndexToRemove = state.customListTodos.findIndex(
+          let todoIndexToRemove = state.todo.customListTodos.findIndex(
             (todo) => todo._id == t._id
           );
-          state.customListTodos.splice(todoIndexToRemove, 1);
-          state.completedTodos.push(t);
+          state.todo.customListTodos.splice(todoIndexToRemove, 1);
+          state.todo.completedTodos.push(t);
         }
       });
     },
     setCustomTodos(state, todos) {
-      state.customListTodos = todos;
+      state.todo.customListTodos = todos;
     },
     //#endregion
 
     //#region --TodoList Methods--
     setTodoLists(state, todoLists) {
-      state.usersTodoLists = todoLists;
+      state.todo.usersTodoLists = todoLists;
     },
     //#endregion
 
@@ -337,7 +339,9 @@ export default new Vuex.Store({
     },
     async deleteCustomTodo({ dispatch }, todo) {
       await api.delete('todos/' + todo._id);
-      dispatch('getTodosByListId', todo.listId);
+      dispatch('getTodosByListId', todo.listId).then(() => {
+        dispatch('getTodosByUserId', todo.userId);
+      });
     },
     //#endregion
 
