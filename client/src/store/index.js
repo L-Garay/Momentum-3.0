@@ -49,6 +49,9 @@ export default new Vuex.Store({
       technology: [],
       growers: [],
     },
+    sports: {
+      test: [],
+    },
   },
   mutations: {
     //#region --Photo Methods--
@@ -186,6 +189,12 @@ export default new Vuex.Store({
       state.finance.growers = stocks;
     },
 
+    //#endregion
+
+    //#region --Sports Methods--
+    setSports(state, sports) {
+      state.sports.test = sports;
+    },
     //#endregion
   },
   actions: {
@@ -449,6 +458,14 @@ export default new Vuex.Store({
     async getGrowers({ commit }) {
       let res = await api.get('finance/growers');
       commit('setGrowers', res.data.quotes);
+    },
+    //#endregion
+
+    //#region --Sports Methods--
+    async getSports({ commit }) {
+      let id = 133602;
+      let res = await api.get('sports/' + id);
+      commit('setSports', res.data);
     },
     //#endregion
   },

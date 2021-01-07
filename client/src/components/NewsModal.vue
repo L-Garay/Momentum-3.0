@@ -87,6 +87,7 @@ export default {
     this.$store.dispatch('getUndervalued');
     this.$store.dispatch('getTechnology');
     this.$store.dispatch('getGrowers');
+    this.$store.dispatch('getSports');
   },
   computed: {},
   methods: {
