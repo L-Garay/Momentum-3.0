@@ -14,13 +14,30 @@
       </div>
     </div>
     <div class="defaultMainView" v-if="show.default">
-      <h5>this is the default view</h5>
-      <!-- This will be the default main view where news stories about sports will be displayed, there will be one 'highlighted' story on the left side that will have a larger image/desc than the others, then there will be a section on the right that will hold the remaining stories. -->
       <div class="highlightedStory">
-        <!-- this is where the highlighted story will go, when a user clicks on this story it will take them to the full article -->
+        <div class="highlighted">
+          <h3>{{ HighlightedNews.name }}</h3>
+          <img
+            :src="HighlightedNews.image.thumbnail.contentUrl"
+            alt="should be story image"
+          />
+          <p>
+            <a :href="HighlightedNews.url" target="_blank">{{
+              HighlightedNews.description
+            }}</a>
+          </p>
+        </div>
       </div>
       <div class="otherStories">
-        <!-- this is where the rest of the stories will go, when a user clicks on one of these it will make it the highlighted story -->
+        <div class="stories">
+          <div class="story" v-for="(story, index) in SportsNews" :key="index">
+            <img
+              :src="story.image.thumbnail.contentUrl"
+              alt="should be image"
+            />
+            <p>{{ story.name }}</p>
+          </div>
+        </div>
       </div>
     </div>
     <div class="leagueMainView">
@@ -71,8 +88,11 @@ export default {
   },
   mounted() {},
   computed: {
-    Sports() {
-      return this.$store.state.sports.test;
+    SportsNews() {
+      return this.$store.state.sports.news;
+    },
+    HighlightedNews() {
+      return this.$store.state.sports.highlightedNews;
     },
   },
   methods: {
@@ -187,10 +207,41 @@ export default {
 </script>
 
 <style scoped>
+.sportsSection {
+  width: 890px;
+  height: 500px;
+  background-color: rgba(169, 169, 169, 0.637);
+}
+.headerSection {
+  border-bottom: 1pt solid white;
+}
 .navbar p {
   margin-right: 30px;
 }
 .navbar p:hover {
   cursor: pointer;
+}
+.defaultMainView {
+  display: flex;
+}
+.highlightedStory {
+  width: 590px;
+}
+div.highlighted img {
+  height: 200px;
+  width: 250px;
+}
+div.highlighted a {
+  font-size: 20px;
+  color: white;
+}
+div.highlighted a:hover {
+  text-decoration-color: blue;
+}
+.otherStories {
+  width: 290px;
+  height: 440px;
+  overflow-y: auto;
+  padding-top: 10px;
 }
 </style>
