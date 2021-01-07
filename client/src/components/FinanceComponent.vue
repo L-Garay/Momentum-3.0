@@ -167,8 +167,6 @@ export default {
 .headerSection {
   border-bottom: 1pt solid white;
 }
-.navbar {
-}
 .navbar p {
   font-size: 18px;
   margin: 5px 0;

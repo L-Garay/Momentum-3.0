@@ -82,12 +82,12 @@ export default {
   },
   mounted() {
     // this.$store.dispatch('getNews');
-    this.$store.dispatch('getFinanceNews');
-    this.$store.dispatch('getWinnersLosers');
-    this.$store.dispatch('getUndervalued');
-    this.$store.dispatch('getTechnology');
-    this.$store.dispatch('getGrowers');
-    this.$store.dispatch('getSports');
+    // this.$store.dispatch('getFinanceNews');
+    // this.$store.dispatch('getWinnersLosers');
+    // this.$store.dispatch('getUndervalued');
+    // this.$store.dispatch('getTechnology');
+    // this.$store.dispatch('getGrowers');
+    this.$store.dispatch('getSportsNews');
   },
   computed: {},
   methods: {

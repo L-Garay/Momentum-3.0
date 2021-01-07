@@ -50,7 +50,8 @@ export default new Vuex.Store({
       growers: [],
     },
     sports: {
-      test: [],
+      highlightedNews: {},
+      news: [],
     },
   },
   mutations: {
@@ -192,8 +193,14 @@ export default new Vuex.Store({
     //#endregion
 
     //#region --Sports Methods--
-    setSports(state, sports) {
-      state.sports.test = sports;
+    setSportsNews(state, sports) {
+      let first = sports.shift();
+      state.sports.highlightedNews = first;
+      state.sports.news = sports;
+    },
+    setMoreSportsNews(state, sports) {
+      state.sports.news.push(sports);
+      state.sports.news = state.sports.news.flat();
     },
     //#endregion
   },
@@ -462,10 +469,11 @@ export default new Vuex.Store({
     //#endregion
 
     //#region --Sports Methods--
-    async getSports({ commit }) {
-      let id = 133602;
-      let res = await api.get('sports/' + id);
-      commit('setSports', res.data);
+    async getSportsNews({ commit }) {
+      let firstBatch = await api.get('sports/news');
+      commit('setSportsNews', firstBatch.data.value);
+      let secondBatch = await api.get('sports/news/more');
+      commit('setMoreSportsNews', secondBatch.data.value);
     },
     //#endregion
   },
