@@ -53,6 +53,8 @@ export default new Vuex.Store({
       highlightedNews: {},
       otherHighlighted: [],
       news: [],
+      upcoming15: [],
+      previous15: [],
     },
   },
   mutations: {
@@ -217,6 +219,10 @@ export default new Vuex.Store({
       state.sports.otherHighlighted.splice(data.index, 1);
       // Set it as the new highlightedNews object
       state.sports.highlightedNews = data.other;
+    },
+    setGames(state, games) {
+      state.sports.upcoming15 = games.upcoming.data.events;
+      state.sports.previous15 = games.previous.data.events;
     },
     //#endregion
   },
@@ -492,10 +498,15 @@ export default new Vuex.Store({
       commit('setMoreSportsNews', secondBatch.data.value);
     },
     switchHighlighted({ commit, state }, other) {
-      debugger;
       let indexToRemove = state.sports.otherHighlighted.indexOf(other);
       let data = { other: other, index: indexToRemove };
       commit('switchHighlighted', data);
+    },
+    async getGames({ commit }, id) {
+      let games = {};
+      games.previous = await api.get('sports/games/previous/' + id);
+      games.upcoming = await api.get('sports/games/upcoming/' + id);
+      commit('setGames', games);
     },
     //#endregion
   },
