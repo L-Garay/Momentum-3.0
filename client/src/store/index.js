@@ -51,6 +51,7 @@ export default new Vuex.Store({
     },
     sports: {
       highlightedNews: {},
+      otherHighlighted: [],
       news: [],
     },
   },
@@ -194,13 +195,28 @@ export default new Vuex.Store({
 
     //#region --Sports Methods--
     setSportsNews(state, sports) {
+      // Set the first highlightedNews object with first news article
       let first = sports.shift();
       state.sports.highlightedNews = first;
+      // Grab the next three articles and make them the otherHighlighted array
+      let nextThree = sports.slice(0, 3);
+      state.sports.otherHighlighted = nextThree;
+      sports.splice(0, 3);
+      // Set the rest
       state.sports.news = sports;
     },
     setMoreSportsNews(state, sports) {
       state.sports.news.push(sports);
       state.sports.news = state.sports.news.flat();
+    },
+    switchHighlighted(state, data) {
+      // Grab the current highlightedNews object and push it into otherHighlighted array
+      let oldHighlighted = state.sports.highlightedNews;
+      state.sports.otherHighlighted.push(oldHighlighted);
+      // Remove the highlighted news to be from the otherHighlighted array
+      state.sports.otherHighlighted.splice(data.index, 1);
+      // Set it as the new highlightedNews object
+      state.sports.highlightedNews = data.other;
     },
     //#endregion
   },
@@ -474,6 +490,12 @@ export default new Vuex.Store({
       commit('setSportsNews', firstBatch.data.value);
       let secondBatch = await api.get('sports/news/more');
       commit('setMoreSportsNews', secondBatch.data.value);
+    },
+    switchHighlighted({ commit, state }, other) {
+      debugger;
+      let indexToRemove = state.sports.otherHighlighted.indexOf(other);
+      let data = { other: other, index: indexToRemove };
+      commit('switchHighlighted', data);
     },
     //#endregion
   },
