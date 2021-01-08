@@ -137,7 +137,8 @@ export default {
             (this.show.mlb = false),
             (this.show.nhl = false),
             (this.show.mls = false),
-            (this.show.epl = false);
+            (this.show.epl = false),
+            this.$store.dispatch('getGames', 4391);
           break;
         case 'NCAAF':
           (this.show.default = false),
@@ -149,6 +150,7 @@ export default {
             (this.show.nhl = false),
             (this.show.mls = false),
             (this.show.epl = false);
+          this.$store.dispatch('getGames', 4479);
           break;
         case 'NBA':
           (this.show.nfl = false),
@@ -159,6 +161,7 @@ export default {
             (this.show.nhl = false),
             (this.show.mls = false),
             (this.show.epl = false);
+          this.$store.dispatch('getGames', 4387);
           break;
         case 'NCAAB':
           (this.show.default = false),
@@ -170,6 +173,7 @@ export default {
             (this.show.nhl = false),
             (this.show.mls = false),
             (this.show.epl = false);
+          this.$store.dispatch('getGames', 4607);
           break;
         case 'MLB':
           (this.show.default = false),
@@ -181,6 +185,7 @@ export default {
             (this.show.nhl = false),
             (this.show.mls = false),
             (this.show.epl = false);
+          this.$store.dispatch('getGames', 4424);
           break;
         case 'NHL':
           (this.show.default = false),
@@ -192,6 +197,7 @@ export default {
             (this.show.nhl = true),
             (this.show.mls = false),
             (this.show.epl = false);
+          this.$store.dispatch('getGames', 4380);
           break;
         case 'MLS':
           (this.show.default = false),
@@ -203,6 +209,7 @@ export default {
             (this.show.nhl = false),
             (this.show.mls = true),
             (this.show.epl = false);
+          this.$store.dispatch('getGames', 4346);
           break;
         case 'EPL':
           (this.show.default = false),
@@ -214,6 +221,7 @@ export default {
             (this.show.nhl = false),
             (this.show.mls = false),
             (this.show.epl = true);
+          this.$store.dispatch('getGames', 4328);
           break;
 
         default:

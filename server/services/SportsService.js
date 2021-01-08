@@ -45,6 +45,33 @@ class SportsService {
       );
     }
   }
+  async getPreviousGames(id) {
+    console.log('league id', id);
+    try {
+      return await axios({
+        method: 'GET',
+        url: `https://www.thesportsdb.com/api/v1/json/1/eventspastleague.php?id=${id}`,
+      });
+    } catch (error) {
+      throw new ErrorResponse(
+        `Cant get previous games with that id:${id}.  ${error}`,
+        error.response.status
+      );
+    }
+  }
+  async getUpcomingGames(id) {
+    try {
+      return await axios({
+        method: 'GET',
+        url: `https://www.thesportsdb.com/api/v1/json/1/eventsnextleague.php?id=${id}`,
+      });
+    } catch (error) {
+      throw new ErrorResponse(
+        `Cant get upcoming games with that id:${id}.  ${error}`,
+        error.response.status
+      );
+    }
+  }
 }
 
 export const sportsService = new SportsService();
