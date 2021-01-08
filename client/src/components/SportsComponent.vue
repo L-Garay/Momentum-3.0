@@ -16,7 +16,7 @@
     <div class="defaultMainView" v-if="show.default">
       <div class="highlightedStory">
         <div class="highlighted">
-          <h3>{{ HighlightedNews.name }}</h3>
+          <h5>{{ HighlightedNews.name }}</h5>
           <img
             :src="HighlightedNews.image.thumbnail.contentUrl"
             alt="should be story image"
@@ -27,15 +27,31 @@
             }}</a>
           </p>
         </div>
+        <div class="otherHighlightedStories">
+          <div
+            class="otherHighlighted"
+            v-for="(other, index) in OtherHighlighted"
+            :key="index"
+            @click="switchHighlighted(other)"
+          >
+            <img
+              :src="other.image.thumbnail.contentUrl"
+              alt="should be image"
+            />
+            <p>{{ other.name }}</p>
+          </div>
+        </div>
       </div>
       <div class="otherStories">
         <div class="stories">
           <div class="story" v-for="(story, index) in SportsNews" :key="index">
-            <img
-              :src="story.image.thumbnail.contentUrl"
-              alt="should be image"
-            />
-            <p>{{ story.name }}</p>
+            <a :href="story.url" target="_blank">
+              <img
+                :src="story.image.thumbnail.contentUrl"
+                alt="should be image"
+              />
+              <p>{{ story.name }}</p></a
+            >
           </div>
         </div>
       </div>
@@ -93,6 +109,9 @@ export default {
     },
     HighlightedNews() {
       return this.$store.state.sports.highlightedNews;
+    },
+    OtherHighlighted() {
+      return this.$store.state.sports.otherHighlighted;
     },
   },
   methods: {
@@ -202,6 +221,9 @@ export default {
           break;
       }
     },
+    switchHighlighted(other) {
+      this.$store.dispatch('switchHighlighted', other);
+    },
   },
 };
 </script>
@@ -224,24 +246,70 @@ export default {
 .defaultMainView {
   display: flex;
 }
+/* Highlighted news section styling */
 .highlightedStory {
   width: 590px;
 }
+div.highlighted {
+  border-bottom: 1pt solid white;
+}
 div.highlighted img {
-  height: 200px;
-  width: 250px;
+  height: 125px;
+  width: 150px;
 }
 div.highlighted a {
-  font-size: 20px;
+  font-size: 16px;
   color: white;
 }
 div.highlighted a:hover {
   text-decoration-color: blue;
 }
+
+/* Other highlighted news section styling */
+.otherHighlightedStories {
+  display: flex;
+}
+div.otherHighlighted {
+  font-size: 12px;
+  text-align: center;
+  padding: 10px;
+}
+div.otherHighlighted:hover {
+  cursor: pointer;
+}
+div.otherHighlighted p {
+  margin-bottom: 0;
+  text-align: start;
+}
+
+/* Other news section styling */
 .otherStories {
   width: 290px;
   height: 440px;
   overflow-y: auto;
   padding-top: 10px;
+  border-left: 1pt solid white;
+}
+.story a {
+  display: flex;
+  font-size: 13px;
+  margin: 0px 0 0px 2px;
+  border-bottom: 1pt solid white;
+  color: white;
+}
+.story a:hover {
+  text-decoration-color: blue;
+}
+.story img {
+  height: 100px;
+  width: 100px;
+  padding: 5px 3px 5px 3px;
+}
+.story:hover {
+  box-shadow: 0pt 0pt 5pt white;
+}
+.story p {
+  align-self: center;
+  margin-bottom: 0;
 }
 </style>
