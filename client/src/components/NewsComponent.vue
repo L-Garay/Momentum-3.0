@@ -1,5 +1,5 @@
 <template>
-  <div class="newsSection">
+  <!-- <div class="newsSection">
     <div class="input">
       <input
         type="text"
@@ -37,21 +37,80 @@
         </ul>
       </div>
     </div>
+  </div> -->
+  <div class="newsSection">
+    <div class="headerSection">
+      <div class="navbar">
+        <p @click="toggleNews('Home')">Home</p>
+        <p @click="toggleNews('US')">US</p>
+        <p @click="toggleNews('Politics')">Politics</p>
+        <p @click="toggleNews('World')">World</p>
+        <p @click="toggleNews('Science')">Science/Technology</p>
+        <p @click="toggleNews('Business')">Business</p>
+        <p @click="toggleNews('Entertainment')">Entertainment</p>
+        <p @click="toggleNews('Health')">Health</p>
+        <div class="input">
+          <input
+            type="text"
+            placeholder="New search"
+            v-model="news.query"
+            v-autowidth="{
+              maxWidth: '400px',
+              minWidth: '70px',
+              comfortZone: 20,
+            }"
+          />
+          <i class="fas fa-search" @click="submitNewsQuery"></i>
+        </div>
+      </div>
+    </div>
+    <div class="contentSection">
+      <div class="home" v-if="show.home">
+        <!-- this is where the 'trending' stories will go and act as the news component's 'home' page and will have slightly different layout -->
+        <h5>This is the home layout</h5>
+      </div>
+      <news-layout v-if="show.business" :newsData="business" />
+      <news-layout v-if="show.entertainment" :newsData="entertainment" />
+      <news-layout v-if="show.health" :newsData="health" />
+      <news-layout v-if="show.politics" :newsData="politics" />
+      <news-layout v-if="show.science" :newsData="science" />
+      <news-layout v-if="show.us" :newsData="us" />
+      <news-layout v-if="show.world" :newsData="world" />
+    </div>
   </div>
 </template>
 
 <script>
+import NewsLayout from '@/components/NewsComponentLayout.vue';
 import VueInputAutoWidth from 'vue-input-autowidth';
 import Vue from 'vue';
 Vue.use(VueInputAutoWidth);
 export default {
   name: 'NewsCompoenent',
+  components: { NewsLayout },
   data() {
     return {
       fetchedNewNews: false,
       news: {
         query: '',
       },
+      show: {
+        home: true,
+        business: false,
+        entertainment: false,
+        health: false,
+        politics: false,
+        science: false,
+        us: false,
+        world: false,
+      },
+      business: { name: 'Business' },
+      entertainment: { name: 'Entertainment' },
+      health: { name: 'Health' },
+      politics: { name: 'Politics' },
+      science: { name: 'Science/Technology' },
+      us: { name: 'United States' },
+      world: { name: 'World' },
     };
   },
   mounted() {
@@ -66,6 +125,101 @@ export default {
     },
   },
   methods: {
+    toggleNews(news) {
+      switch (news) {
+        case 'Home':
+          (this.show.home = true),
+            (this.show.business = false),
+            (this.show.entertainment = false),
+            (this.show.health = false),
+            (this.show.politics = false),
+            (this.show.science = false),
+            (this.show.us = false),
+            (this.show.world = false);
+          break;
+        case 'Business':
+          (this.show.home = false),
+            (this.show.business = true),
+            (this.show.entertainment = false),
+            (this.show.health = false),
+            (this.show.politics = false),
+            (this.show.science = false),
+            (this.show.us = false),
+            (this.show.world = false),
+            (this.show.epl = false);
+          this.$store.dispatch('getNewsCategory', 'Business');
+          break;
+        case 'Entertainment':
+          (this.show.home = false),
+            (this.show.business = false),
+            (this.show.entertainment = true),
+            (this.show.health = false),
+            (this.show.politics = false),
+            (this.show.science = false),
+            (this.show.us = false),
+            (this.show.world = false);
+          this.$store.dispatch('getNewsCategory', 'Entertainment');
+          break;
+        case 'Health':
+          (this.show.business = false),
+            (this.show.entertainment = false),
+            (this.show.health = true),
+            (this.show.politics = false),
+            (this.show.science = false),
+            (this.show.us = false),
+            (this.show.world = false);
+          this.$store.dispatch('getNewsCategory', 'Health');
+          break;
+        case 'Politics':
+          (this.show.home = false),
+            (this.show.business = false),
+            (this.show.entertainment = false),
+            (this.show.health = false),
+            (this.show.politics = true),
+            (this.show.science = false),
+            (this.show.us = false),
+            (this.show.world = false);
+          this.$store.dispatch('getNewsCategory', 'Politics');
+          break;
+        case 'Science':
+          (this.show.home = false),
+            (this.show.business = false),
+            (this.show.entertainment = false),
+            (this.show.health = false),
+            (this.show.politics = false),
+            (this.show.science = true),
+            (this.show.us = false),
+            (this.show.world = false);
+          this.$store.dispatch('getNewsCategory', 'Science');
+          break;
+        case 'US':
+          (this.show.home = false),
+            (this.show.business = false),
+            (this.show.entertainment = false),
+            (this.show.health = false),
+            (this.show.politics = false),
+            (this.show.science = false),
+            (this.show.us = true),
+            (this.show.world = false);
+          this.$store.dispatch('getNewsCategory', 'US');
+          break;
+        case 'World':
+          (this.show.home = false),
+            (this.show.business = false),
+            (this.show.entertainment = false),
+            (this.show.health = false),
+            (this.show.politics = false),
+            (this.show.science = false),
+            (this.show.us = false),
+            (this.show.world = true);
+          this.$store.dispatch('getNewsCategory', 'World');
+          break;
+
+        default:
+          console.log('That is not an option');
+          break;
+      }
+    },
     submitNewsQuery() {
       if (this.news.query !== '') {
         this.$store.dispatch('getNewNews', this.news);
@@ -86,6 +240,9 @@ export default {
   height: 500px;
   background-color: rgba(169, 169, 169, 0.596);
   color: white;
+}
+.navbar p:hover {
+  cursor: pointer;
 }
 .input {
   text-align: center;

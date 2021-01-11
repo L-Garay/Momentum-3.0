@@ -40,6 +40,15 @@ export default new Vuex.Store({
     news: {
       newsWithPicture: [],
       newsNoPicture: [],
+      category: {
+        highlighted: [],
+        others: [],
+      },
+      home: {
+        main: {},
+        justText: [],
+        others: [],
+      },
     },
     finance: {
       currentFinanceNews: [],
@@ -161,6 +170,19 @@ export default new Vuex.Store({
       state.news.newsWithPicture = news.slice(0, 20);
       state.news.newsNoPicture = news.slice(20);
     },
+    setNewsCategory(state, news) {
+      console.log('regular', news);
+      if (news.length == 12) {
+        state.news.category.highlighted = news.slice(0, 11);
+        state.news.category.others = [];
+      } else if (news.length > 12) {
+        state.news.category.highlighted = news.slice(0, 11);
+        state.news.category.others = news.slice(11);
+      }
+    },
+    // setNewsCategoryExtra(state, news) {
+    //   console.log('extra', news);
+    // },
     //#endregion
 
     //#region --Finance Methods--
@@ -407,9 +429,27 @@ export default new Vuex.Store({
     //#endregion
 
     //#region --News Methods--
-    async getNews({ commit }) {
-      let res = await api.get('news');
+    async getNewsTrending({ commit }) {
+      let res = await api.get('news/trending');
       commit('setNews', res.data.value);
+    },
+    async getNewsCategory({ commit }, category) {
+      // NOTE For some reason, the Bing News Search API isn't working properly and when using the 'category api', the optional parameters of 'count' and 'offset' only work for the category 'Health'; all other categories are uneffected by those parameters.  This means that I cannot get more than the first 12 stories for each category, besides 'Health'.  No matter how many times I make a call to the 'Politics' category, it will return the same 12 stories. This severly limits the amount of stories per category I can display, but there isn't much I can do about it now; in the future I may switch and migrate to a different API but for now this will work.
+      /** Code below is me trying to get multiple sets of results */
+      // if (category == 'Health') {
+      //   let res = await api.get('news/category/' + category);
+      //   commit('setNewsCategory', res.data);
+      // } else {
+      //   let first = await api.get('news/category/' + category);
+      //   let second = await api.get('news/category/v2/' + category);
+      //   let res = {
+      //     first: first.data.value,
+      //     second: second.data.value,
+      //   };
+      //   commit('setNewsCategoryExtra', res);
+      // }
+      let res = await api.get('news/category/' + category);
+      commit('setNewsCategory', res.data.value);
     },
     async getNewNews({ commit }, news) {
       let res = await api.post('news/change', news);
