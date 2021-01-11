@@ -153,7 +153,8 @@ export default {
           this.$store.dispatch('getGames', 4479);
           break;
         case 'NBA':
-          (this.show.nfl = false),
+          (this.show.default = false),
+            (this.show.nfl = false),
             (this.show.ncaaf = false),
             (this.show.nba = true),
             (this.show.ncaab = false),

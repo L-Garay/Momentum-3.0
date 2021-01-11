@@ -81,13 +81,13 @@ export default {
     };
   },
   mounted() {
-    // this.$store.dispatch('getNews');
+    // this.$store.dispatch('getNewsTrending');
     // this.$store.dispatch('getFinanceNews');
     // this.$store.dispatch('getWinnersLosers');
     // this.$store.dispatch('getUndervalued');
     // this.$store.dispatch('getTechnology');
     // this.$store.dispatch('getGrowers');
-    this.$store.dispatch('getSportsNews');
+    // this.$store.dispatch('getSportsNews');
   },
   computed: {},
   methods: {
