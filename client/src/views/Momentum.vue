@@ -3,6 +3,7 @@
     class="momentum"
     id="backgroundImg"
     :style="{ 'background-image': 'url(' + Photo.urls.regular + ')' }"
+    v-if="gotPhoto"
   >
     <div class="container-fluid top">
       <div class="row justify-content-between">
@@ -124,10 +125,11 @@ export default {
       showTodosModal: false,
       showCalculator: false,
       showNewsModal: false,
+      gotPhoto: false,
     };
   },
   mounted() {
-    this.$store.dispatch('getPhoto');
+    this.getPhotoBackground();
   },
   computed: {
     Photo() {
@@ -135,6 +137,10 @@ export default {
     },
   },
   methods: {
+    async getPhotoBackground() {
+      await this.$store.dispatch('getPhoto');
+      this.gotPhoto = true;
+    },
     openPhotosModal() {
       this.showPhotoModal = true;
     },

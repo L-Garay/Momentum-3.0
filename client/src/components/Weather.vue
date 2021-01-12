@@ -39,7 +39,7 @@
             <p>Unkown Weather Condition</p>
           </div>
         </h1>
-        <h1 class="Temp">
+        <h1 class="Temp" v-if="gotWeather">
           {{ Math.round(Weather.main.temp) }}
           <span id="F">&#8457;</span>
         </h1>
@@ -80,6 +80,7 @@ export default {
   name: 'Weather',
   data() {
     return {
+      gotWeather: false,
       // To get weather
       coord: {
         lat: null,
@@ -129,6 +130,7 @@ export default {
       let coords = { ...this.coord };
       await this.$store.dispatch('getWeather', coords);
       this.checkCondition();
+      this.gotWeather = true;
     },
     error(err) {
       console.warn(`Error code: ${err.code}, ${err.message}.`);

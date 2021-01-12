@@ -16,10 +16,10 @@ export default new Vuex.Store({
       savedPhotos: [],
     },
     weather: {
-      weather: null,
+      weather: {},
     },
     quote: {
-      quote: null,
+      quote: {},
       savedQuotes: [],
     },
     user: {
