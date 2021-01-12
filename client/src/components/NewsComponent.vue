@@ -104,13 +104,13 @@ export default {
         us: false,
         world: false,
       },
-      business: { name: 'Business' },
-      entertainment: { name: 'Entertainment' },
-      health: { name: 'Health' },
-      politics: { name: 'Politics' },
-      science: { name: 'Science/Technology' },
-      us: { name: 'United States' },
-      world: { name: 'World' },
+      business: { name: 'Business', width: 155, margin: 237.5 },
+      entertainment: { name: 'Entertainment', width: 230, margin: 200 },
+      health: { name: 'Health', width: 120, margin: 255 },
+      politics: { name: 'Politics', width: 130, margin: 250 },
+      science: { name: 'Science/Technology', width: 320, margin: 155 },
+      us: { name: 'United States', width: 225, margin: 202.5 },
+      world: { name: 'World', width: 110, margin: 260 },
     };
   },
   mounted() {
@@ -240,6 +240,9 @@ export default {
   height: 500px;
   background-color: rgba(169, 169, 169, 0.596);
   color: white;
+}
+.navbar p {
+  margin-bottom: 0;
 }
 .navbar p:hover {
   cursor: pointer;

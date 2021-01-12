@@ -27,7 +27,7 @@ class NewsService {
         method: 'GET',
         url: 'https://bing-news-search1.p.rapidapi.com/news',
         params: {
-          count: 25,
+          count: 12,
           safeSearch: 'Off',
           category: category,
           textFormat: 'Raw',
