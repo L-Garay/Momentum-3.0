@@ -167,12 +167,17 @@ export default new Vuex.Store({
 
     //#region --News Methods--
     setNews(state, news) {
+      state.news.home.others = news.slice(0, 20);
       state.news.newsWithPicture = news.slice(0, 20);
       state.news.newsNoPicture = news.slice(20);
     },
     setNewsCategory(state, news) {
       console.log('regular', news);
       state.news.category.highlighted = news;
+    },
+    setHomeNews(state, news) {
+      state.news.home.main = news[0];
+      state.news.home.justText = news.slice(1, 7);
     },
     // setNewsCategoryExtra(state, news) {
     //   console.log('extra', news);
@@ -479,6 +484,27 @@ export default new Vuex.Store({
         }
       });
       commit('setNews', customArr);
+    },
+    async getNewsHome({ commit }, category) {
+      console.log('hit the newsHome');
+      let res = await api.get('news/category/' + category);
+      let customArr = [];
+      res.data.value.forEach((n) => {
+        if (Object.prototype.hasOwnProperty.call(n, 'image')) {
+          n.image.url = n.image.thumbnail.contentUrl;
+          n.webSearchUrl = n.url;
+          customArr.unshift(n);
+        } else {
+          n.image = {
+            url:
+              'https://www.conchovalleyhomepage.com/wp-content/uploads/sites/83/2020/05/BREAKING-NEWS-GENERIC-1.jpg?w=100&h=100&crop=1',
+          };
+          n.webSearchUrl = n.url;
+          customArr.push(n);
+        }
+      });
+      commit('setHomeNews', customArr);
+      console.log('arr', customArr);
     },
     // For whatever reason, whatever data gets passed into this function it is not getting read properly.  When you console log the argument getting passed in, it just shows this object that has 'commit, dispatch, getters, state, rootGetters/State' even though when you console log the parameter getting passed in and it is the right data. So somewhere between the dispatch and then the execution of this method, something happens to the data.  This means I'm going to have to rewrite the same code (WET).
     // checkForImage(news) {

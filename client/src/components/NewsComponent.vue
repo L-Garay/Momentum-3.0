@@ -66,16 +66,53 @@
     </div>
     <div class="contentSection">
       <div class="home" v-if="show.home">
-        <!-- this is where the 'trending' stories will go and act as the news component's 'home' page and will have slightly different layout -->
-        <h5>This is the home layout</h5>
+        <h4 class="greeting">Welcome to the News!</h4>
+        <div class="content">
+          <div class="mainSection">
+            <div class="highlightedStory">
+              <a :href="Highlighted.webSearchUrl" target="_blank">
+                <h5>{{ Highlighted.name }}</h5>
+                <img
+                  src="https://www.conchovalleyhomepage.com/wp-content/uploads/sites/83/2020/05/BREAKING-NEWS-GENERIC-1.jpg?w=330&h=160&crop=1"
+                  alt="should be an image"
+                />
+                <p>{{ Highlighted.description }}</p></a
+              >
+            </div>
+            <div class="justText">
+              <ul class="column">
+                <li v-for="story in JustText" :key="story.name">
+                  <a :href="story.webSearchUrl" target="_blank">
+                    {{ story.name }}</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="otherSection">
+            <div class="otherStories">
+              <h5>Other Stories</h5>
+            </div>
+            <div class="stories">
+              <div class="story" v-for="story in Others" :key="story.name">
+                <a :href="story.webSearchUrl" target="_blank">
+                  <img :src="story.image.url" alt="should be an image" />
+                  <p>{{ story.name }}</p></a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <news-layout v-if="show.business" :newsData="business" />
-      <news-layout v-if="show.entertainment" :newsData="entertainment" />
-      <news-layout v-if="show.health" :newsData="health" />
-      <news-layout v-if="show.politics" :newsData="politics" />
-      <news-layout v-if="show.science" :newsData="science" />
-      <news-layout v-if="show.us" :newsData="us" />
-      <news-layout v-if="show.world" :newsData="world" />
+      <div class="categories">
+        <news-layout v-if="show.business" :newsData="business" />
+        <news-layout v-if="show.entertainment" :newsData="entertainment" />
+        <news-layout v-if="show.health" :newsData="health" />
+        <news-layout v-if="show.politics" :newsData="politics" />
+        <news-layout v-if="show.science" :newsData="science" />
+        <news-layout v-if="show.us" :newsData="us" />
+        <news-layout v-if="show.world" :newsData="world" />
+      </div>
     </div>
   </div>
 </template>
@@ -90,7 +127,7 @@ export default {
   components: { NewsLayout },
   data() {
     return {
-      fetchedNewNews: false,
+      newsCategory: 'Politics',
       news: {
         query: '',
       },
@@ -113,15 +150,16 @@ export default {
       world: { name: 'World', width: 110, margin: 260 },
     };
   },
-  mounted() {
-    // this.$store.dispatch('getNews');
-  },
+  mounted() {},
   computed: {
-    NewsWithPicture() {
-      return this.$store.state.news.newsWithPicture;
+    Highlighted() {
+      return this.$store.state.news.home.main;
     },
-    NewsNoPicture() {
-      return this.$store.state.news.newsNoPicture;
+    Others() {
+      return this.$store.state.news.home.others;
+    },
+    JustText() {
+      return this.$store.state.news.home.justText;
     },
   },
   methods: {
@@ -220,6 +258,7 @@ export default {
           break;
       }
     },
+
     submitNewsQuery() {
       if (this.news.query !== '') {
         this.$store.dispatch('getNewNews', this.news);
@@ -241,6 +280,18 @@ export default {
   background-color: rgba(169, 169, 169, 0.596);
   color: white;
 }
+a {
+  color: white;
+}
+a:hover {
+  text-decoration-color: blue;
+  text-shadow: 1pt 1pt 2pt grey;
+}
+/* Navbar styling */
+.navbar {
+  border-bottom: 1pt solid white;
+  padding: 1px 15px;
+}
 .navbar p {
   margin-bottom: 0;
 }
@@ -257,37 +308,79 @@ export default {
 .fas:hover {
   cursor: pointer;
 }
+/* Main section styling */
+h4.greeting {
+  text-align: center;
+  position: relative;
+}
+h4.greeting::after {
+  position: absolute;
+  content: '';
+  width: 50%;
+  height: 2px;
+  bottom: 0;
+  left: 25%;
+  background: white;
+}
 .content {
   display: flex;
-  flex-wrap: wrap;
-  height: 450px;
 }
-.pictures {
-  width: 550px;
+.mainSection {
+  width: 600px;
+  max-height: 330px;
+}
+.highlightedStory {
+  text-align: center;
+  margin-bottom: 3px;
+}
+.highlightedStory h5 {
+  text-align: start;
+  max-height: 51px;
+  overflow-y: hidden;
+}
+.highlightedStory p {
+  text-align: start;
+  font-size: 14px;
+  padding-right: 5px;
+  margin-bottom: 0;
+}
+.highlightedStory p,
+.highlightedStory h5 {
+  padding-left: 10px;
+}
+.column {
+  columns: 2;
+  border: 1pt solid white;
+}
+.column li {
+  font-size: 12px;
+}
+/* Other news styling */
+.otherSection {
+  width: 250px;
+  border: 1pt solid white;
+}
+.otherStories h5 {
+  text-align: center;
+}
+.stories {
+  max-height: 375px;
+  overflow-y: auto;
+  padding-left: 10px;
+}
+.story a {
   display: flex;
-  flex-wrap: wrap;
-  max-height: 440px;
-  overflow-y: auto;
+  align-items: center;
+  font-size: 12px;
+  margin: 5px 0;
+  padding: 3px;
+  /* border: 1pt solid white; */
 }
-.pictureContent {
-  width: 170px;
+.story img {
+  height: 75px;
+  width: 75px;
 }
-.pictureContent h5 {
-  max-width: 140px;
-  font-size: 17px;
-}
-.textContent {
-  max-height: 440px;
-  width: 275px;
-  padding-right: 10px;
-  overflow-y: auto;
-}
-a {
-  color: white;
-  text-shadow: 1pt 1pt 2pt black;
-}
-a:hover {
-  color: blue;
-  text-shadow: 1pt 1pt 2pt white;
+.story p {
+  padding-left: 4px;
 }
 </style>
