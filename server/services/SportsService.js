@@ -2,12 +2,18 @@ import axios from 'axios';
 import ErrorResponse from '../utils/ErrorResponse';
 
 class SportsService {
-  async getSportsNews() {
+  async getSportsNews(topic) {
     try {
       return await axios({
         method: 'GET',
-        url: 'https://bing-news-search1.p.rapidapi.com/news',
-        params: { safeSearch: 'Off', category: 'sports', textFormat: 'Raw' },
+        url: 'https://bing-news-search1.p.rapidapi.com/news/search',
+        params: {
+          q: topic,
+          freshness: 'Month',
+          textFormat: 'Raw',
+          safeSearch: 'Off',
+          count: 40,
+        },
         headers: {
           'x-bingapis-sdk': 'true',
           'x-rapidapi-key': process.env.X_RAPIDAPI_KEY,
@@ -16,7 +22,7 @@ class SportsService {
       });
     } catch (error) {
       throw new ErrorResponse(
-        `Cant get sports stories.  ${error}`,
+        `Cant get sports news for that topic, '${query}'. ${error}`,
         error.response.status
       );
     }

@@ -1,43 +1,4 @@
 <template>
-  <!-- <div class="newsSection">
-    <div class="input">
-      <input
-        type="text"
-        placeholder="New search"
-        v-model="news.query"
-        v-autowidth="{ maxWidth: '400px', minWidth: '70px', comfortZone: 20 }"
-      />
-      <i class="fas fa-search" @click="submitNewsQuery"></i>
-    </div>
-    <div class="content">
-      <div class="pictures">
-        <div
-          v-for="news in NewsWithPicture"
-          :key="news.name"
-          class="pictureContent"
-        >
-          <a :href="news.webSearchUrl" target="_blank">
-            <img
-              v-if="fetchedNewNews"
-              :src="news.image.url"
-              alt="No image available"
-            />
-            <img v-else :src="news.image.url" alt="No image available" />
-            <h5>{{ news.name }}</h5>
-          </a>
-        </div>
-      </div>
-      <div class="textContent">
-        <ul>
-          <li v-for="news in NewsNoPicture" :key="news.name">
-            <a :href="news.webSearchUrl" target="_blank"
-              ><p>{{ news.name }}</p></a
-            >
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div> -->
   <div class="newsSection">
     <div class="headerSection">
       <div class="navbar">
@@ -59,9 +20,9 @@
               minWidth: '70px',
               comfortZone: 20,
             }"
-            v-on:keyup.enter="submitNewsQuery"
+            v-on:keyup.enter="toggleNews('Search')"
           />
-          <i class="fas fa-search" @click="submitNewsQuery"></i>
+          <i class="fas fa-search" @click="toggleNews('Search')"></i>
         </div>
       </div>
     </div>
@@ -144,7 +105,6 @@ export default {
   components: { NewsLayout },
   data() {
     return {
-      newsCategory: 'Politics',
       news: {
         query: '',
         isSearch: true,
@@ -205,117 +165,124 @@ export default {
     },
   },
   methods: {
-    toggleNews(news) {
+    async toggleNews(news) {
       switch (news) {
         case 'Home':
-          (this.show.home = true),
-            (this.show.business = false),
-            (this.show.entertainment = false),
-            (this.show.health = false),
-            (this.show.politics = false),
-            (this.show.science = false),
-            (this.show.us = false),
-            (this.show.world = false),
-            (this.show.search = false);
+          this.show.home = true;
+          this.show.business = false;
+          this.show.entertainment = false;
+          this.show.health = false;
+          this.show.politics = false;
+          this.show.science = false;
+          this.show.us = false;
+          this.show.world = false;
+          this.show.search = false;
           this.$store.dispatch('getNewsTrending');
           break;
         case 'Business':
-          (this.show.home = false),
-            (this.show.business = true),
-            (this.show.entertainment = false),
-            (this.show.health = false),
-            (this.show.politics = false),
-            (this.show.science = false),
-            (this.show.us = false),
-            (this.show.world = false),
-            (this.show.search = false);
+          this.show.home = false;
+          this.show.business = true;
+          this.show.entertainment = false;
+          this.show.health = false;
+          this.show.politics = false;
+          this.show.science = false;
+          this.show.us = false;
+          this.show.world = false;
+          this.show.search = false;
           this.$store.dispatch('getNewsCategory', this.business);
           break;
         case 'Entertainment':
-          (this.show.home = false),
-            (this.show.business = false),
-            (this.show.entertainment = true),
-            (this.show.health = false),
-            (this.show.politics = false),
-            (this.show.science = false),
-            (this.show.us = false),
-            (this.show.world = false),
-            (this.show.search = false);
+          this.show.home = false;
+          this.show.business = false;
+          this.show.entertainment = true;
+          this.show.health = false;
+          this.show.politics = false;
+          this.show.science = false;
+          this.show.us = false;
+          this.show.world = false;
+          this.show.search = false;
           this.$store.dispatch('getNewsCategory', this.entertainment);
           break;
         case 'Health':
-          (this.show.business = false),
-            (this.show.entertainment = false),
-            (this.show.health = true),
-            (this.show.politics = false),
-            (this.show.science = false),
-            (this.show.us = false),
-            (this.show.world = false),
-            (this.show.search = false);
+          this.show.business = false;
+          this.show.entertainment = false;
+          this.show.health = true;
+          this.show.politics = false;
+          this.show.science = false;
+          this.show.us = false;
+          this.show.world = false;
+          this.show.search = false;
           this.$store.dispatch('getNewsCategory', this.health);
           break;
         case 'Politics':
-          (this.show.home = false),
-            (this.show.business = false),
-            (this.show.entertainment = false),
-            (this.show.health = false),
-            (this.show.politics = true),
-            (this.show.science = false),
-            (this.show.us = false),
-            (this.show.world = false),
-            (this.show.search = false);
+          this.show.home = false;
+          this.show.business = false;
+          this.show.entertainment = false;
+          this.show.health = false;
+          this.show.politics = true;
+          this.show.science = false;
+          this.show.us = false;
+          this.show.world = false;
+          this.show.search = false;
           this.$store.dispatch('getNewsCategory', this.politics);
           break;
         case 'Science':
-          (this.show.home = false),
-            (this.show.business = false),
-            (this.show.entertainment = false),
-            (this.show.health = false),
-            (this.show.politics = false),
-            (this.show.science = true),
-            (this.show.us = false),
-            (this.show.world = false),
-            (this.show.search = false);
+          this.show.home = false;
+          this.show.business = false;
+          this.show.entertainment = false;
+          this.show.health = false;
+          this.show.politics = false;
+          this.show.science = true;
+          this.show.us = false;
+          this.show.world = false;
+          this.show.search = false;
           this.$store.dispatch('getNewsCategory', this.science);
           break;
         case 'US':
-          (this.show.home = false),
-            (this.show.business = false),
-            (this.show.entertainment = false),
-            (this.show.health = false),
-            (this.show.politics = false),
-            (this.show.science = false),
-            (this.show.us = true),
-            (this.show.world = false),
-            (this.show.search = false);
+          this.show.home = false;
+          this.show.business = false;
+          this.show.entertainment = false;
+          this.show.health = false;
+          this.show.politics = false;
+          this.show.science = false;
+          this.show.us = true;
+          this.show.world = false;
+          this.show.search = false;
           this.$store.dispatch('getNewsCategory', this.us);
           break;
         case 'World':
-          (this.show.home = false),
-            (this.show.business = false),
-            (this.show.entertainment = false),
-            (this.show.health = false),
-            (this.show.politics = false),
-            (this.show.science = false),
-            (this.show.us = false),
-            (this.show.world = true),
-            (this.show.search = false);
+          this.show.home = false;
+          this.show.business = false;
+          this.show.entertainment = false;
+          this.show.health = false;
+          this.show.politics = false;
+          this.show.science = false;
+          this.show.us = false;
+          this.show.world = true;
+          this.show.search = false;
           this.$store.dispatch('getNewsCategory', this.world);
+          break;
+        case 'Search':
+          if (this.news.query !== '') {
+            await this.$store.dispatch('getNewNews', this.news);
+            this.show.search = true;
+            this.show.home = false;
+            this.show.business = false;
+            this.show.entertainment = false;
+            this.show.health = false;
+            this.show.politics = false;
+            this.show.science = false;
+            this.show.us = false;
+            this.show.world = false;
+            this.news.query = '';
+          } else {
+            this.news.query = '';
+          }
           break;
 
         default:
           console.log('That is not an option, check the category name.');
           break;
-      }
-    },
-    async submitNewsQuery() {
-      if (this.news.query !== '') {
-        await this.$store.dispatch('getNewNews', this.news);
-        this.show.home = false;
-        this.show.search = true;
-        this.news.query = '';
-      } else {
-        this.news.query = '';
       }
     },
   },

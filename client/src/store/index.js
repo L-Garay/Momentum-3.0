@@ -65,6 +65,7 @@ export default new Vuex.Store({
       highlightedNews: {},
       otherHighlighted: [],
       news: [],
+      leagueNews: [],
       upcoming15: [],
       previous15: [],
     },
@@ -234,9 +235,12 @@ export default new Vuex.Store({
       // Set the rest
       state.sports.news = sports;
     },
-    setMoreSportsNews(state, sports) {
-      state.sports.news.push(sports);
-      state.sports.news = state.sports.news.flat();
+    // setMoreSportsNews(state, sports) {
+    //   state.sports.news.push(sports);
+    //   state.sports.news = state.sports.news.flat();
+    // },
+    setNewsSports(state, news) {
+      state.sports.leagueNews = news;
     },
     switchHighlighted(state, data) {
       // Grab the current highlightedNews object and push it into otherHighlighted array
@@ -248,8 +252,8 @@ export default new Vuex.Store({
       state.sports.highlightedNews = data.other;
     },
     setGames(state, games) {
-      state.sports.upcoming15 = games.upcoming.data.events;
       state.sports.previous15 = games.previous.data.events;
+      state.sports.upcoming15 = games.upcoming.data.events;
     },
     //#endregion
   },
@@ -472,6 +476,8 @@ export default new Vuex.Store({
       });
       if (category.isNewsHome) {
         commit('setHomeNews', customArr);
+      } else if (category.isSports) {
+        commit('setNewsSports', customArr);
       } else {
         commit('setNewsCategory', customArr);
       }
@@ -583,11 +589,24 @@ export default new Vuex.Store({
     //#endregion
 
     //#region --Sports Methods--
-    async getSportsNews({ commit }) {
-      let firstBatch = await api.get('sports/news');
-      commit('setSportsNews', firstBatch.data.value);
-      let secondBatch = await api.get('sports/news/more');
-      commit('setMoreSportsNews', secondBatch.data.value);
+    async getSportsNews({ commit }, topic) {
+      let data = await api.get('sports/news/' + topic);
+      let customArr = [];
+      data.data.value.forEach((n) => {
+        if (Object.prototype.hasOwnProperty.call(n, 'image')) {
+          n.image.url = n.image.thumbnail.contentUrl;
+          n.webSearchUrl = n.url;
+          customArr.unshift(n);
+        } else {
+          n.image = {
+            url:
+              'https://www.conchovalleyhomepage.com/wp-content/uploads/sites/83/2020/05/BREAKING-NEWS-GENERIC-1.jpg?w=100&h=100&crop=1',
+          };
+          n.webSearchUrl = n.url;
+          customArr.push(n);
+        }
+      });
+      commit('setSportsNews', customArr);
     },
     switchHighlighted({ commit, state }, other) {
       let indexToRemove = state.sports.otherHighlighted.indexOf(other);
