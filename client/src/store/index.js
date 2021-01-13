@@ -49,6 +49,9 @@ export default new Vuex.Store({
         justText: [],
         others: [],
       },
+      search: {
+        news: [],
+      },
     },
     finance: {
       currentFinanceNews: [],
@@ -178,6 +181,9 @@ export default new Vuex.Store({
     setHomeNews(state, news) {
       state.news.home.main = news[0];
       state.news.home.justText = news.slice(1, 7);
+    },
+    setSearchNews(state, news) {
+      state.news.search.news = news;
     },
     // setNewsCategoryExtra(state, news) {
     //   console.log('extra', news);
@@ -447,7 +453,7 @@ export default new Vuex.Store({
       //   };
       //   commit('setNewsCategoryExtra', res);
       // }
-      let res = await api.get('news/category/' + category);
+      let res = await api.get('news/category/' + category.topic);
       // dispatch('checkForImage', res.data.value);
       let customArr = [];
       res.data.value.forEach((n) => {
@@ -464,7 +470,11 @@ export default new Vuex.Store({
           customArr.push(n);
         }
       });
-      commit('setNewsCategory', customArr);
+      if (category.isNewsHome) {
+        commit('setHomeNews', customArr);
+      } else {
+        commit('setNewsCategory', customArr);
+      }
     },
     async getNewNews({ commit }, news) {
       let res = await api.post('news/change', news);
@@ -483,28 +493,11 @@ export default new Vuex.Store({
           customArr.push(n);
         }
       });
-      commit('setNews', customArr);
-    },
-    async getNewsHome({ commit }, category) {
-      console.log('hit the newsHome');
-      let res = await api.get('news/category/' + category);
-      let customArr = [];
-      res.data.value.forEach((n) => {
-        if (Object.prototype.hasOwnProperty.call(n, 'image')) {
-          n.image.url = n.image.thumbnail.contentUrl;
-          n.webSearchUrl = n.url;
-          customArr.unshift(n);
-        } else {
-          n.image = {
-            url:
-              'https://www.conchovalleyhomepage.com/wp-content/uploads/sites/83/2020/05/BREAKING-NEWS-GENERIC-1.jpg?w=100&h=100&crop=1',
-          };
-          n.webSearchUrl = n.url;
-          customArr.push(n);
-        }
-      });
-      commit('setHomeNews', customArr);
-      console.log('arr', customArr);
+      if (news.isSearch) {
+        commit('setSearchNews', customArr);
+      } else {
+        commit('setNews', customArr);
+      }
     },
     // For whatever reason, whatever data gets passed into this function it is not getting read properly.  When you console log the argument getting passed in, it just shows this object that has 'commit, dispatch, getters, state, rootGetters/State' even though when you console log the parameter getting passed in and it is the right data. So somewhere between the dispatch and then the execution of this method, something happens to the data.  This means I'm going to have to rewrite the same code (WET).
     // checkForImage(news) {

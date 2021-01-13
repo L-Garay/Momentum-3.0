@@ -79,12 +79,15 @@ export default {
       backgroundImgUrl:
         'https://images.unsplash.com/photo-1460494936962-50da3863c15b?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1055&q=80',
       // Used to determine what type of news to first fetch when loading the news component. Can use this variable to conditionaly determine what category to search for when user navigates to 'home' section of news component.
-      newsHomeTopic: 'Politics',
+      newsHome: {
+        topic: 'Politics',
+        isNewsHome: true,
+      },
     };
   },
   mounted() {
     this.$store.dispatch('getNewsTrending');
-    this.$store.dispatch('getNewsHome', this.newsHomeTopic);
+    this.$store.dispatch('getNewsCategory', this.newsHome);
     // this.$store.dispatch('getFinanceNews');
     // this.$store.dispatch('getWinnersLosers');
     // this.$store.dispatch('getUndervalued');

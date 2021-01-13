@@ -59,6 +59,7 @@
               minWidth: '70px',
               comfortZone: 20,
             }"
+            v-on:keyup.enter="submitNewsQuery"
           />
           <i class="fas fa-search" @click="submitNewsQuery"></i>
         </div>
@@ -104,6 +105,22 @@
           </div>
         </div>
       </div>
+      <div class="searchSection" v-if="show.search">
+        <div class="header">
+          <h5>Search Results</h5>
+        </div>
+        <div class="results">
+          <div class="result" v-for="story in Search" :key="story.name">
+            <img :src="story.image.url" alt="should be an image" />
+            <div class="text">
+              <a :href="story.webSearchUrl" target="_blank">
+                <h5>{{ story.name }}</h5>
+                <p>{{ story.description }}</p></a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="categories">
         <news-layout v-if="show.business" :newsData="business" />
         <news-layout v-if="show.entertainment" :newsData="entertainment" />
@@ -130,6 +147,7 @@ export default {
       newsCategory: 'Politics',
       news: {
         query: '',
+        isSearch: true,
       },
       show: {
         home: true,
@@ -140,14 +158,35 @@ export default {
         science: false,
         us: false,
         world: false,
+        search: false,
       },
-      business: { name: 'Business', width: 155, margin: 237.5 },
-      entertainment: { name: 'Entertainment', width: 230, margin: 200 },
-      health: { name: 'Health', width: 120, margin: 255 },
-      politics: { name: 'Politics', width: 130, margin: 250 },
-      science: { name: 'Science/Technology', width: 320, margin: 155 },
-      us: { name: 'United States', width: 225, margin: 202.5 },
-      world: { name: 'World', width: 110, margin: 260 },
+      business: {
+        name: 'Business',
+        topic: 'Business',
+        width: 155,
+        margin: 237.5,
+      },
+      entertainment: {
+        name: 'Entertainment',
+        topic: 'Entertainment',
+        width: 230,
+        margin: 200,
+      },
+      health: { name: 'Health', topic: 'Health', width: 120, margin: 255 },
+      politics: {
+        name: 'Politics',
+        topic: 'Politics',
+        width: 130,
+        margin: 250,
+      },
+      science: {
+        name: 'Science/Technology',
+        topic: 'ScienceAndTechnology',
+        width: 320,
+        margin: 155,
+      },
+      us: { name: 'United States', topic: 'US', width: 225, margin: 202.5 },
+      world: { name: 'World', topic: 'World', width: 110, margin: 260 },
     };
   },
   mounted() {},
@@ -161,6 +200,9 @@ export default {
     JustText() {
       return this.$store.state.news.home.justText;
     },
+    Search() {
+      return this.$store.state.news.search.news;
+    },
   },
   methods: {
     toggleNews(news) {
@@ -173,7 +215,9 @@ export default {
             (this.show.politics = false),
             (this.show.science = false),
             (this.show.us = false),
-            (this.show.world = false);
+            (this.show.world = false),
+            (this.show.search = false);
+          this.$store.dispatch('getNewsTrending');
           break;
         case 'Business':
           (this.show.home = false),
@@ -184,8 +228,8 @@ export default {
             (this.show.science = false),
             (this.show.us = false),
             (this.show.world = false),
-            (this.show.epl = false);
-          this.$store.dispatch('getNewsCategory', 'Business');
+            (this.show.search = false);
+          this.$store.dispatch('getNewsCategory', this.business);
           break;
         case 'Entertainment':
           (this.show.home = false),
@@ -195,8 +239,9 @@ export default {
             (this.show.politics = false),
             (this.show.science = false),
             (this.show.us = false),
-            (this.show.world = false);
-          this.$store.dispatch('getNewsCategory', 'Entertainment');
+            (this.show.world = false),
+            (this.show.search = false);
+          this.$store.dispatch('getNewsCategory', this.entertainment);
           break;
         case 'Health':
           (this.show.business = false),
@@ -205,8 +250,9 @@ export default {
             (this.show.politics = false),
             (this.show.science = false),
             (this.show.us = false),
-            (this.show.world = false);
-          this.$store.dispatch('getNewsCategory', 'Health');
+            (this.show.world = false),
+            (this.show.search = false);
+          this.$store.dispatch('getNewsCategory', this.health);
           break;
         case 'Politics':
           (this.show.home = false),
@@ -216,8 +262,9 @@ export default {
             (this.show.politics = true),
             (this.show.science = false),
             (this.show.us = false),
-            (this.show.world = false);
-          this.$store.dispatch('getNewsCategory', 'Politics');
+            (this.show.world = false),
+            (this.show.search = false);
+          this.$store.dispatch('getNewsCategory', this.politics);
           break;
         case 'Science':
           (this.show.home = false),
@@ -227,8 +274,9 @@ export default {
             (this.show.politics = false),
             (this.show.science = true),
             (this.show.us = false),
-            (this.show.world = false);
-          this.$store.dispatch('getNewsCategory', 'Science');
+            (this.show.world = false),
+            (this.show.search = false);
+          this.$store.dispatch('getNewsCategory', this.science);
           break;
         case 'US':
           (this.show.home = false),
@@ -238,8 +286,9 @@ export default {
             (this.show.politics = false),
             (this.show.science = false),
             (this.show.us = true),
-            (this.show.world = false);
-          this.$store.dispatch('getNewsCategory', 'US');
+            (this.show.world = false),
+            (this.show.search = false);
+          this.$store.dispatch('getNewsCategory', this.us);
           break;
         case 'World':
           (this.show.home = false),
@@ -249,25 +298,25 @@ export default {
             (this.show.politics = false),
             (this.show.science = false),
             (this.show.us = false),
-            (this.show.world = true);
-          this.$store.dispatch('getNewsCategory', 'World');
+            (this.show.world = true),
+            (this.show.search = false);
+          this.$store.dispatch('getNewsCategory', this.world);
           break;
 
         default:
-          console.log('That is not an option');
+          console.log('That is not an option, check the category name.');
           break;
       }
     },
-
-    submitNewsQuery() {
+    async submitNewsQuery() {
       if (this.news.query !== '') {
-        this.$store.dispatch('getNewNews', this.news);
+        await this.$store.dispatch('getNewNews', this.news);
+        this.show.home = false;
+        this.show.search = true;
         this.news.query = '';
       } else {
         this.news.query = '';
       }
-      this.fetchedNewNews = true;
-      console.log(this.fetchedNewNews);
     },
   },
 };
@@ -335,7 +384,7 @@ h4.greeting::after {
 }
 .highlightedStory h5 {
   text-align: start;
-  max-height: 51px;
+  max-height: 55px;
   overflow-y: hidden;
 }
 .highlightedStory p {
@@ -352,10 +401,13 @@ h4.greeting::after {
   columns: 2;
   border: 1pt solid white;
 }
+.column ul {
+  margin-bottom: 0;
+}
 .column li {
   font-size: 12px;
 }
-/* Other news styling */
+/* Other home news styling */
 .otherSection {
   width: 250px;
   border: 1pt solid white;
@@ -382,5 +434,31 @@ h4.greeting::after {
 }
 .story p {
   padding-left: 4px;
+}
+
+/* Search results styling */
+div.header {
+  text-align: center;
+  position: relative;
+}
+div.header::after {
+  position: absolute;
+  content: '';
+  width: 20%;
+  height: 2px;
+  left: 40%;
+  bottom: 0;
+  background: white;
+}
+.results {
+  max-height: 415px;
+  overflow-y: auto;
+}
+.result {
+  display: flex;
+  margin: 8px 3px 8px 10px;
+}
+.text {
+  padding-left: 10px;
 }
 </style>
