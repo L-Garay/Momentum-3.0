@@ -1,5 +1,5 @@
 <template>
-  <div class="sportsSection">
+  <div class="sportsSection" v-if="gotSports">
     <div class="headerSection">
       <div class="navbar">
         <p @click="toggleLeague('Home')">Home</p>
@@ -17,12 +17,9 @@
       <div class="highlightedStory">
         <div class="highlighted">
           <h5>{{ HighlightedNews.name }}</h5>
-          <img
-            :src="HighlightedNews.image.thumbnail.contentUrl"
-            alt="should be story image"
-          />
+          <img :src="HighlightedNews.image.url" alt="should be story image" />
           <p>
-            <a :href="HighlightedNews.url" target="_blank">{{
+            <a :href="HighlightedNews.webSearchUrl" target="_blank">{{
               HighlightedNews.description
             }}</a>
           </p>
@@ -34,10 +31,7 @@
             :key="index"
             @click="switchHighlighted(other)"
           >
-            <img
-              :src="other.image.thumbnail.contentUrl"
-              alt="should be image"
-            />
+            <img :src="other.image.url" alt="should be image" />
             <p>{{ other.name }}</p>
           </div>
         </div>
@@ -45,11 +39,8 @@
       <div class="otherStories">
         <div class="stories">
           <div class="story" v-for="(story, index) in SportsNews" :key="index">
-            <a :href="story.url" target="_blank">
-              <img
-                :src="story.image.thumbnail.contentUrl"
-                alt="should be image"
-              />
+            <a :href="story.webSearchUrl" target="_blank">
+              <img :src="story.image.url" alt="should be image" />
               <p>{{ story.name }}</p></a
             >
           </div>
@@ -65,7 +56,6 @@
       <sports-leagues v-if="show.nhl" :leagueData="nhl" />
       <sports-leagues v-if="show.mls" :leagueData="mls" />
       <sports-leagues v-if="show.epl" :leagueData="epl" />
-      <!-- This is where the (most likely) league component will go, where the league standing, and previous and upcoming 15 games will be displayed  -->
     </div>
   </div>
 </template>
@@ -79,6 +69,7 @@ export default {
   },
   data() {
     return {
+      gotSports: false,
       show: {
         default: true,
         nfl: false,
@@ -92,15 +83,56 @@ export default {
       },
       nfl: {
         name: 'National Football League',
+        topic: 'Sports_NFL',
+        isSports: true,
+        id: 4391,
       },
-      ncaaf: { name: 'National Collegiate Athletic Association Football' },
-      nba: { name: 'National Basketball Association' },
-      ncaab: { name: 'National Collegiate Athletic Association Basketball' },
-      mlb: { name: 'Major League Baseball' },
-      nhl: { name: 'National Hockey League' },
-      mls: { name: 'Major League Soccer' },
-      epl: { name: 'English Premier League' },
+      ncaaf: {
+        name: 'National Collegiate Athletic Association Football',
+        topic: 'Sports_CFB',
+        isSports: true,
+        id: 4479,
+      },
+      nba: {
+        name: 'National Basketball Association',
+        topic: 'Sports_NBA',
+        isSports: true,
+        id: 4387,
+      },
+      ncaab: {
+        name: 'National Collegiate Athletic Association Basketball',
+        topic: 'Sports_CBB',
+        isSports: true,
+        id: 4607,
+      },
+      mlb: {
+        name: 'Major League Baseball',
+        topic: 'Sports_MLB',
+        isSports: true,
+        id: 4424,
+      },
+      nhl: {
+        name: 'National Hockey League',
+        topic: 'Sports_NHL',
+        isSports: true,
+        id: 4380,
+      },
+      mls: {
+        name: 'Major League Soccer',
+        topic: 'Sports_Soccer',
+        isSports: true,
+        id: 4346,
+      },
+      epl: {
+        name: 'English Premier League',
+        topic: 'Sports_Soccer',
+        isSports: true,
+        id: 4328,
+      },
     };
+  },
+  beforeMount() {
+    this.getSportsNews();
   },
   mounted() {},
   computed: {
@@ -127,6 +159,7 @@ export default {
             (this.show.nhl = false),
             (this.show.mls = false),
             (this.show.epl = false);
+          this.$store.dispatch('getSportsNews', 'Sports');
           break;
         case 'NFL':
           (this.show.default = false),
@@ -138,7 +171,8 @@ export default {
             (this.show.nhl = false),
             (this.show.mls = false),
             (this.show.epl = false),
-            this.$store.dispatch('getGames', 4391);
+            this.$store.dispatch('getGames', this.nfl.id);
+          this.$store.dispatch('getNewsCategory', this.nfl);
           break;
         case 'NCAAF':
           (this.show.default = false),
@@ -150,7 +184,8 @@ export default {
             (this.show.nhl = false),
             (this.show.mls = false),
             (this.show.epl = false);
-          this.$store.dispatch('getGames', 4479);
+          this.$store.dispatch('getGames', this.ncaaf.id);
+          this.$store.dispatch('getNewsCategory', this.ncaaf);
           break;
         case 'NBA':
           (this.show.default = false),
@@ -162,7 +197,8 @@ export default {
             (this.show.nhl = false),
             (this.show.mls = false),
             (this.show.epl = false);
-          this.$store.dispatch('getGames', 4387);
+          this.$store.dispatch('getGames', this.nba.id);
+          this.$store.dispatch('getNewsCategory', this.nba);
           break;
         case 'NCAAB':
           (this.show.default = false),
@@ -174,7 +210,8 @@ export default {
             (this.show.nhl = false),
             (this.show.mls = false),
             (this.show.epl = false);
-          this.$store.dispatch('getGames', 4607);
+          this.$store.dispatch('getGames', this.ncaab.id);
+          this.$store.dispatch('getNewsCategory', this.ncaab);
           break;
         case 'MLB':
           (this.show.default = false),
@@ -186,7 +223,8 @@ export default {
             (this.show.nhl = false),
             (this.show.mls = false),
             (this.show.epl = false);
-          this.$store.dispatch('getGames', 4424);
+          this.$store.dispatch('getGames', this.mlb.id);
+          this.$store.dispatch('getNewsCategory', this.mlb);
           break;
         case 'NHL':
           (this.show.default = false),
@@ -198,7 +236,8 @@ export default {
             (this.show.nhl = true),
             (this.show.mls = false),
             (this.show.epl = false);
-          this.$store.dispatch('getGames', 4380);
+          this.$store.dispatch('getGames', this.nhl.id);
+          this.$store.dispatch('getNewsCategory', this.nhl);
           break;
         case 'MLS':
           (this.show.default = false),
@@ -210,7 +249,8 @@ export default {
             (this.show.nhl = false),
             (this.show.mls = true),
             (this.show.epl = false);
-          this.$store.dispatch('getGames', 4346);
+          this.$store.dispatch('getGames', this.mls.id);
+          this.$store.dispatch('getNewsCategory', this.mls);
           break;
         case 'EPL':
           (this.show.default = false),
@@ -222,13 +262,18 @@ export default {
             (this.show.nhl = false),
             (this.show.mls = false),
             (this.show.epl = true);
-          this.$store.dispatch('getGames', 4328);
+          this.$store.dispatch('getGames', this.epl.id);
+          this.$store.dispatch('getNewsCategory', this.epl);
           break;
 
         default:
           console.log('That is not an option');
           break;
       }
+    },
+    async getSportsNews() {
+      await this.$store.dispatch('getSportsNews', 'Sports');
+      this.gotSports = true;
     },
     switchHighlighted(other) {
       this.$store.dispatch('switchHighlighted', other);
@@ -272,6 +317,11 @@ div.highlighted a {
 }
 div.highlighted a:hover {
   text-decoration-color: blue;
+}
+div.highlighted p {
+  margin-bottom: 3px;
+  max-height: 95px;
+  overflow: hidden;
 }
 
 /* Other highlighted news section styling */

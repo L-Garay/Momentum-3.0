@@ -5,7 +5,7 @@ export class SportsController extends BaseController {
   constructor() {
     super('api/sports');
     this.router
-      .get('/news', this.getSportsNews)
+      .get('/news/:topic', this.getSportsNews)
       .get('/news/more', this.getSportsNewsOffset)
       .get('/games/previous/:id', this.getPreviousGames)
       .get('/games/upcoming/:id', this.getUpcomingGames);
@@ -13,7 +13,7 @@ export class SportsController extends BaseController {
 
   async getSportsNews(req, res, next) {
     try {
-      let data = await sportsService.getSportsNews();
+      let data = await sportsService.getSportsNews(req.params.topic);
       return res.status(200).send(data.data);
     } catch (error) {
       next(error);
