@@ -43,7 +43,12 @@
                   >Yahoo Finance</a
                 >
               </p>
-              <p v-if="showSports" class="sourceLink">Powered by</p>
+              <p v-if="showSports" class="sourceLink">
+                Powered by
+                <a href="https://www.thesportsdb.com/api.php" target="_blank"
+                  >The SportsDB</a
+                >
+              </p>
               <button
                 class="modal-default-button"
                 @click="$emit('close-news-modal')"
@@ -86,14 +91,14 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch('getNewsTrending');
-    this.$store.dispatch('getNewsCategory', this.newsHome);
+    // this.$store.dispatch('getNewsTrending');
+    // this.$store.dispatch('getNewsCategory', this.newsHome);
     // this.$store.dispatch('getFinanceNews');
     // this.$store.dispatch('getWinnersLosers');
     // this.$store.dispatch('getUndervalued');
     // this.$store.dispatch('getTechnology');
     // this.$store.dispatch('getGrowers');
-    // this.$store.dispatch('getSportsNews');
+    this.$store.dispatch('getSportsNews');
   },
   computed: {},
   methods: {

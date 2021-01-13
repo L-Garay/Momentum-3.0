@@ -6,6 +6,7 @@
       </div>
       <div class="listSection">
         <div class="game" v-for="game in Previous" :key="game.idEvent">
+          <p class="time">{{ game.dateEvent }} @ {{ game.strTime }}</p>
           <p>
             {{ game.strHomeTeam }} {{ game.intHomeScore }} vs
             {{ game.intAwayScore }} {{ game.strAwayTeam }}
