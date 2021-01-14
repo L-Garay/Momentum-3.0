@@ -6,16 +6,21 @@
     v-if="gotPhoto"
   >
     <div class="container-fluid top">
-      <div class="row justify-content-between">
+      <div class="row">
         <div class="col-1">
           <settings
             @openPhotosModal="openPhotosModal"
             @openQuotesModal="openQuotesModal"
             @toggleCalculator="toggleCalculator"
-            @openNewsModal="openNewsModal"
           />
         </div>
-        <div class="col-4 mr-3"><weather /></div>
+        <div class="col-3 offset-8 d-flex">
+          <div class="toggleNews" @click="openNewsModal">
+            <i class="far fa-newspaper fa-2x"></i>
+            <p>NEWS</p>
+          </div>
+          <weather />
+        </div>
       </div>
     </div>
     <div class="container-fluid middle">
@@ -141,24 +146,28 @@ export default {
       await this.$store.dispatch('getPhoto');
       this.gotPhoto = true;
     },
+    // Photo Modal control
     openPhotosModal() {
       this.showPhotoModal = true;
     },
     closePhotosModal() {
       this.showPhotoModal = false;
     },
+    // Quote Modal control
     openQuotesModal() {
       this.showQuoteModal = true;
     },
     closeQuotesModal() {
       this.showQuoteModal = false;
     },
+    // News Modal control
     openNewsModal() {
       this.showNewsModal = true;
     },
     closeNewsModal() {
       this.showNewsModal = false;
     },
+    // Todos Control
     toggleTodos() {
       if (this.showTodosModal == true) {
         this.showTodosModal = false;
@@ -166,6 +175,7 @@ export default {
         this.showTodosModal = true;
       }
     },
+    // Calculator control
     toggleCalculator() {
       if (this.showCalculator == false) {
         this.showCalculator = true;
@@ -224,5 +234,28 @@ p.toggleTodos:hover {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+/* News styling */
+div.toggleNews {
+  color: black;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1pt solid black;
+  text-align: center;
+  height: 60px;
+  width: 60px;
+  padding-top: 5px;
+  margin-top: 17px;
+  margin-right: 20px;
+}
+div.toggleNews:hover {
+  border: solid 2pt black;
+  background-color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+div.toggleNews p {
+  font-size: 12px;
+  text-shadow: 1pt 1pt 1pt white;
 }
 </style>

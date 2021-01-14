@@ -330,7 +330,7 @@ export default {
   overflow: hidden;
   z-index: 10;
   position: relative;
-  margin: 25px 0 100px 0;
+  margin-top: 15px;
   height: 90px;
   width: 300px;
   border-radius: 10px;

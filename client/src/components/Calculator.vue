@@ -5,7 +5,9 @@
     :style="{ width: width + 'px', height: height + 'px' }"
   >
     <div class="toggle" v-if="hideCalculator">
-      <div @click="openCalculator"><i class="fas fa-calculator fa-2x"></i></div>
+      <div @click="openCalculator">
+        <i class="fas fa-calculator fa-2x"> <p>Calculator</p></i>
+      </div>
     </div>
     <div class="toggle" v-if="showCalculator">
       <p @click="closeCalculator">Toggle calculator</p>
@@ -168,7 +170,14 @@ export default {
 }
 .toggle div {
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 5px;
+}
+div.toggle:hover p {
+  font-weight: bold;
+}
+div.toggle p {
+  font-size: 12px;
+  font-weight: normal;
 }
 p {
   color: black;
