@@ -28,7 +28,6 @@
     </div>
     <div class="contentSection">
       <div class="home" v-if="show.home">
-        <h4 class="greeting">Welcome to the News!</h4>
         <div class="content">
           <div class="mainSection">
             <div class="highlightedStory">
@@ -325,36 +324,24 @@ a:hover {
   cursor: pointer;
 }
 /* Main section styling */
-h4.greeting {
-  text-align: center;
-  position: relative;
-}
-h4.greeting::after {
-  position: absolute;
-  content: '';
-  width: 50%;
-  height: 2px;
-  bottom: 0;
-  left: 25%;
-  background: white;
-}
 .content {
   display: flex;
 }
 .mainSection {
   width: 600px;
-  max-height: 330px;
+  max-height: 446px;
 }
 .highlightedStory {
   text-align: center;
-  margin-bottom: 3px;
+  border-left: 1pt solid white;
 }
 .highlightedStory h5 {
   text-align: start;
-  max-height: 55px;
+  height: 55px;
   overflow-y: hidden;
 }
 .highlightedStory p {
+  height: 83px;
   text-align: start;
   font-size: 14px;
   padding-right: 5px;
@@ -364,12 +351,18 @@ h4.greeting::after {
 .highlightedStory h5 {
   padding-left: 10px;
 }
+.justText {
+  height: 141px;
+  border: 1pt solid white;
+  border-bottom: none;
+  border-right: none;
+}
 .column {
   columns: 2;
-  border: 1pt solid white;
 }
-.column ul {
+ul.column {
   margin-bottom: 0;
+  padding-inline-start: 25px;
 }
 .column li {
   font-size: 12px;
@@ -378,12 +371,13 @@ h4.greeting::after {
 .otherSection {
   width: 250px;
   border: 1pt solid white;
+  border-bottom: none;
 }
 .otherStories h5 {
   text-align: center;
 }
 .stories {
-  max-height: 375px;
+  max-height: 413px;
   overflow-y: auto;
   padding-left: 10px;
 }
