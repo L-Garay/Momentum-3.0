@@ -82,11 +82,18 @@
     </div>
     <div class="container-fluid ">
       <div class="row justify-content-center bottom ">
-        <div class="col-6 offset-3">
+        <div class="col-1">
+          <p class="toggle" @click="toggleUtilities">Utilities</p>
+          <transition name="fade">
+            <div v-if="showUtilities">
+              <utilities /></div
+          ></transition>
+        </div>
+        <div class="col-6 offset-2">
           <quote />
         </div>
         <div class="col-1 offset-2 todoList">
-          <p class="toggleTodos" @click="toggleTodos">Todos</p>
+          <p class="toggle" @click="toggleTodos">Todos</p>
           <transition name="fade">
             <div v-if="showTodosModal">
               <todo /></div
@@ -108,6 +115,7 @@ import QuoteModal from '@/components/QuoteModal.vue';
 import Todo from '@/components/Todo.vue';
 import Calculator from '@/components/Calculator.vue';
 import NewsModal from '@/components/NewsModal.vue';
+import Utilities from '@/components/Utilities/Utilities.vue';
 
 export default {
   name: 'momentum',
@@ -122,6 +130,7 @@ export default {
     Todo,
     Calculator,
     NewsModal,
+    Utilities,
   },
   data() {
     return {
@@ -130,6 +139,7 @@ export default {
       showTodosModal: false,
       showCalculator: false,
       showNewsModal: false,
+      showUtilities: false,
       gotPhoto: false,
     };
   },
@@ -183,6 +193,14 @@ export default {
         this.showCalculator = false;
       }
     },
+    // Utilities control
+    toggleUtilities() {
+      if (this.showUtilities == false) {
+        this.showUtilities = true;
+      } else if (this.showUtilities == true) {
+        this.showUtilities = false;
+      }
+    },
   },
 };
 </script>
@@ -218,12 +236,12 @@ export default {
 .todoList {
   text-align: center;
 }
-p.toggleTodos {
+p.toggle {
   color: white;
   font-size: 20px;
   text-shadow: 3px 3px 3px black;
 }
-p.toggleTodos:hover {
+p.toggle:hover {
   cursor: pointer;
   font-size: 25px;
   text-shadow: 5px 5px 3px black;
