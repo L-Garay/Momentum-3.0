@@ -38,10 +38,18 @@ export default {
 </script>
 
 <style scoped>
+/* Component styling */
 .Quote {
   text-align: center;
   padding-bottom: 10px;
 }
+p {
+  font-size: 20px;
+  color: white;
+  text-shadow: 3px 3px 5px black;
+  margin-bottom: 0;
+}
+/* Quote transition styling */
 .center {
   transition: transform 0.35s ease-in-out;
 }
@@ -54,21 +62,14 @@ export default {
 .Quote:hover p.author {
   margin-top: 0;
 }
-p {
-  font-size: 20px;
-  color: white;
-  text-shadow: 3px 3px 5px black;
-  margin-bottom: 0;
-}
 p.quote {
   padding-bottom: 5px;
 }
-
 p.author {
   margin-top: -25px;
   font-size: 15px;
 }
-
+/* Author transition styling */
 .fade-enter-active {
   transition: all 0.35s ease;
   opacity: 0.05;
@@ -87,6 +88,7 @@ p.author {
   opacity: 0;
 }
 
+/* Media querries */
 @media (max-width: 1024px) {
   p {
     font-size: 15px;
