@@ -32,7 +32,7 @@
           </div>
           <div v-else-if="mist">
             <i class="fas fa-smog icon" :style="{ color: iconColor }"></i>
-            {{ Wather.weather[0].main }}
+            {{ Weather.weather[0].main }}
           </div>
           <div v-else>
             <i class="fas fa-question icon" :style="{ color: iconColor }"></i>
