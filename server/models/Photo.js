@@ -12,7 +12,7 @@ const Photo = new Schema(
       regular: { type: String, required: true },
       thumbUrl: { type: String, required: true },
     },
-    downloadLocation: { type: String, required: true },
+    download_location: { type: String, required: true },
     userName: { type: String, required: true },
     name: { type: String, required: true },
     unsplashLink: { type: String, required: true },

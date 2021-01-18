@@ -36,7 +36,9 @@ class UserService {
   }
   async updateUserById(user) {
     try {
-      return await User.findByIdAndUpdate(user.id, user);
+      await User.findByIdAndUpdate(user.id, user);
+      let updated = User.findById(user.id);
+      return updated;
       // return await dbContext.User.findByIdAndUpdate(user.id, user);
     } catch (error) {
       throw new ErrorResponse(

@@ -102,6 +102,8 @@ export default {
       user: {
         name: '',
         militaryTimeSelected: false,
+        calculatorSelected: false,
+        newsSelected: false,
         createdTodoLists: [],
       },
     };
