@@ -12,10 +12,11 @@
             @openPhotosModal="openPhotosModal"
             @openQuotesModal="openQuotesModal"
             @toggleCalculator="toggleCalculator"
+            @toggleNews="toggleNews"
           />
         </div>
         <div class="col-3 offset-8 d-flex">
-          <div class="toggleNews" @click="openNewsModal">
+          <div v-if="toggledNews" class="toggleNews" @click="openNewsModal">
             <i class="far fa-newspaper fa-2x"></i>
             <p>NEWS</p>
           </div>
@@ -40,7 +41,7 @@
         <news-modal v-if="showNewsModal" @close-news-modal="closeNewsModal" />
         <div class="col-3">
           <!-- <calculator /> -->
-          <calculator v-if="showCalculator" class="calculator" />
+          <calculator v-if="toggledCalculator" class="calculator" />
         </div>
         <!-- NOTE Can't use bootstrap modal because for some reason I get an error saying the '$' symbol when trying to programatically open/close it using bootstrap's $('#myModal').modal(options) is 'undefined'. I have tried using a cdn directly from jquery, I have tried npm i-ing jquery directly into the project and neither work.  I have tried reordering the cdns, I have tried nmp i-ing bootstrap directly, and neither work.  I have no idea why it's not working. So the workaround is to use a modal made by the vue devs found at https://vuejs.org/v2/examples/modal.html?
           <div
@@ -137,7 +138,9 @@ export default {
       showPhotoModal: false,
       showQuoteModal: false,
       showTodosModal: false,
+      toggledCalculator: false,
       showCalculator: false,
+      toggledNews: false,
       showNewsModal: false,
       showUtilities: false,
       gotPhoto: false,
@@ -145,6 +148,14 @@ export default {
   },
   mounted() {
     this.getPhotoBackground();
+    this.$root.$on('checkLastUser', (result) => {
+      this.checkCaclulator(result);
+      this.checkNews(result);
+    });
+    this.$root.$on('changedUser', (newUser) => {
+      this.checkCaclulator(newUser);
+      this.checkNews(newUser);
+    });
   },
   computed: {
     Photo() {
@@ -171,11 +182,25 @@ export default {
       this.showQuoteModal = false;
     },
     // News Modal control
+    toggleNews() {
+      if (this.toggledNews == true) {
+        this.toggledNews = false;
+      } else if (this.toggledNews == false) {
+        this.toggledNews = true;
+      }
+    },
     openNewsModal() {
       this.showNewsModal = true;
     },
     closeNewsModal() {
       this.showNewsModal = false;
+    },
+    checkNews(user) {
+      if (user.newsSelected == true) {
+        this.toggledNews = true;
+      } else {
+        this.toggledNews = false;
+      }
     },
     // Todos Control
     toggleTodos() {
@@ -187,10 +212,17 @@ export default {
     },
     // Calculator control
     toggleCalculator() {
-      if (this.showCalculator == false) {
-        this.showCalculator = true;
+      if (this.toggledCalculator == false) {
+        this.toggledCalculator = true;
       } else {
-        this.showCalculator = false;
+        this.toggledCalculator = false;
+      }
+    },
+    checkCaclulator(user) {
+      if (user.calculatorSelected == true) {
+        this.toggledCalculator = true;
+      } else {
+        this.toggledCalculator = false;
       }
     },
     // Utilities control
