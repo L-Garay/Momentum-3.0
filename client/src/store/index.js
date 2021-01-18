@@ -220,7 +220,6 @@ export default new Vuex.Store({
     setGrowers(state, stocks) {
       state.finance.growers = stocks;
     },
-
     //#endregion
 
     //#region --Sports Methods--

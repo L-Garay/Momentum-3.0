@@ -6,7 +6,7 @@
   >
     <div class="center">
       <p class="quote">
-        {{ '"' + Quote.quote + '"' || 'Loading...' }}
+        {{ Quote.quote || 'Loading...' }}
       </p>
       <transition name="fade">
         <p v-show="showAuthor" class="author">

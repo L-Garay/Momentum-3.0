@@ -126,7 +126,7 @@ export default {
     },
     previousNews() {
       if (this.lastNews == true) {
-        this.lastNews == false;
+        this.lastNews = false;
       }
       this.$store.dispatch('previousNews');
     },
