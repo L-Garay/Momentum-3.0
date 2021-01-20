@@ -90,6 +90,7 @@
             @openQuotesModal="openQuotesModal"
             @toggleCalculator="toggleCalculator"
             @toggleNews="toggleNews"
+            @toggleGames="toggleGames"
           />
         </div>
         <div class="col-6 offset-2">
@@ -151,7 +152,7 @@ export default {
       showCalculator: false,
       toggledNews: false,
       showNewsModal: false,
-      toggledGames: true,
+      toggledGames: false,
       showGames: false,
       showUtilities: false,
       gotPhoto: false,
@@ -162,10 +163,18 @@ export default {
     this.$root.$on('checkLastUser', (result) => {
       this.checkCaclulator(result);
       this.checkNews(result);
+      this.checkGames(result);
     });
     this.$root.$on('changedUser', (newUser) => {
+      console.log('hit changed user in the momentum view');
       this.checkCaclulator(newUser);
       this.checkNews(newUser);
+      this.checkGames(newUser);
+    });
+    this.$root.$on('submitNewUser', (user) => {
+      this.checkCaclulator(user);
+      this.checkNews(user);
+      this.checkGames(user);
     });
   },
   computed: {
@@ -237,11 +246,25 @@ export default {
       }
     },
     // Games control
+    toggleGames() {
+      if (this.toggledGames == true) {
+        this.toggledGames = false;
+      } else {
+        this.toggledGames = true;
+      }
+    },
     openGames() {
       this.showGames = true;
     },
     closeGames() {
       this.showGames = false;
+    },
+    checkGames(user) {
+      if (user.gamesSelected == true) {
+        this.toggledGames = true;
+      } else {
+        this.toggledGames = false;
+      }
     },
     // Utilities control
     toggleUtilities() {
