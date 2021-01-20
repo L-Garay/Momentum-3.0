@@ -103,6 +103,4 @@ div.Navbar h5:hover {
 }
 
 /* Component Section styling */
-div.components {
-}
 </style>
