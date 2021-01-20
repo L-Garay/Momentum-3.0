@@ -82,8 +82,8 @@ export default {
   height: 450px;
   position: absolute;
   z-index: 5;
-  bottom: 50px;
-  left: 10px;
+  bottom: 70px;
+  right: 30px;
 }
 
 div.navbar p:hover {

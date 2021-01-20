@@ -8,12 +8,13 @@
     <div class="container-fluid top">
       <div class="row">
         <div class="col-1">
-          <settings
+          <p>settings</p>
+          <!-- <settings
             @openPhotosModal="openPhotosModal"
             @openQuotesModal="openQuotesModal"
             @toggleCalculator="toggleCalculator"
             @toggleNews="toggleNews"
-          />
+          /> -->
         </div>
         <div class="col-3 offset-8 d-flex">
           <div v-if="toggledNews" class="toggleNews" @click="openNewsModal">
@@ -84,22 +85,30 @@
     <div class="container-fluid ">
       <div class="row justify-content-center bottom ">
         <div class="col-1">
+          <settings
+            @openPhotosModal="openPhotosModal"
+            @openQuotesModal="openQuotesModal"
+            @toggleCalculator="toggleCalculator"
+            @toggleNews="toggleNews"
+          />
+        </div>
+        <div class="col-6 offset-2">
+          <quote />
+        </div>
+        <div class="col-1 offset-2">
           <p class="toggle" @click="toggleUtilities">Utilities</p>
           <transition name="fade">
             <div v-if="showUtilities">
               <utilities /></div
           ></transition>
         </div>
-        <div class="col-6 offset-2">
-          <quote />
-        </div>
-        <div class="col-1 offset-2 todoList">
+        <!-- <div class="col-1 offset-2 todoList">
           <p class="toggle" @click="toggleTodos">Todos</p>
           <transition name="fade">
             <div v-if="showTodosModal">
               <todo /></div
           ></transition>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -113,7 +122,7 @@ import Clock from '@/components/Clock.vue';
 import Greeting from '@/components/Greeting.vue';
 import PhotoModal from '@/components/PhotoModal.vue';
 import QuoteModal from '@/components/QuoteModal.vue';
-import Todo from '@/components/Utilities/Todo.vue';
+// import Todo from '@/components/Utilities/Todo.vue';
 import Calculator from '@/components/Calculator.vue';
 import NewsModal from '@/components/NewsModal.vue';
 import Utilities from '@/components/Utilities/Utilities.vue';
@@ -128,7 +137,7 @@ export default {
     Greeting,
     PhotoModal,
     QuoteModal,
-    Todo,
+    // Todo,
     Calculator,
     NewsModal,
     Utilities,
@@ -280,7 +289,7 @@ p.toggle:hover {
 }
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s;
+  transition: opacity 0.35s;
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
