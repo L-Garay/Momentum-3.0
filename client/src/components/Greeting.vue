@@ -104,6 +104,7 @@ export default {
         militaryTimeSelected: false,
         calculatorSelected: false,
         newsSelected: false,
+        gamesSelected: false,
         createdTodoLists: [],
       },
     };
@@ -157,6 +158,8 @@ export default {
     },
     submitNewUser() {
       this.$store.dispatch('newUser', this.user);
+      let user = this.user;
+      this.$root.$emit('submitNewUser', user);
       this.user.name = '';
     },
 

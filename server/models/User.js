@@ -15,6 +15,7 @@ const UserSchema = new mongoose.Schema(
     militaryTimeSelected: { type: Boolean, required: true },
     calculatorSelected: { type: Boolean, required: true },
     newsSelected: { type: Boolean, required: true },
+    gamesSelected: { type: Boolean, required: true },
     createdTodoLists: { type: Array, required: true },
   },
   { timestamps: true, toJSON: { virtuals: true } }
