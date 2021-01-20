@@ -329,15 +329,16 @@ export default {
 
 <style scoped>
 /* Modal top level */
+div.todoList {
+  text-align: center;
+  text-align: -webkit-center;
+  margin-top: 40px;
+}
 #todoDropdown {
-  background-color: rgba(245, 245, 245, 0.815);
-  border: 1pt solid black;
-  width: 350px;
+  background-color: transparent;
+  border: none;
+  width: 375px;
   height: 325px;
-  position: absolute;
-  z-index: 5;
-  bottom: 50px;
-  right: 12px;
 }
 /* Header section styling */
 .header {

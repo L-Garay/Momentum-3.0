@@ -2,10 +2,10 @@
   <div class="utilitiesComponent">
     <div class="content">
       <div class="header">
-        <div class="navbar">
-          <p @click="toggleUtility('Todos')">Todos</p>
-          <p @click="toggleUtility('Calendar')">Calendar</p>
-          <p @click="toggleUtility('Contacts')">Contacts</p>
+        <div class="Navbar">
+          <h5 @click="toggleUtility('Todos')">Todos</h5>
+          <h5 @click="toggleUtility('Calendar')">Calendar</h5>
+          <h5 @click="toggleUtility('Contacts')">Contacts</h5>
         </div>
       </div>
       <div class="mainSection">
@@ -86,7 +86,23 @@ export default {
   right: 30px;
 }
 
-div.navbar p:hover {
+div.Navbar {
+  display: flex;
+  border-bottom: 2pt solid black;
+}
+div.Navbar h5 {
+  padding: 5px 0;
+  margin-bottom: 0;
+  margin-right: 35px;
+}
+div.Navbar h5:first-child {
+  margin-left: 10px;
+}
+div.Navbar h5:hover {
   cursor: pointer;
+}
+
+/* Component Section styling */
+div.components {
 }
 </style>
