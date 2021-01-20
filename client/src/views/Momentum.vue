@@ -113,7 +113,7 @@ import Clock from '@/components/Clock.vue';
 import Greeting from '@/components/Greeting.vue';
 import PhotoModal from '@/components/PhotoModal.vue';
 import QuoteModal from '@/components/QuoteModal.vue';
-import Todo from '@/components/Todo.vue';
+import Todo from '@/components/Utilities/Todo.vue';
 import Calculator from '@/components/Calculator.vue';
 import NewsModal from '@/components/NewsModal.vue';
 import Utilities from '@/components/Utilities/Utilities.vue';
