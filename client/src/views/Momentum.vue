@@ -8,20 +8,17 @@
     <div class="container-fluid top">
       <div class="row">
         <div class="col-1">
-          <p>settings</p>
-          <!-- <settings
-            @openPhotosModal="openPhotosModal"
-            @openQuotesModal="openQuotesModal"
-            @toggleCalculator="toggleCalculator"
-            @toggleNews="toggleNews"
-          /> -->
-        </div>
-        <div class="col-3 offset-8 d-flex">
           <div v-if="toggledNews" class="toggleNews" @click="openNewsModal">
             <i class="far fa-newspaper fa-2x"></i>
             <p>NEWS</p>
           </div>
+        </div>
+        <div class="col-3 offset-8">
           <weather />
+        </div>
+        <div class="col-1">
+          <!-- <calculator /> -->
+          <calculator v-if="toggledCalculator" class="calculator" />
         </div>
       </div>
     </div>
@@ -40,10 +37,9 @@
           @close-quotes-modal="closeQuotesModal"
         />
         <news-modal v-if="showNewsModal" @close-news-modal="closeNewsModal" />
-        <div class="col-3">
-          <!-- <calculator /> -->
+        <!-- <div class="col-3">
           <calculator v-if="toggledCalculator" class="calculator" />
-        </div>
+        </div> -->
         <!-- NOTE Can't use bootstrap modal because for some reason I get an error saying the '$' symbol when trying to programatically open/close it using bootstrap's $('#myModal').modal(options) is 'undefined'. I have tried using a cdn directly from jquery, I have tried npm i-ing jquery directly into the project and neither work.  I have tried reordering the cdns, I have tried nmp i-ing bootstrap directly, and neither work.  I have no idea why it's not working. So the workaround is to use a modal made by the vue devs found at https://vuejs.org/v2/examples/modal.html?
           <div
           class="modal"
@@ -269,8 +265,8 @@ export default {
 
 /* Calculator component styling */
 .calculator {
-  margin-top: -50px;
-  float: right;
+  margin-top: -10px;
+  float: left;
 }
 
 /* Todo component styling */
