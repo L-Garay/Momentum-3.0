@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="showWeatherColor"
     class="main ml-auto"
     id="changeColor"
     :style="{ 'background-color': backgroundColor, color: textColor }"
@@ -70,6 +71,67 @@
       </div>
     </div>
   </div>
+  <div v-else class="main ml-auto" id="changeColor">
+    <div class="background">
+      <div class="content">
+        <h1 class="Condition">
+          <div v-if="sunny">
+            <i class="fas fa-sun icon"></i>
+            {{ Weather.weather[0].main }}
+          </div>
+          <div v-else-if="rain">
+            <i class="fas fa-cloud-showers-heavy icon"></i>
+            {{ Weather.weather[0].main }}
+          </div>
+          <div v-else-if="cloudy">
+            <i class="fas fa-cloud icon"></i>
+            {{ Weather.weather[0].main }}
+          </div>
+          <div v-else-if="snow">
+            <i class="far fa-snowflake icon"></i>
+            {{ Weather.weather[0].main }}
+          </div>
+          <div v-else-if="fog">
+            <i class="fas fa-smog icon"></i>
+            {{ Weather.weather[0].main }}
+          </div>
+          <div v-else-if="mist">
+            <i class="fas fa-smog icon"></i>
+            {{ Weather.weather[0].main }}
+          </div>
+          <div v-else>
+            <i class="fas fa-question icon"></i>
+            <p>Unkown Weather Condition</p>
+          </div>
+        </h1>
+        <h1 class="Temp" v-if="gotWeather">
+          {{ Math.round(Weather.main.temp) }}
+          <span id="F">&#8457;</span>
+        </h1>
+        <h1 class="Time">{{ month }} {{ day }}</h1>
+        <div>
+          <input
+            v-on:blur="onClickOutside"
+            ref="focus"
+            type="text"
+            v-model="city.name"
+            v-on:keyup.enter="submitNewCity"
+            v-autowidth="{
+              maxWidth: '100px',
+              minWidth: '20px',
+              comfortZone: 10,
+            }"
+            v-if="city.changeCity"
+            class="locationInput"
+          />
+          <h1 class="Location" v-else @click="getNewCity">
+            <i class="fas fa-map-marker-alt locationIcon"></i>
+            {{ Weather.name }}
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -78,9 +140,11 @@ import Vue from 'vue';
 Vue.use(VueInputAutoWidth);
 export default {
   name: 'Weather',
+  props: ['weatherData'],
   data() {
     return {
       gotWeather: false,
+      showWeatherColor: false,
       // To get weather
       coord: {
         lat: null,
@@ -111,6 +175,15 @@ export default {
   mounted() {
     this.getLocation();
     this.getDate();
+    this.$root.$on('revealWeather', () => {
+      this.setBackgroundColor();
+      this.showWeatherColor = true;
+      console.log('true', this.showWeatherColor);
+    });
+    this.$root.$on('hideWeather', () => {
+      this.showWeatherColor = false;
+      console.log('false', this.showWeatherColor);
+    });
   },
   computed: {
     Weather() {
@@ -236,22 +309,25 @@ export default {
         this.sunny == true &&
         this.$store.state.weather.weather.main.temp > 100
       ) {
-        let change = document.getElementById('changeColor');
-        change.style.backgroundColor = 'rgb(248, 78, 35)';
+        // let change = document.getElementById('changeColor');
+        // change.style.backgroundColor = 'rgb(248, 78, 35)';
+        this.backgroundColor = 'rgb(248, 78, 35)';
         this.iconColor = 'rgb(252, 196, 15)';
       } else if (
         this.sunny == true &&
         this.$store.state.weather.weather.main.temp >= 70
       ) {
-        let change = document.getElementById('changeColor');
-        change.style.backgroundColor = 'rgb(248, 181, 35)';
+        // let change = document.getElementById('changeColor');
+        // change.style.backgroundColor = 'rgb(248, 181, 35)';
+        this.backgroundColor = 'rgb(248, 181, 35)';
         this.iconColor = 'rgb(252, 62, 29)';
       } else if (
         this.sunny == true &&
         this.$store.state.weather.weather.main.temp > 50
       ) {
-        let change = document.getElementById('changeColor');
-        change.style.backgroundColor = 'rgb(253, 253, 61)';
+        // let change = document.getElementById('changeColor');
+        // change.style.backgroundColor = 'rgb(253, 253, 61)';
+        this.backgroundColor = 'rgb(253, 253, 61)';
         this.iconColor = 'rgb(252, 155, 29)';
       } else if (
         this.sunny == true &&
@@ -259,63 +335,73 @@ export default {
       ) {
         // this.backgroundColor = "rgb(241, 241, 126)";
         // this.iconColor = "rgb(252, 161, 41)";
-        let change = document.getElementById('changeColor');
-        change.style.backgroundColor = 'rgb(241, 241, 126)';
+        // let change = document.getElementById('changeColor');
+        // change.style.backgroundColor = 'rgb(241, 241, 126)';
+        this.backgroundColor = 'rgb(241, 241, 126)';
         this.iconColor = 'rgb(252, 161, 41)';
       } else if (
         this.sunny == true &&
         this.$store.state.weather.weather.main.temp <= 0
       ) {
-        let change = document.getElementById('changeColor');
-        change.style.backgroundColor = 'rgb(241, 241, 188)';
+        // let change = document.getElementById('changeColor');
+        // change.style.backgroundColor = 'rgb(241, 241, 188)';
+        this.backgroundColor = 'rgb(241, 241, 188)';
         this.iconColor = 'rgb(252, 161, 41)';
       }
 
       // Rain
       if (this.rain) {
-        let change = document.getElementById('changeColor');
-        change.style.backgroundColor = 'deepskyblue';
+        // let change = document.getElementById('changeColor');
+        // change.style.backgroundColor = 'deepskyblue';
+        this.backgroundColor = 'deepskyblue';
         this.locationIconColor = 'grey';
         this.iconColor = 'grey';
       }
 
       // Snow
       if (this.snow == true) {
-        let change = document.getElementById('changeColor');
-        change.style.backgroundColor = 'white';
+        // let change = document.getElementById('changeColor');
+        // change.style.backgroundColor = 'white';
+        this.backgroundColor = 'white';
         this.iconColor = 'black';
       }
 
       // Cloudy
       if (this.cloudy) {
-        let change = document.getElementById('changeColor');
-        change.style.backgroundColor = 'grey';
+        // let change = document.getElementById('changeColor');
+        // change.style.backgroundColor = 'grey';
+        this.backgroundColor = 'grey';
         this.iconColor = 'white';
         this.locationIconColor = 'white';
       }
 
       // Fog
       if (this.fog) {
-        let change = document.getElementById('changeColor');
-        change.style.backgroundColor = 'lightslategrey';
+        // let change = document.getElementById('changeColor');
+        // change.style.backgroundColor = 'lightslategrey';
+        this.backgroundColor = 'lightslategrey';
         this.iconColor = 'rgb(206, 206, 202)';
         this.locationIconColor = 'rgb(206, 206, 202)';
       }
 
       // Mist
       if (this.mist) {
-        let change = document.getElementById('changeColor');
-        change.style.backgroundColor = 'lightblue';
+        // let change = document.getElementById('changeColor');
+        // change.style.backgroundColor = 'lightblue';
+        this.backgroundColor = 'lightblue';
         this.iconColor = ' rgb(172, 172, 172)';
         this.locationIconColor = ' rgb(172, 172, 172)';
       }
       // Unknown
       if (this.unkownCondition) {
-        let change = document.getElementById('changeColor');
-        change.style.backgroundColor = 'white';
+        // let change = document.getElementById('changeColor');
+        // change.style.backgroundColor = 'white';
+        this.backgroundColor = 'white';
         this.iconColor = 'black';
         this.locationIconColor = 'black';
       }
+      console.log('icon color', this.iconColor);
+      console.log('locaiton color', this.locationIconColor);
     },
     onClickOutside() {
       this.city.changeCity = false;
@@ -332,10 +418,11 @@ export default {
   position: relative;
   margin-top: 15px;
   height: 90px;
-  width: 300px;
+  width: 230px;
   border-radius: 10px;
-  box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.2);
-  background-color: coral;
+  /* box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.2); */
+  background-color: transparent;
+  color: white;
 }
 
 /* Widget styling */

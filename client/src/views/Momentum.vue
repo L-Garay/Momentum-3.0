@@ -20,7 +20,10 @@
           </div>
         </div>
         <div class="col-3 offset-7">
-          <weather />
+          <weather
+            @mouseover.native="revealWeather"
+            @mouseleave.native="hideWeather"
+          />
         </div>
         <div class="col-1">
           <!-- <calculator /> -->
@@ -200,6 +203,17 @@ export default {
     },
     closeQuotesModal() {
       this.showQuoteModal = false;
+    },
+    // Weather control
+    revealWeather() {
+      console.log('I am revealed');
+      this.showWeatherColor = true;
+      this.$root.$emit('revealWeather');
+    },
+    hideWeather() {
+      console.log('I am hidden');
+      this.showWeatherColor = false;
+      this.$root.$emit('hideWeather');
     },
     // News Modal control
     toggleNews() {
