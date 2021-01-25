@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import NewsLayout from '@/components/NewsComponentLayout.vue';
+import NewsLayout from '@/components/Optional/News/News/NewsComponentLayout.vue';
 import VueInputAutoWidth from 'vue-input-autowidth';
 import Vue from 'vue';
 Vue.use(VueInputAutoWidth);

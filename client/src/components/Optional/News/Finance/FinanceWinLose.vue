@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import FinanceTable from '@/components/FinanceWinLoseTable.vue';
+import FinanceTable from '@/components/Optional/News/Finance/FinanceWinLoseTable.vue';
 export default {
   name: 'FinanceWinLose',
   components: { FinanceTable },

@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import FinanceTable from '@/components/FinanceTable.vue';
+import FinanceTable from '@/components/Optional/News/Finance/FinanceTable.vue';
 export default {
   name: 'FinanceTabs',
   props: ['componentData'],
