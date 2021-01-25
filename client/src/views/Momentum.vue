@@ -15,7 +15,7 @@
         </div>
         <div class="col-1">
           <div v-if="toggledGames" class="toggle games" @click="openGames">
-            <i class="far fa-newspaper fa-2x"></i>
+            <i class="fas fa-gamepad fa-2x"></i>
             <p>Games</p>
           </div>
         </div>
