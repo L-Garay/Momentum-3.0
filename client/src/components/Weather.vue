@@ -7,44 +7,42 @@
   >
     <div class="background">
       <div class="content">
+        <h1 class="Time">{{ month }} {{ day }}</h1>
+        <h1 class="Temp" v-if="gotWeather">
+          {{ Math.round(Weather.main.temp) }}
+          <p id="F"><small>&#176;</small></p>
+        </h1>
         <h1 class="Condition">
           <div v-if="sunny">
             <i class="fas fa-sun icon" :style="{ color: iconColor }"></i>
-            {{ Weather.weather[0].main }}
+            <p>{{ Weather.weather[0].main }}</p>
           </div>
           <div v-else-if="rain">
-            <i
-              class="fas fa-cloud-showers-heavy icon"
-              :style="{ color: iconColor }"
-            ></i>
-            {{ Weather.weather[0].main }}
+            <p>{{ Weather.weather[0].main }}</p>
+            <i class="fas fa-cloud-showers-heavy icon"></i>
+            :style="{ color: iconColor }"
           </div>
           <div v-else-if="cloudy">
             <i class="fas fa-cloud icon" :style="{ color: iconColor }"></i>
-            {{ Weather.weather[0].main }}
+            <p>{{ Weather.weather[0].main }}</p>
           </div>
           <div v-else-if="snow">
             <i class="far fa-snowflake icon" :style="{ color: iconColor }"></i>
-            {{ Weather.weather[0].main }}
+            <p>{{ Weather.weather[0].main }}</p>
           </div>
           <div v-else-if="fog">
             <i class="fas fa-smog icon" :style="{ color: iconColor }"></i>
-            {{ Weather.weather[0].main }}
+            <p>{{ Weather.weather[0].main }}</p>
           </div>
           <div v-else-if="mist">
             <i class="fas fa-smog icon" :style="{ color: iconColor }"></i>
-            {{ Weather.weather[0].main }}
+            <p>{{ Weather.weather[0].main }}</p>
           </div>
           <div v-else>
             <i class="fas fa-question icon" :style="{ color: iconColor }"></i>
             <p>Unkown Weather Condition</p>
           </div>
         </h1>
-        <h1 class="Temp" v-if="gotWeather">
-          {{ Math.round(Weather.main.temp) }}
-          <span id="F">&#8457;</span>
-        </h1>
-        <h1 class="Time">{{ month }} {{ day }}</h1>
         <div>
           <input
             v-on:blur="onClickOutside"
@@ -74,41 +72,41 @@
   <div v-else class="main ml-auto" id="changeColor">
     <div class="background">
       <div class="content">
+        <h1 class="Time">{{ month }} {{ day }}</h1>
+        <h1 class="Temp" v-if="gotWeather">
+          {{ Math.round(Weather.main.temp) }}
+          <p id="F"><small>&#176;</small></p>
+        </h1>
         <h1 class="Condition">
           <div v-if="sunny">
             <i class="fas fa-sun icon"></i>
-            {{ Weather.weather[0].main }}
+            <p>{{ Weather.weather[0].main }}</p>
           </div>
           <div v-else-if="rain">
             <i class="fas fa-cloud-showers-heavy icon"></i>
-            {{ Weather.weather[0].main }}
+            <p>{{ Weather.weather[0].main }}</p>
           </div>
           <div v-else-if="cloudy">
             <i class="fas fa-cloud icon"></i>
-            {{ Weather.weather[0].main }}
+            <p>{{ Weather.weather[0].main }}</p>
           </div>
           <div v-else-if="snow">
             <i class="far fa-snowflake icon"></i>
-            {{ Weather.weather[0].main }}
+            <p>{{ Weather.weather[0].main }}</p>
           </div>
           <div v-else-if="fog">
             <i class="fas fa-smog icon"></i>
-            {{ Weather.weather[0].main }}
+            <p>{{ Weather.weather[0].main }}</p>
           </div>
           <div v-else-if="mist">
             <i class="fas fa-smog icon"></i>
-            {{ Weather.weather[0].main }}
+            <p>{{ Weather.weather[0].main }}</p>
           </div>
           <div v-else>
             <i class="fas fa-question icon"></i>
             <p>Unkown Weather Condition</p>
           </div>
         </h1>
-        <h1 class="Temp" v-if="gotWeather">
-          {{ Math.round(Weather.main.temp) }}
-          <span id="F">&#8457;</span>
-        </h1>
-        <h1 class="Time">{{ month }} {{ day }}</h1>
         <div>
           <input
             v-on:blur="onClickOutside"
@@ -125,7 +123,6 @@
             class="locationInput"
           />
           <h1 class="Location" v-else @click="getNewCity">
-            <i class="fas fa-map-marker-alt locationIcon"></i>
             {{ Weather.name }}
           </h1>
         </div>
@@ -418,7 +415,7 @@ export default {
   position: relative;
   margin-top: 15px;
   height: 90px;
-  width: 230px;
+  width: 135px;
   border-radius: 10px;
   /* box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.2); */
   background-color: transparent;
@@ -429,33 +426,39 @@ export default {
 
 .icon {
   z-index: 1000;
-  font-size: 15px !important;
+  font-size: 27px !important;
 }
-
 .Condition {
   z-index: 1000;
   position: absolute;
   font-family: 'Roboto', sans-serif;
   font-weight: 100;
-  font-size: 20px;
-  left: 20px;
-  top: 10px;
+  font-size: 14px;
+  right: 20px;
+  top: 22px;
+  text-align: center;
+}
+.Condition p {
+  margin-bottom: 0;
+  font-size: 11px;
+  margin-top: 0;
 }
 
 .Temp {
   z-index: 1000;
   position: absolute;
   font-family: 'Roboto', sans-serif;
-  font-size: 35px;
+  font-size: 45px;
   font-weight: 400;
-  left: 20px;
-  bottom: 5px;
+  right: 60px;
+  bottom: 10px;
+  display: flex;
 }
 
 #F {
   z-index: 1000;
   font-family: 'Roboto', sans-serif;
-  font-weight: 100;
+  font-weight: 150;
   font-size: 30px;
 }
 
@@ -463,15 +466,15 @@ export default {
   z-index: 1000;
   position: absolute;
   font-family: 'Noto Sans', sans-serif;
-  font-size: 18px;
-  font-weight: 200;
+  font-size: 12px;
+  font-weight: 100;
   right: 20px;
-  top: 10px;
+  bottom: 62px;
 }
 
 .locationIcon {
   z-index: 1000;
-  font-size: 15px;
+  font-size: 10px;
   color: white;
 }
 
@@ -479,17 +482,17 @@ export default {
   z-index: 1000;
   position: absolute;
   font-family: 'Noto Sans', sans-serif;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 200;
   right: 20px;
-  bottom: 15px;
+  bottom: 0px;
   cursor: pointer;
 }
 .locationInput {
   z-index: 1000;
   position: absolute;
   right: 20px;
-  bottom: 15px;
+  bottom: 5px;
 }
 @media (max-width: 1024px) {
   .main {
