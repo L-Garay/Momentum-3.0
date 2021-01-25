@@ -119,14 +119,14 @@
 import Weather from '@/components/Weather.vue';
 import Quote from '@/components/Quote.vue';
 import Settings from '@/components/Settings.vue';
-import Clock from '@/components/Clock.vue';
-import Greeting from '@/components/Greeting.vue';
-import PhotoModal from '@/components/PhotoModal.vue';
-import QuoteModal from '@/components/QuoteModal.vue';
-import Calculator from '@/components/Calculator.vue';
-import NewsModal from '@/components/NewsModal.vue';
-import Utilities from '@/components/Utilities/Utilities.vue';
-import Game from '@/components/GameComponent.vue';
+import Clock from '@/components/Greeting/Clock.vue';
+import Greeting from '@/components/Greeting/Greeting.vue';
+import PhotoModal from '@/components/Modals/PhotoModal.vue';
+import QuoteModal from '@/components/Modals/QuoteModal.vue';
+import Calculator from '@/components/Optional/Calculator/Calculator.vue';
+import NewsModal from '@/components/Modals/NewsModal.vue';
+import Utilities from '@/components/Utilities/UtilitiesComponent.vue';
+import Game from '@/components/Optional/Games/GameComponent.vue';
 
 export default {
   name: 'momentum',

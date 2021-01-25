@@ -53,8 +53,8 @@
 </template>
 
 <script>
-import FinanceWinLose from '@/components/FinanceWinLose.vue';
-import FinanceTab from '@/components/FinanceTabs.vue';
+import FinanceWinLose from '@/components/Optional/News/Finance/FinanceWinLose.vue';
+import FinanceTab from '@/components/Optional/News/Finance/FinanceTabs.vue';
 
 export default {
   name: 'FinanceCompoenent',

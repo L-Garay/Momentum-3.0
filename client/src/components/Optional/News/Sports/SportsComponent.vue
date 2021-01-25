@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import SportsLeagues from '@/components/SportsLeagues.vue';
+import SportsLeagues from '@/components/Optional/News/Sports/SportsLeagues.vue';
 export default {
   name: 'SportsCompoenent',
   components: {

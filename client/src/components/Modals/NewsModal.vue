@@ -64,9 +64,9 @@
 </template>
 
 <script>
-import NewsComponent from '@/components/NewsComponent.vue';
-import FinanceComponent from '@/components/FinanceComponent.vue';
-import SportsComponent from '@/components/SportsComponent.vue';
+import NewsComponent from '@/components/Optional/News/News/NewsComponent.vue';
+import FinanceComponent from '@/components/Optional/News/Finance/FinanceComponent.vue';
+import SportsComponent from '@/components/Optional/News/Sports/SportsComponent.vue';
 
 export default {
   name: 'NewsModal',
