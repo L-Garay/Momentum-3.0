@@ -78,8 +78,8 @@ export default {
 .utilitiesComponent {
   background-color: rgba(245, 245, 245, 0.815);
   border: 1pt solid black;
-  width: 575px;
-  height: 450px;
+  width: 500px;
+  height: 415px;
   position: absolute;
   z-index: 5;
   bottom: 70px;

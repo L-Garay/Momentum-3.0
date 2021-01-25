@@ -1,5 +1,5 @@
 <template>
-  <div
+  <!-- <div
     v-if="showWeatherColor"
     class="main ml-auto"
     id="changeColor"
@@ -7,7 +7,29 @@
   >
     <div class="background">
       <div class="content">
-        <h1 class="Time">{{ month }} {{ day }}</h1>
+        <div class="TimeLocation">
+          <h1 class="Time">{{ month }} {{ day }}</h1>
+          <p>/</p>
+          <div>
+            <input
+              v-on:blur="onClickOutside"
+              ref="focus"
+              type="text"
+              v-model="city.name"
+              v-on:keyup.enter="submitNewCity"
+              v-autowidth="{
+                maxWidth: '100px',
+                minWidth: '20px',
+                comfortZone: 10,
+              }"
+              v-if="city.changeCity"
+              class="locationInput"
+            />
+            <h1 class="Location" v-else @click="getNewCity">
+              {{ Weather.name }}
+            </h1>
+          </div>
+        </div>
         <h1 class="Temp" v-if="gotWeather">
           {{ Math.round(Weather.main.temp) }}
           <p id="F"><small>&#176;</small></p>
@@ -43,36 +65,15 @@
             <p>Unkown Weather Condition</p>
           </div>
         </h1>
-        <div>
-          <input
-            v-on:blur="onClickOutside"
-            ref="focus"
-            type="text"
-            v-model="city.name"
-            v-on:keyup.enter="submitNewCity"
-            v-autowidth="{
-              maxWidth: '100px',
-              minWidth: '20px',
-              comfortZone: 10,
-            }"
-            v-if="city.changeCity"
-            class="locationInput"
-          />
-          <h1 class="Location" v-else @click="getNewCity">
-            <i
-              class="fas fa-map-marker-alt locationIcon"
-              :style="{ color: locationIconColor }"
-            ></i>
-            {{ Weather.name }}
-          </h1>
-        </div>
       </div>
     </div>
-  </div>
-  <div v-else class="main ml-auto" id="changeColor">
+  </div> -->
+  <div class="main ml-auto" id="changeColor">
     <div class="background">
       <div class="content">
-        <h1 class="Time">{{ month }} {{ day }}</h1>
+        <div class="TimeLocation">
+          <h1 class="Time">{{ month }} {{ day }} / {{ Weather.name }}</h1>
+        </div>
         <h1 class="Temp" v-if="gotWeather">
           {{ Math.round(Weather.main.temp) }}
           <p id="F"><small>&#176;</small></p>
@@ -80,52 +81,26 @@
         <h1 class="Condition">
           <div v-if="sunny">
             <i class="fas fa-sun icon"></i>
-            <p>{{ Weather.weather[0].main }}</p>
           </div>
           <div v-else-if="rain">
             <i class="fas fa-cloud-showers-heavy icon"></i>
-            <p>{{ Weather.weather[0].main }}</p>
           </div>
           <div v-else-if="cloudy">
             <i class="fas fa-cloud icon"></i>
-            <p>{{ Weather.weather[0].main }}</p>
           </div>
           <div v-else-if="snow">
             <i class="far fa-snowflake icon"></i>
-            <p>{{ Weather.weather[0].main }}</p>
           </div>
           <div v-else-if="fog">
             <i class="fas fa-smog icon"></i>
-            <p>{{ Weather.weather[0].main }}</p>
           </div>
           <div v-else-if="mist">
             <i class="fas fa-smog icon"></i>
-            <p>{{ Weather.weather[0].main }}</p>
           </div>
           <div v-else>
             <i class="fas fa-question icon"></i>
-            <p>Unkown Weather Condition</p>
           </div>
         </h1>
-        <div>
-          <input
-            v-on:blur="onClickOutside"
-            ref="focus"
-            type="text"
-            v-model="city.name"
-            v-on:keyup.enter="submitNewCity"
-            v-autowidth="{
-              maxWidth: '100px',
-              minWidth: '20px',
-              comfortZone: 10,
-            }"
-            v-if="city.changeCity"
-            class="locationInput"
-          />
-          <h1 class="Location" v-else @click="getNewCity">
-            {{ Weather.name }}
-          </h1>
-        </div>
       </div>
     </div>
   </div>
@@ -172,15 +147,6 @@ export default {
   mounted() {
     this.getLocation();
     this.getDate();
-    this.$root.$on('revealWeather', () => {
-      this.setBackgroundColor();
-      this.showWeatherColor = true;
-      console.log('true', this.showWeatherColor);
-    });
-    this.$root.$on('hideWeather', () => {
-      this.showWeatherColor = false;
-      console.log('false', this.showWeatherColor);
-    });
   },
   computed: {
     Weather() {
@@ -397,8 +363,6 @@ export default {
         this.iconColor = 'black';
         this.locationIconColor = 'black';
       }
-      console.log('icon color', this.iconColor);
-      console.log('locaiton color', this.locationIconColor);
     },
     onClickOutside() {
       this.city.changeCity = false;
@@ -415,19 +379,18 @@ export default {
   position: relative;
   margin-top: 15px;
   height: 90px;
-  width: 135px;
+  width: 170px;
   border-radius: 10px;
   /* box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.2); */
   background-color: transparent;
   color: white;
+  text-shadow: 1pt 1pt 3pt black;
+}
+.main:hover {
+  cursor: pointer;
 }
 
 /* Widget styling */
-
-.icon {
-  z-index: 1000;
-  font-size: 27px !important;
-}
 .Condition {
   z-index: 1000;
   position: absolute;
@@ -438,10 +401,9 @@ export default {
   top: 22px;
   text-align: center;
 }
-.Condition p {
-  margin-bottom: 0;
-  font-size: 11px;
-  margin-top: 0;
+.icon {
+  z-index: 1000;
+  font-size: 35px !important;
 }
 
 .Temp {
@@ -450,11 +412,10 @@ export default {
   font-family: 'Roboto', sans-serif;
   font-size: 45px;
   font-weight: 400;
-  right: 60px;
+  right: 70px;
   bottom: 10px;
   display: flex;
 }
-
 #F {
   z-index: 1000;
   font-family: 'Roboto', sans-serif;
@@ -462,38 +423,21 @@ export default {
   font-size: 30px;
 }
 
-.Time {
+.TimeLocation {
   z-index: 1000;
   position: absolute;
-  font-family: 'Noto Sans', sans-serif;
+  right: 20px;
+  top: 0px;
+  display: flex;
+}
+.TimeLocation h1 {
   font-size: 12px;
-  font-weight: 100;
-  right: 20px;
-  bottom: 62px;
-}
-
-.locationIcon {
-  z-index: 1000;
-  font-size: 10px;
-  color: white;
-}
-
-.Location {
-  z-index: 1000;
-  position: absolute;
-  font-family: 'Noto Sans', sans-serif;
-  font-size: 14px;
   font-weight: 200;
-  right: 20px;
-  bottom: 0px;
-  cursor: pointer;
+  font-family: 'Noto Sans', sans-serif;
+  margin-bottom: 0;
+  text-shadow: 1pt 1pt 2pt black !important;
 }
-.locationInput {
-  z-index: 1000;
-  position: absolute;
-  right: 20px;
-  bottom: 5px;
-}
+
 @media (max-width: 1024px) {
   .main {
     width: 225px;

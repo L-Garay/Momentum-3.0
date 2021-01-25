@@ -46,7 +46,7 @@ export default {
 p {
   font-size: 20px;
   color: white;
-  text-shadow: 3px 3px 5px black;
+  text-shadow: 3px 3px 3px black;
   margin-bottom: 0;
 }
 /* Quote transition styling */
