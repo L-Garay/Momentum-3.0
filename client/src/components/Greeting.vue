@@ -205,6 +205,7 @@ export default {
 }
 h1 {
   text-shadow: 3px 3px 5px black;
+  font-size: 64px;
 }
 input {
   border: none;

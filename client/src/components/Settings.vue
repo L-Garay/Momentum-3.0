@@ -233,14 +233,14 @@ export default {
 p {
   color: rgb(255, 255, 255);
   font-size: 1.3rem;
-  text-shadow: 1px 1px 1px rgb(0, 0, 0);
+  text-shadow: 2px 2px 3px rgb(0, 0, 0);
   margin-top: 10px;
 }
 p:hover {
   color: white;
   cursor: pointer;
   font-size: 1.4rem;
-  text-shadow: 2px 2px 2px black;
+  text-shadow: 4px 4px 3px black;
 }
 
 li {

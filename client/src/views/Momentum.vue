@@ -20,10 +20,7 @@
           </div>
         </div>
         <div class="col-3 offset-7">
-          <weather
-            @mouseover.native="revealWeather"
-            @mouseleave.native="hideWeather"
-          />
+          <weather />
         </div>
         <div class="col-1">
           <!-- <calculator /> -->
@@ -33,7 +30,7 @@
     </div>
     <div class="container-fluid middle">
       <div class="row">
-        <div class="col-6 offset-3">
+        <div class="col-6 offset-3 mt-4">
           <clock />
           <greeting />
         </div>
@@ -205,16 +202,16 @@ export default {
       this.showQuoteModal = false;
     },
     // Weather control
-    revealWeather() {
-      console.log('I am revealed');
-      this.showWeatherColor = true;
-      this.$root.$emit('revealWeather');
-    },
-    hideWeather() {
-      console.log('I am hidden');
-      this.showWeatherColor = false;
-      this.$root.$emit('hideWeather');
-    },
+    // revealWeather() {
+    //   console.log('I am revealed');
+    //   this.showWeatherColor = true;
+    //   this.$root.$emit('revealWeather');
+    // },
+    // hideWeather() {
+    //   console.log('I am hidden');
+    //   this.showWeatherColor = false;
+    //   this.$root.$emit('hideWeather');
+    // },
     // News Modal control
     toggleNews() {
       if (this.toggledNews == true) {
@@ -325,13 +322,13 @@ export default {
 }
 p.utilities {
   color: white;
-  font-size: 20px;
+  font-size: 1.3rem;
   text-shadow: 3px 3px 3px black;
 }
 p.utilities:hover {
   cursor: pointer;
-  font-size: 25px;
-  text-shadow: 5px 5px 3px black;
+  font-size: 1.4rem;
+  text-shadow: 4px 4px 3px black;
 }
 .fade-enter-active,
 .fade-leave-active {
