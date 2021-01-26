@@ -357,9 +357,17 @@ button.btn {
   color: black;
 }
 button.btn:hover {
-  background-color: darkgray;
-  color: white;
-  box-shadow: 3pt 3pt 5pt black;
+  background-color: lightgray;
+  color: black;
+  box-shadow: 1pt 0pt 6pt black;
+}
+button.btn:active {
+  background-color: lightgray !important;
+}
+button.btn:focus {
+  background-color: transparent;
+  color: black;
+  box-shadow: 1pt 0pt 10pt rgba(0, 0, 0, 0.692) !important;
 }
 p.dropdown-item {
   margin-bottom: 0;
@@ -409,9 +417,9 @@ button.createBtn {
   border-radius: 5px 5px 5px 5px;
 }
 button.createBtn:hover {
-  background-color: darkgray;
-  color: white;
-  box-shadow: 3pt 3pt 5pt black;
+  background-color: lightgray;
+  color: black;
+  box-shadow: 1pt 0pt 5pt rgba(0, 0, 0, 0.692);
 }
 /* Font awesome styling */
 i.far,
