@@ -17,6 +17,13 @@ export default new Vuex.Store({
     },
     weather: {
       weather: {},
+      forecast: {
+        dayOne: [],
+        dayTwo: [],
+        dayThree: [],
+        dayFour: [],
+        dayFive: [],
+      },
     },
     quote: {
       quote: {},
@@ -83,6 +90,13 @@ export default new Vuex.Store({
     //#region --Weather Methods--
     setWeather(state, weather) {
       state.weather.weather = weather;
+    },
+    setWeatherForecast(state, weather) {
+      state.weather.forecast.dayOne = weather[0];
+      state.weather.forecast.dayTwo = weather[1];
+      state.weather.forecast.dayThree = weather[2];
+      state.weather.forecast.dayFour = weather[3];
+      state.weather.forecast.dayFive = weather[4];
     },
     //#endregion
 
@@ -303,6 +317,274 @@ export default new Vuex.Store({
       try {
         let res = await api.post('weather/change', cityName);
         commit('setWeather', res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getWeatherForecast({ commit }, coords) {
+      try {
+        let res = await api.post('weather/forecast', coords);
+        // Create basic weather data object
+        let day = {
+          high: 0,
+          low: 100,
+          condition: undefined,
+          feels_like_high: 0,
+          feels_like_low: 100,
+          humidity_high: 0,
+          humidity_low: 100,
+          wind_speed_high: 0,
+          wind_speed_low: 100,
+        };
+        // Create empty array to push modified objects into
+        let data = [];
+        // Split up the data into the proper day 'chunks' -- 8 data points = 1 day (each data point is 3hrs)
+        let dayOneRaw = res.data.list.slice(0, 8);
+        let dayTwoRaw = res.data.list.slice(8, 16);
+        let dayThreeRaw = res.data.list.slice(16, 24);
+        let dayFourRaw = res.data.list.slice(24, 32);
+        let dayFiveRaw = res.data.list.slice(32);
+        // So for each day chunk we need to grab the day's high/low temp, humidity, wind speed, and feels like values; and to do that I used a forloop to iterate over each 'day' and capture the high and low values.
+        for (let i = 0; i < dayOneRaw.length; i++) {
+          // Get the day high
+          if (dayOneRaw[i].main.temp > day.high) {
+            day.high = dayOneRaw[i].main.temp;
+          }
+          // Get the day low
+          if (dayOneRaw[i].main.temp < day.low) {
+            day.low = dayOneRaw[i].main.temp;
+          }
+          // Get the feels high
+          if (dayOneRaw[i].main.feels_like > day.feels_like_high) {
+            day.feels_like_high = dayOneRaw[i].main.feels_like;
+          }
+          // Get the feels low
+          if (dayOneRaw[i].main.feels_like < day.feels_like_low) {
+            day.feels_like_low = dayOneRaw[i].main.feels_like;
+          }
+          // Get the humidity high
+          if (dayOneRaw[i].main.humidity > day.humidity_high) {
+            day.humidity_high = dayOneRaw[i].main.humidity;
+          }
+          // Get the humidity low
+          if (dayOneRaw[i].main.humidity < day.humidity_low) {
+            day.humidity_low = dayOneRaw[i].main.humidity;
+          }
+          // Get the wind high
+          if (dayOneRaw[i].wind.speed > day.wind_speed_high) {
+            day.wind_speed_high = dayOneRaw[i].wind.speed;
+          }
+          // Get the wind low
+          if (dayOneRaw[i].wind.speed < day.wind_speed_low) {
+            day.wind_speed_low = dayOneRaw[i].wind.speed;
+          }
+        }
+        // Then I just used the 5th data point (4th index), which is equivalent to noon, to grab the weather condition for that day.
+        day.condition = dayOneRaw[4].weather[0].main;
+        // Push it into data array
+        data.push(day);
+        // Reset the day object
+        day = {
+          high: 0,
+          low: 100,
+          condition: undefined,
+          feels_like_high: 0,
+          feels_like_low: 100,
+          humidity_high: 0,
+          humidity_low: 100,
+          wind_speed_high: 0,
+          wind_speed_low: 100,
+        };
+        for (let i = 0; i < dayTwoRaw.length; i++) {
+          // Get the day high
+          if (dayTwoRaw[i].main.temp > day.high) {
+            day.high = dayTwoRaw[i].main.temp;
+          }
+          // Get the day low
+          if (dayTwoRaw[i].main.temp < day.low) {
+            day.low = dayTwoRaw[i].main.temp;
+          }
+          // Get the feels high
+          if (dayTwoRaw[i].main.feels_like > day.feels_like_high) {
+            day.feels_like_high = dayTwoRaw[i].main.feels_like;
+          }
+          // Get the feels low
+          if (dayTwoRaw[i].main.feels_like < day.feels_like_low) {
+            day.feels_like_low = dayTwoRaw[i].main.feels_like;
+          }
+          // Get the humidity high
+          if (dayTwoRaw[i].main.humidity > day.humidity_high) {
+            day.humidity_high = dayTwoRaw[i].main.humidity;
+          }
+          // Get the humidity low
+          if (dayTwoRaw[i].main.humidity < day.humidity_low) {
+            day.humidity_low = dayTwoRaw[i].main.humidity;
+          }
+          // Get the wind high
+          if (dayTwoRaw[i].wind.speed > day.wind_speed_high) {
+            day.wind_speed_high = dayTwoRaw[i].wind.speed;
+          }
+          // Get the wind low
+          if (dayTwoRaw[i].wind.speed < day.wind_speed_low) {
+            day.wind_speed_low = dayTwoRaw[i].wind.speed;
+          }
+        }
+        day.condition = dayOneRaw[4].weather[0].main;
+        data.push(day);
+        day = {
+          high: 0,
+          low: 100,
+          condition: undefined,
+          feels_like_high: 0,
+          feels_like_low: 100,
+          humidity_high: 0,
+          humidity_low: 100,
+          wind_speed_high: 0,
+          wind_speed_low: 100,
+        };
+        for (let i = 0; i < dayThreeRaw.length; i++) {
+          // Get the day high
+          if (dayThreeRaw[i].main.temp > day.high) {
+            day.high = dayThreeRaw[i].main.temp;
+          }
+          // Get the day low
+          if (dayThreeRaw[i].main.temp < day.low) {
+            day.low = dayThreeRaw[i].main.temp;
+          }
+          // Get the feels high
+          if (dayThreeRaw[i].main.feels_like > day.feels_like_high) {
+            day.feels_like_high = dayThreeRaw[i].main.feels_like;
+          }
+          // Get the feels low
+          if (dayThreeRaw[i].main.feels_like < day.feels_like_low) {
+            day.feels_like_low = dayThreeRaw[i].main.feels_like;
+          }
+          // Get the humidity high
+          if (dayThreeRaw[i].main.humidity > day.humidity_high) {
+            day.humidity_high = dayThreeRaw[i].main.humidity;
+          }
+          // Get the humidity low
+          if (dayThreeRaw[i].main.humidity < day.humidity_low) {
+            day.humidity_low = dayThreeRaw[i].main.humidity;
+          }
+          // Get the wind high
+          if (dayThreeRaw[i].wind.speed > day.wind_speed_high) {
+            day.wind_speed_high = dayThreeRaw[i].wind.speed;
+          }
+          // Get the wind low
+          if (dayThreeRaw[i].wind.speed < day.wind_speed_low) {
+            day.wind_speed_low = dayThreeRaw[i].wind.speed;
+          }
+        }
+        day.condition = dayOneRaw[4].weather[0].main;
+        data.push(day);
+        day = {
+          high: 0,
+          low: 100,
+          condition: undefined,
+          feels_like_high: 0,
+          feels_like_low: 100,
+          humidity_high: 0,
+          humidity_low: 100,
+          wind_speed_high: 0,
+          wind_speed_low: 100,
+        };
+        for (let i = 0; i < dayFourRaw.length; i++) {
+          // Get the day high
+          if (dayFourRaw[i].main.temp > day.high) {
+            day.high = dayFourRaw[i].main.temp;
+          }
+          // Get the day low
+          if (dayFourRaw[i].main.temp < day.low) {
+            day.low = dayFourRaw[i].main.temp;
+          }
+          // Get the feels high
+          if (dayFourRaw[i].main.feels_like > day.feels_like_high) {
+            day.feels_like_high = dayFourRaw[i].main.feels_like;
+          }
+          // Get the feels low
+          if (dayFourRaw[i].main.feels_like < day.feels_like_low) {
+            day.feels_like_low = dayFourRaw[i].main.feels_like;
+          }
+          // Get the humidity high
+          if (dayFourRaw[i].main.humidity > day.humidity_high) {
+            day.humidity_high = dayFourRaw[i].main.humidity;
+          }
+          // Get the humidity low
+          if (dayFourRaw[i].main.humidity < day.humidity_low) {
+            day.humidity_low = dayFourRaw[i].main.humidity;
+          }
+          // Get the wind high
+          if (dayFourRaw[i].wind.speed > day.wind_speed_high) {
+            day.wind_speed_high = dayFourRaw[i].wind.speed;
+          }
+          // Get the wind low
+          if (dayFourRaw[i].wind.speed < day.wind_speed_low) {
+            day.wind_speed_low = dayFourRaw[i].wind.speed;
+          }
+        }
+        day.condition = dayOneRaw[4].weather[0].main;
+        data.push(day);
+        day = {
+          high: 0,
+          low: 100,
+          condition: undefined,
+          feels_like_high: 0,
+          feels_like_low: 100,
+          humidity_high: 0,
+          humidity_low: 100,
+          wind_speed_high: 0,
+          wind_speed_low: 100,
+        };
+        for (let i = 0; i < dayFiveRaw.length; i++) {
+          // Get the day high
+          if (dayFiveRaw[i].main.temp > day.high) {
+            day.high = dayFiveRaw[i].main.temp;
+          }
+          // Get the day low
+          if (dayFiveRaw[i].main.temp < day.low) {
+            day.low = dayFiveRaw[i].main.temp;
+          }
+          // Get the feels high
+          if (dayFiveRaw[i].main.feels_like > day.feels_like_high) {
+            day.feels_like_high = dayFiveRaw[i].main.feels_like;
+          }
+          // Get the feels low
+          if (dayFiveRaw[i].main.feels_like < day.feels_like_low) {
+            day.feels_like_low = dayFiveRaw[i].main.feels_like;
+          }
+          // Get the humidity high
+          if (dayFiveRaw[i].main.humidity > day.humidity_high) {
+            day.humidity_high = dayFiveRaw[i].main.humidity;
+          }
+          // Get the humidity low
+          if (dayFiveRaw[i].main.humidity < day.humidity_low) {
+            day.humidity_low = dayFiveRaw[i].main.humidity;
+          }
+          // Get the wind high
+          if (dayFiveRaw[i].wind.speed > day.wind_speed_high) {
+            day.wind_speed_high = dayFiveRaw[i].wind.speed;
+          }
+          // Get the wind low
+          if (dayFiveRaw[i].wind.speed < day.wind_speed_low) {
+            day.wind_speed_low = dayFiveRaw[i].wind.speed;
+          }
+        }
+        day.condition = dayOneRaw[4].weather[0].main;
+        data.push(day);
+        // Finally send the data array (which should now have 5 objects (days) with weather data)
+        commit('setWeatherForecast', data);
+        day = {
+          high: 0,
+          low: 100,
+          condition: undefined,
+          feels_like_high: 0,
+          feels_like_low: 100,
+          humidity_high: 0,
+          humidity_low: 100,
+          wind_speed_high: 0,
+          wind_speed_low: 100,
+        };
       } catch (error) {
         console.log(error);
       }

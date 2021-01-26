@@ -164,6 +164,7 @@ export default {
       this.coord.lat = position.coords.latitude.toString();
       this.coord.lon = position.coords.longitude.toString();
       let coords = { ...this.coord };
+      this.$store.dispatch('getWeatherForecast', coords);
       await this.$store.dispatch('getWeather', coords);
       this.checkCondition();
       this.gotWeather = true;

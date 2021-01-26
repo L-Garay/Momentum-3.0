@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="col-3 offset-7">
-          <weather @click="toggle5DayForecast" />
+          <div @click="toggle5DayForecast"><weather /></div>
           <transition name="fade">
             <div v-if="show5DayForecast">
               <forecast />
