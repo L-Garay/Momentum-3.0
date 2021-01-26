@@ -148,6 +148,7 @@ export default {
     NewsModal,
     Utilities,
     Game,
+    Forecast,
   },
   data() {
     return {
