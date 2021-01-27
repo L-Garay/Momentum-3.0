@@ -49,7 +49,7 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      document.addEventListener('click', this.setupEventListener(), true);
+      document.addEventListener('click', this.setupEventListener());
     }, 1000);
     // setTimeout(() => {
     //   document.addEventListener('click', (event) => {
@@ -58,7 +58,7 @@ export default {
     // }, 1000);
   },
   beforeDestroy() {
-    document.removeEventListener('click', this.setupEventListener(), true);
+    document.removeEventListener('click', this.setupEventListener());
   },
   computed: {
     Today() {
@@ -92,7 +92,7 @@ export default {
       if (!this.$el.contains(event.target)) {
         this.$emit('closeForecast');
         console.log('removed');
-        document.removeEventListener('');
+        document.removeEventListener('click', this.setupEventListener());
       }
     },
   },
