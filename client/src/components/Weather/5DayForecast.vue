@@ -9,7 +9,11 @@
           </div>
           <div class="weatherData">
             <div class="tempCondition">
-              <h1 class="temp">
+              <h1 v-if="use.metric" class="temp">
+                {{ Math.round(Today.main.temp - 32 / 1.8) }}
+                <p id="degree">&#176;</p>
+              </h1>
+              <h1 v-else class="temp">
                 {{ Math.round(Today.main.temp) }}
                 <p id="degree">&#176;</p>
               </h1>
@@ -40,14 +44,33 @@
             </div>
             <div class="extraWeatherData">
               <div v-if="show.today" class="today">
-                <p>
-                  <small>Feels Like: {{ Today.main.feels_like }}&#176;</small>
+                <p v-if="use.metric">
+                  <small
+                    >Feels Like:
+                    {{
+                      Math.round(Today.main.feels_like - 32 / 1.8)
+                    }}&#176;</small
+                  >
+                </p>
+                <p v-else>
+                  <small
+                    >Feels Like:
+                    {{ Math.round(Today.main.feels_like) }}&#176;</small
+                  >
                 </p>
                 <p>
                   <small>Humidity: {{ Today.main.humidity }}%</small>
                 </p>
-                <p>
-                  <small>Wind Speed: {{ Today.wind.speed }}/mph</small>
+                <p v-if="use.metric">
+                  <small
+                    >Wind Speed:
+                    {{ Math.round(Today.wind.speed * 1.609) }}/kph</small
+                  >
+                </p>
+                <p v-else>
+                  <small
+                    >Wind Speed: {{ Math.round(Today.wind.speed) }}/mph</small
+                  >
                 </p>
               </div>
             </div>
@@ -62,7 +85,11 @@
           </div>
           <div class="weatherData">
             <div class="tempCondition">
-              <h1 class="temp">
+              <h1 v-if="use.metric" class="temp">
+                {{ Math.round(Current.high - 32 / 1.8) }}
+                <p id="degree">&#176;</p>
+              </h1>
+              <h1 v-else class="temp">
                 {{ Math.round(Current.high) }}
                 <p id="degree">&#176;</p>
               </h1>
@@ -96,10 +123,19 @@
             </div>
             <div class="extraWeatherData">
               <div class="extraWeather">
-                <p>
+                <p v-if="use.metric">
                   <small
-                    >Feels Like: {{ Current.feels_like_high }} -
-                    {{ Current.feels_like_low }}&#176;</small
+                    >Feels Like:
+                    {{ Math.round(Current.feels_like_high - 32 / 1.8) }} -
+                    {{
+                      Math.round(Current.feels_like_low - 32 / 1.8)
+                    }}&#176;</small
+                  >
+                </p>
+                <p v-else>
+                  <small
+                    >Feels Like: {{ Math.round(Current.feels_like_high) }} -
+                    {{ Math.round(Current.feels_like_low) }}&#176;</small
                   >
                 </p>
                 <p>
@@ -108,10 +144,17 @@
                     {{ Current.humidity_low }}%</small
                   >
                 </p>
-                <p>
+                <p v-if="use.metric">
                   <small
-                    >Wind Speed: {{ Current.wind_speed_high }} -
-                    {{ Current.wind_speed_low }}/mph</small
+                    >Wind Speed:
+                    {{ Math.round(Current.wind_speed_high * 1.609) }} -
+                    {{ Math.round(Current.wind_speed_low * 1.609) }}/kph</small
+                  >
+                </p>
+                <p v-else>
+                  <small
+                    >Wind Speed: {{ Math.round(Current.wind_speed_high) }} -
+                    {{ Math.round(Current.wind_speed_low) }}/mph</small
                   >
                 </p>
               </div>
@@ -119,7 +162,21 @@
           </div>
         </div>
       </div>
-      <div class="settingsArea"></div>
+      <div class="settingsArea">
+        <div class="switch">
+          <div class="custom-control custom-switch">
+            <input
+              type="checkbox"
+              class="custom-control-input"
+              id="metricSwitch"
+              @input="switchUnits"
+            />
+            <label class="custom-control-label" for="metricSwitch"
+              >Toggle Metric Units</label
+            >
+          </div>
+        </div>
+      </div>
     </div>
     <div class="forecastArea container-fluid">
       <div class="row">
@@ -352,12 +409,18 @@ export default {
       show: {
         today: true,
       },
+      use: {
+        metric: false,
+      },
     };
   },
   beforeUpdate() {
     this.weather = this.weatherData;
   },
   mounted() {
+    // TODO use this code to check if a user's prefference is metric units and then switch the 'use.metric' boolean along with adding/removing the 'checked' attribute from the input
+    // document.getElementById('metricSwitch').setAttribute('checked', 'checked');
+    // document.getElementById('metricSwitch').removeAttribute('checked');
     setTimeout(() => {
       document.addEventListener('click', this.setupEventListener, false);
     }, 1000);
@@ -423,6 +486,14 @@ export default {
           this.$store.state.weather.forecast.current = this.$store.state.weather.weather;
           break;
       }
+    },
+    switchUnits() {
+      if (this.use.metric == false) {
+        this.use.metric = true;
+      } else if (this.use.metric == true) {
+        this.use.metric = false;
+      }
+      console.log(this.use.metric);
     },
   },
 };
