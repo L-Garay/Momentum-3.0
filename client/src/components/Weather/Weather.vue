@@ -77,7 +77,7 @@
           </div>
           <h1 class="Temp" v-if="gotWeather">
             {{ Math.round(Weather.main.temp) }}
-            <p id="F"><small>&#176;</small></p>
+            <p id="F">&#176;</p>
           </h1>
           <h1 class="Condition">
             <div v-if="weather.condition.sunny">
@@ -441,8 +441,8 @@ export default {
 #F {
   z-index: 1000;
   font-family: 'Roboto', sans-serif;
-  font-weight: 150;
-  font-size: 30px;
+  font-weight: 350;
+  font-size: 36px;
 }
 
 .TimeLocation {

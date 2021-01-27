@@ -18,11 +18,12 @@ export default new Vuex.Store({
     weather: {
       weather: {},
       forecast: {
-        dayOne: [],
-        dayTwo: [],
-        dayThree: [],
-        dayFour: [],
-        dayFive: [],
+        current: {},
+        dayOne: {},
+        dayTwo: {},
+        dayThree: {},
+        dayFour: {},
+        dayFive: {},
       },
     },
     quote: {
@@ -90,6 +91,7 @@ export default new Vuex.Store({
     //#region --Weather Methods--
     setWeather(state, weather) {
       state.weather.weather = weather;
+      state.weather.forecast.current = weather;
     },
     setWeatherForecast(state, weather) {
       state.weather.forecast.dayOne = weather[0];
