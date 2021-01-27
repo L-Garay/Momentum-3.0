@@ -6,28 +6,292 @@
           <div class="dateLocation">
             <p>{{ Today.name }} / Date goes here</p>
           </div>
-          <div class="tempCondition">
-            <h1 class="temp">
-              {{ Math.round(Today.main.temp) }}
-              <p id="degree"><small>&#176;</small></p>
-            </h1>
-            <div class="condition">
-              <i v-if="sunny" class="fas fa-sun icon"></i>
-              <i v-else-if="rain" class="fas fa-cloud-showers-heavy icon"></i>
-              <i v-else-if="cloudy" class="fas fa-cloud icon"></i>
-              <i v-else-if="snow" class="far fa-snowflake icon"></i>
-              <i v-else-if="fog" class="fas fa-smog icon"></i>
-              <i v-else-if="mist" class="fas fa-smog icon"></i>
-              <i v-else class="fas fa-question icon"></i>
+          <div class="weatherData">
+            <div class="tempCondition">
+              <h1 class="temp">
+                {{ Math.round(Today.main.temp) }}
+                <p id="degree">&#176;</p>
+              </h1>
+              <div class="condition">
+                <i v-if="weather.condition.sunny" class="fas fa-sun icon"></i>
+                <i
+                  v-else-if="weather.condition.rain"
+                  class="fas fa-cloud-showers-heavy icon"
+                ></i>
+                <i
+                  v-else-if="weather.condition.cloudy"
+                  class="fas fa-cloud icon"
+                ></i>
+                <i
+                  v-else-if="weather.condition.snow"
+                  class="far fa-snowflake icon"
+                ></i>
+                <i
+                  v-else-if="weather.condition.fog"
+                  class="fas fa-smog icon"
+                ></i>
+                <i
+                  v-else-if="weather.condition.mist"
+                  class="fas fa-smog icon"
+                ></i>
+                <i v-else class="fas fa-question icon"></i>
+              </div>
+            </div>
+            <div class="extraWeatherData">
+              <div v-if="show.today" class="today">
+                <p>
+                  <small>Feels Like: {{ Today.main.feels_like }}&#176;</small>
+                </p>
+                <p>
+                  <small>Humidity: {{ Today.main.humidity }}%</small>
+                </p>
+                <p>
+                  <small>Wind Speed: {{ Today.wind.speed }}/mph</small>
+                </p>
+              </div>
+              <div v-else class="forecast">
+                <p>
+                  <small
+                    >{{ Today.main.feels_like_low }} -
+                    {{ Today.main.feels_like_high }}</small
+                  >
+                </p>
+                <p>
+                  <small
+                    >{{ Today.main.humidity_low }} -
+                    {{ Today.main.humidity_high }}</small
+                  >
+                </p>
+                <p>
+                  <small
+                    >{{ Today.wind_speed_low }} -
+                    {{ Today.wind_speed_high }}</small
+                  >
+                </p>
+              </div>
             </div>
           </div>
-          <div class="extraWeatherData"></div>
         </div>
       </div>
       <div class="settingsArea"></div>
     </div>
-    <div class="forecastArea">
-      <!-- This is where the 5 day forecast data will be displayed.  Still haven't decided if I'm going to use a container/row/col design or just use divs, I'll try columns first and see how it looks. -->
+    <div class="forecastArea container-fluid">
+      <div class="row">
+        <div class="col">
+          <p class="day">DayOne</p>
+          <div class="forecastData">
+            <div class="forecastCondition">
+              <i v-if="DayOne.condition == 'Clear'" class="fas fa-sun icon"></i>
+              <i
+                v-else-if="DayOne.condition == 'Rain'"
+                class="fas fa-cloud-showers-heavy icon"
+              ></i>
+              <i
+                v-else-if="DayOne.condition == 'Clouds'"
+                class="fas fa-cloud icon"
+              ></i>
+              <i
+                v-else-if="DayOne.condition == 'Snow'"
+                class="far fa-snowflake icon"
+              ></i>
+              <i
+                v-else-if="DayOne.condition == 'Fog'"
+                class="fas fa-smog icon"
+              ></i>
+              <i
+                v-else-if="DayOne.condition == 'Mist'"
+                class="fas fa-smog icon"
+              ></i>
+              <i v-else class="fas fa-question icon"></i>
+            </div>
+            <div class="forecastTemp">
+              <div class="forecastHigh">
+                <p>
+                  <small>{{ Math.round(DayOne.high) }}&#176;</small>
+                </p>
+              </div>
+              <div class="forecastLow">
+                <p>
+                  <small>{{ Math.round(DayOne.low) }}&#176;</small>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <p class="day">DayTwo</p>
+          <div class="forecastData">
+            <div class="forecastCondition">
+              <i v-if="DayTwo.condition == 'Clear'" class="fas fa-sun icon"></i>
+              <i
+                v-else-if="DayTwo.condition == 'Rain'"
+                class="fas fa-cloud-showers-heavy icon"
+              ></i>
+              <i
+                v-else-if="DayTwo.condition == 'Clouds'"
+                class="fas fa-cloud icon"
+              ></i>
+              <i
+                v-else-if="DayTwo.condition == 'Snow'"
+                class="far fa-snowflake icon"
+              ></i>
+              <i
+                v-else-if="DayTwo.condition == 'Fog'"
+                class="fas fa-smog icon"
+              ></i>
+              <i
+                v-else-if="DayTwo.condition == 'Mist'"
+                class="fas fa-smog icon"
+              ></i>
+              <i v-else class="fas fa-question icon"></i>
+            </div>
+            <div class="forecastTemp">
+              <div class="forecastHigh">
+                <p>
+                  <small>{{ Math.round(DayTwo.high) }}&#176;</small>
+                </p>
+              </div>
+              <div class="forecastLow">
+                <p>
+                  <small>{{ Math.round(DayTwo.low) }}&#176;</small>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <p class="day">DayThree</p>
+          <div class="forecastData">
+            <div class="forecastCondition">
+              <i
+                v-if="DayThree.condition == 'Clear'"
+                class="fas fa-sun icon"
+              ></i>
+              <i
+                v-else-if="DayThree.condition == 'Rain'"
+                class="fas fa-cloud-showers-heavy icon"
+              ></i>
+              <i
+                v-else-if="DayThree.condition == 'Clouds'"
+                class="fas fa-cloud icon"
+              ></i>
+              <i
+                v-else-if="DayThree.condition == 'Snow'"
+                class="far fa-snowflake icon"
+              ></i>
+              <i
+                v-else-if="DayThree.condition == 'Fog'"
+                class="fas fa-smog icon"
+              ></i>
+              <i
+                v-else-if="DayThree.condition == 'Mist'"
+                class="fas fa-smog icon"
+              ></i>
+              <i v-else class="fas fa-question icon"></i>
+            </div>
+            <div class="forecastTemp">
+              <div class="forecastHigh">
+                <p>
+                  <small>{{ Math.round(DayThree.high) }}&#176;</small>
+                </p>
+              </div>
+              <div class="forecastLow">
+                <p>
+                  <small>{{ Math.round(DayThree.low) }}&#176;</small>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <p class="day">DayFour</p>
+          <div class="forecastData">
+            <div class="forecastCondition">
+              <i
+                v-if="DayFour.condition == 'Clear'"
+                class="fas fa-sun icon"
+              ></i>
+              <i
+                v-else-if="DayFour.condition == 'Rain'"
+                class="fas fa-cloud-showers-heavy icon"
+              ></i>
+              <i
+                v-else-if="DayFour.condition == 'Clouds'"
+                class="fas fa-cloud icon"
+              ></i>
+              <i
+                v-else-if="DayFour.condition == 'Snow'"
+                class="far fa-snowflake icon"
+              ></i>
+              <i
+                v-else-if="DayFour.condition == 'Fog'"
+                class="fas fa-smog icon"
+              ></i>
+              <i
+                v-else-if="DayFour.condition == 'Mist'"
+                class="fas fa-smog icon"
+              ></i>
+              <i v-else class="fas fa-question icon"></i>
+            </div>
+            <div class="forecastTemp">
+              <div class="forecastHigh">
+                <p>
+                  <small>{{ Math.round(DayFour.high) }}&#176;</small>
+                </p>
+              </div>
+              <div class="forecastLow">
+                <p>
+                  <small>{{ Math.round(DayFour.low) }}&#176;</small>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <p class="day">DayFive</p>
+          <div class="forecastData">
+            <div class="forecastCondition">
+              <i
+                v-if="DayFive.condition == 'Clear'"
+                class="fas fa-sun icon"
+              ></i>
+              <i
+                v-else-if="DayFive.condition == 'Rain'"
+                class="fas fa-cloud-showers-heavy icon"
+              ></i>
+              <i
+                v-else-if="DayFive.condition == 'Clouds'"
+                class="fas fa-cloud icon"
+              ></i>
+              <i
+                v-else-if="DayFive.condition == 'Snow'"
+                class="far fa-snowflake icon"
+              ></i>
+              <i
+                v-else-if="DayFive.condition == 'Fog'"
+                class="fas fa-smog icon"
+              ></i>
+              <i
+                v-else-if="DayFive.condition == 'Mist'"
+                class="fas fa-smog icon"
+              ></i>
+              <i v-else class="fas fa-question icon"></i>
+            </div>
+            <div class="forecastTemp">
+              <div class="forecastHigh">
+                <p>
+                  <small>{{ Math.round(DayFive.high) }}&#176;</small>
+                </p>
+              </div>
+              <div class="forecastLow">
+                <p>
+                  <small>{{ Math.round(DayFive.low) }}&#176;</small>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -35,17 +299,17 @@
 <script>
 export default {
   name: 'FiveDayForecastComponent',
+  props: ['weatherData'],
   data() {
     return {
-      // Possible weather conditions
-      sunny: false,
-      rain: false,
-      snow: false,
-      cloudy: false,
-      fog: false,
-      mist: false,
-      unkownCondition: false,
+      weather: this.weatherData,
+      show: {
+        today: true,
+      },
     };
+  },
+  beforeUpdate() {
+    this.weather = this.weatherData;
   },
   mounted() {
     setTimeout(() => {
@@ -103,6 +367,16 @@ div.mainDisplayArea {
 div.weatherDataArea {
   width: 310px;
 }
+div.weatherData {
+  display: flex;
+}
+h1.temp {
+  display: flex;
+}
+p.degree {
+  margin-top: -10px;
+  font-size: 74px;
+}
 div.settingsArea {
   width: 165px;
   border-left: 1pt solid white;
@@ -110,5 +384,11 @@ div.settingsArea {
 div.forecastArea {
   border-top: 1pt solid white;
   height: 80px;
+}
+div.forecastData {
+  display: flex;
+}
+div.forecastTemp p {
+  margin-bottom: 0;
 }
 </style>

@@ -80,22 +80,22 @@
             <p id="F"><small>&#176;</small></p>
           </h1>
           <h1 class="Condition">
-            <div v-if="sunny">
+            <div v-if="weather.condition.sunny">
               <i class="fas fa-sun icon"></i>
             </div>
-            <div v-else-if="rain">
+            <div v-else-if="weather.condition.rain">
               <i class="fas fa-cloud-showers-heavy icon"></i>
             </div>
-            <div v-else-if="cloudy">
+            <div v-else-if="weather.condition.cloudy">
               <i class="fas fa-cloud icon"></i>
             </div>
-            <div v-else-if="snow">
+            <div v-else-if="weather.condition.snow">
               <i class="far fa-snowflake icon"></i>
             </div>
-            <div v-else-if="fog">
+            <div v-else-if="weather.condition.fog">
               <i class="fas fa-smog icon"></i>
             </div>
-            <div v-else-if="mist">
+            <div v-else-if="weather.condition.mist">
               <i class="fas fa-smog icon"></i>
             </div>
             <div v-else>
@@ -105,7 +105,11 @@
         </div>
       </div>
     </div>
-    <forecast v-if="showForecast" @closeForecast="toggle5DayForecast" />
+    <forecast
+      v-if="showForecast"
+      @closeForecast="toggle5DayForecast"
+      :weatherData="weather"
+    />
   </div>
 </template>
 
@@ -116,7 +120,6 @@ Vue.use(VueInputAutoWidth);
 import Forecast from '@/components/Weather/5DayForecast.vue';
 export default {
   name: 'Weather',
-  props: ['weatherData'],
   components: { Forecast },
   data() {
     return {
@@ -136,18 +139,23 @@ export default {
       day: '',
       month: '',
       // Possible weather conditions
-      sunny: false,
-      rain: false,
-      snow: false,
-      cloudy: false,
-      fog: false,
-      mist: false,
-      unkownCondition: false,
-      // For widget styling
-      backgroundColor: '',
-      textColor: 'black',
-      iconColor: '',
-      locationIconColor: 'black',
+      weather: {
+        condition: {
+          sunny: false,
+          rain: false,
+          snow: false,
+          cloudy: false,
+          fog: false,
+          mist: false,
+          unkownCondition: false,
+        },
+        styling: {
+          backgroundColor: '',
+          textColor: 'black',
+          iconColor: '',
+          locationIconColor: 'black',
+        },
+      },
     };
   },
   mounted() {
@@ -221,61 +229,61 @@ export default {
     checkCondition() {
       switch (this.$store.state.weather.weather.weather[0].main) {
         case 'Clear':
-          this.sunny = true;
-          this.cloudy = false;
-          this.rain = false;
-          this.snow = false;
-          this.fog = false;
-          this.mist = false;
-          this.textColor = 'black';
+          this.weather.condition.sunny = true;
+          this.weather.condition.cloudy = false;
+          this.weather.condition.rain = false;
+          this.weather.condition.snow = false;
+          this.weather.condition.fog = false;
+          this.weather.condition.mist = false;
+          this.weather.styling.textColor = 'black';
           break;
         case 'Clouds':
-          this.cloudy = true;
-          this.sunny = false;
-          this.rain = false;
-          this.snow = false;
-          this.fog = false;
-          this.mist = false;
-          this.textColor = 'white';
+          this.weather.condition.cloudy = true;
+          this.weather.condition.sunny = false;
+          this.weather.condition.rain = false;
+          this.weather.condition.snow = false;
+          this.weather.condition.fog = false;
+          this.weather.condition.mist = false;
+          this.weather.styling.textColor = 'white';
           break;
         case 'Rain':
-          this.rain = true;
-          this.cloudy = false;
-          this.sunny = false;
-          this.snow = false;
-          this.fog = false;
-          this.mist = false;
-          this.textColor = 'white';
+          this.weather.condition.rain = true;
+          this.weather.condition.cloudy = false;
+          this.weather.condition.sunny = false;
+          this.weather.condition.snow = false;
+          this.weather.condition.fog = false;
+          this.weather.condition.mist = false;
+          this.weather.styling.textColor = 'white';
           break;
         case 'Snow':
-          this.snow = true;
-          this.cloudy = false;
-          this.sunny = false;
-          this.rain = false;
-          this.fog = false;
-          this.mist = false;
-          this.textColor = 'black';
+          this.weather.condition.snow = true;
+          this.weather.condition.cloudy = false;
+          this.weather.condition.sunny = false;
+          this.weather.condition.rain = false;
+          this.weather.condition.fog = false;
+          this.weather.condition.mist = false;
+          this.weather.styling.textColor = 'black';
           break;
         case 'Fog':
-          this.fog = true;
-          this.cloudy = false;
-          this.sunny = false;
-          this.snow = false;
-          this.rain = false;
-          this.mist = false;
-          this.textColor = 'white';
+          this.weather.condition.fog = true;
+          this.weather.condition.cloudy = false;
+          this.weather.condition.sunny = false;
+          this.weather.condition.snow = false;
+          this.weather.condition.rain = false;
+          this.weather.condition.mist = false;
+          this.weather.styling.textColor = 'white';
           break;
         case 'Mist':
-          this.fog = false;
-          this.cloudy = false;
-          this.sunny = false;
-          this.snow = false;
-          this.rain = false;
-          this.mist = true;
-          this.textColor = 'white';
+          this.weather.condition.fog = false;
+          this.weather.condition.cloudy = false;
+          this.weather.condition.sunny = false;
+          this.weather.condition.snow = false;
+          this.weather.condition.rain = false;
+          this.weather.condition.mist = true;
+          this.weather.styling.textColor = 'white';
           break;
         default:
-          this.unkownCondition = true;
+          this.weather.condition.unkownCondition = true;
       }
       this.setBackgroundColor();
     },
@@ -284,99 +292,99 @@ export default {
 
       // Sunny
       if (
-        this.sunny == true &&
+        this.weather.condition.sunny == true &&
         this.$store.state.weather.weather.main.temp > 100
       ) {
         // let change = document.getElementById('changeColor');
         // change.style.backgroundColor = 'rgb(248, 78, 35)';
-        this.backgroundColor = 'rgb(248, 78, 35)';
-        this.iconColor = 'rgb(252, 196, 15)';
+        this.weather.styling.backgroundColor = 'rgb(248, 78, 35)';
+        this.weather.styling.iconColor = 'rgb(252, 196, 15)';
       } else if (
-        this.sunny == true &&
+        this.weather.condition.sunny == true &&
         this.$store.state.weather.weather.main.temp >= 70
       ) {
         // let change = document.getElementById('changeColor');
         // change.style.backgroundColor = 'rgb(248, 181, 35)';
-        this.backgroundColor = 'rgb(248, 181, 35)';
-        this.iconColor = 'rgb(252, 62, 29)';
+        this.weather.styling.backgroundColor = 'rgb(248, 181, 35)';
+        this.weather.styling.iconColor = 'rgb(252, 62, 29)';
       } else if (
-        this.sunny == true &&
+        this.weather.condition.sunny == true &&
         this.$store.state.weather.weather.main.temp > 50
       ) {
         // let change = document.getElementById('changeColor');
         // change.style.backgroundColor = 'rgb(253, 253, 61)';
-        this.backgroundColor = 'rgb(253, 253, 61)';
-        this.iconColor = 'rgb(252, 155, 29)';
+        this.weather.styling.backgroundColor = 'rgb(253, 253, 61)';
+        this.weather.styling.iconColor = 'rgb(252, 155, 29)';
       } else if (
-        this.sunny == true &&
+        this.weather.condition.sunny == true &&
         this.$store.state.weather.weather.main.temp > 0
       ) {
         // this.backgroundColor = "rgb(241, 241, 126)";
         // this.iconColor = "rgb(252, 161, 41)";
         // let change = document.getElementById('changeColor');
         // change.style.backgroundColor = 'rgb(241, 241, 126)';
-        this.backgroundColor = 'rgb(241, 241, 126)';
-        this.iconColor = 'rgb(252, 161, 41)';
+        this.weather.styling.backgroundColor = 'rgb(241, 241, 126)';
+        this.weather.styling.iconColor = 'rgb(252, 161, 41)';
       } else if (
-        this.sunny == true &&
+        this.weather.condition.sunny == true &&
         this.$store.state.weather.weather.main.temp <= 0
       ) {
         // let change = document.getElementById('changeColor');
         // change.style.backgroundColor = 'rgb(241, 241, 188)';
-        this.backgroundColor = 'rgb(241, 241, 188)';
-        this.iconColor = 'rgb(252, 161, 41)';
+        this.weather.styling.backgroundColor = 'rgb(241, 241, 188)';
+        this.weather.styling.iconColor = 'rgb(252, 161, 41)';
       }
 
       // Rain
-      if (this.rain) {
+      if (this.weather.condition.rain) {
         // let change = document.getElementById('changeColor');
         // change.style.backgroundColor = 'deepskyblue';
-        this.backgroundColor = 'deepskyblue';
-        this.locationIconColor = 'grey';
-        this.iconColor = 'grey';
+        this.weather.styling.backgroundColor = 'deepskyblue';
+        this.weather.styling.locationIconColor = 'grey';
+        this.weather.styling.iconColor = 'grey';
       }
 
       // Snow
-      if (this.snow == true) {
+      if (this.weather.condition.snow == true) {
         // let change = document.getElementById('changeColor');
         // change.style.backgroundColor = 'white';
-        this.backgroundColor = 'white';
-        this.iconColor = 'black';
+        this.weather.styling.backgroundColor = 'white';
+        this.weather.styling.iconColor = 'black';
       }
 
       // Cloudy
-      if (this.cloudy) {
+      if (this.weather.condition.cloudy) {
         // let change = document.getElementById('changeColor');
         // change.style.backgroundColor = 'grey';
-        this.backgroundColor = 'grey';
-        this.iconColor = 'white';
-        this.locationIconColor = 'white';
+        this.weather.styling.backgroundColor = 'grey';
+        this.weather.styling.iconColor = 'white';
+        this.weather.styling.locationIconColor = 'white';
       }
 
       // Fog
-      if (this.fog) {
+      if (this.weather.condition.fog) {
         // let change = document.getElementById('changeColor');
         // change.style.backgroundColor = 'lightslategrey';
-        this.backgroundColor = 'lightslategrey';
-        this.iconColor = 'rgb(206, 206, 202)';
-        this.locationIconColor = 'rgb(206, 206, 202)';
+        this.weather.styling.backgroundColor = 'lightslategrey';
+        this.weather.styling.iconColor = 'rgb(206, 206, 202)';
+        this.weather.styling.locationIconColor = 'rgb(206, 206, 202)';
       }
 
       // Mist
-      if (this.mist) {
+      if (this.weather.condition.mist) {
         // let change = document.getElementById('changeColor');
         // change.style.backgroundColor = 'lightblue';
-        this.backgroundColor = 'lightblue';
-        this.iconColor = ' rgb(172, 172, 172)';
-        this.locationIconColor = ' rgb(172, 172, 172)';
+        this.weather.styling.backgroundColor = 'lightblue';
+        this.weather.styling.iconColor = ' rgb(172, 172, 172)';
+        this.weather.styling.locationIconColor = ' rgb(172, 172, 172)';
       }
       // Unknown
-      if (this.unkownCondition) {
+      if (this.weather.condition.unkownCondition) {
         // let change = document.getElementById('changeColor');
         // change.style.backgroundColor = 'white';
-        this.backgroundColor = 'white';
-        this.iconColor = 'black';
-        this.locationIconColor = 'black';
+        this.weather.styling.backgroundColor = 'white';
+        this.weather.styling.iconColor = 'black';
+        this.weather.styling.locationIconColor = 'black';
       }
     },
     onClickOutside() {
