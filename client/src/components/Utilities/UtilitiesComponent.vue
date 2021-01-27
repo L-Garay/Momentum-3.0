@@ -82,8 +82,8 @@ export default {
   height: 415px;
   position: absolute;
   z-index: 5;
-  bottom: 70px;
-  right: 30px;
+  bottom: 65px;
+  right: 15px;
 }
 
 div.Navbar {

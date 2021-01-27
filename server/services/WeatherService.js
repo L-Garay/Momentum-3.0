@@ -48,6 +48,31 @@ class WeatherService {
       );
     }
   }
+  async getWeatherForecast(coords) {
+    try {
+      return await axios({
+        method: 'GET',
+        url: 'https://community-open-weather-map.p.rapidapi.com/forecast',
+        headers: {
+          'content-type': 'application/octet-stream',
+          'x-rapidapi-host': 'community-open-weather-map.p.rapidapi.com',
+          'x-rapidapi-key': process.env.X_RAPIDAPI_KEY,
+        },
+        params: {
+          units: 'imperial',
+          lat: coords.lat,
+          lon: coords.lon,
+        },
+      });
+    } catch (error) {
+      throw new ErrorResponse(
+        `Cant get weather forecast for those coordinates, ${
+          (coords.lat, coords.lon)
+        }. ${error}`,
+        500
+      );
+    }
+  }
 }
 
 export const weatherService = new WeatherService();
