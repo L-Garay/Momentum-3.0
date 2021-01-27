@@ -68,41 +68,44 @@
       </div>
     </div>
   </div> -->
-  <div class="main ml-auto" id="changeColor">
-    <div class="background">
-      <div class="content">
-        <div class="TimeLocation">
-          <h1 class="Time">{{ month }} {{ day }} / {{ Weather.name }}</h1>
+  <div class="weatherWrapper">
+    <div @click="toggle5DayForecast" class="main ml-auto" id="changeColor">
+      <div class="background">
+        <div class="content">
+          <div class="TimeLocation">
+            <h1 class="Time">{{ month }} {{ day }} / {{ Weather.name }}</h1>
+          </div>
+          <h1 class="Temp" v-if="gotWeather">
+            {{ Math.round(Weather.main.temp) }}
+            <p id="F"><small>&#176;</small></p>
+          </h1>
+          <h1 class="Condition">
+            <div v-if="sunny">
+              <i class="fas fa-sun icon"></i>
+            </div>
+            <div v-else-if="rain">
+              <i class="fas fa-cloud-showers-heavy icon"></i>
+            </div>
+            <div v-else-if="cloudy">
+              <i class="fas fa-cloud icon"></i>
+            </div>
+            <div v-else-if="snow">
+              <i class="far fa-snowflake icon"></i>
+            </div>
+            <div v-else-if="fog">
+              <i class="fas fa-smog icon"></i>
+            </div>
+            <div v-else-if="mist">
+              <i class="fas fa-smog icon"></i>
+            </div>
+            <div v-else>
+              <i class="fas fa-question icon"></i>
+            </div>
+          </h1>
         </div>
-        <h1 class="Temp" v-if="gotWeather">
-          {{ Math.round(Weather.main.temp) }}
-          <p id="F"><small>&#176;</small></p>
-        </h1>
-        <h1 class="Condition">
-          <div v-if="sunny">
-            <i class="fas fa-sun icon"></i>
-          </div>
-          <div v-else-if="rain">
-            <i class="fas fa-cloud-showers-heavy icon"></i>
-          </div>
-          <div v-else-if="cloudy">
-            <i class="fas fa-cloud icon"></i>
-          </div>
-          <div v-else-if="snow">
-            <i class="far fa-snowflake icon"></i>
-          </div>
-          <div v-else-if="fog">
-            <i class="fas fa-smog icon"></i>
-          </div>
-          <div v-else-if="mist">
-            <i class="fas fa-smog icon"></i>
-          </div>
-          <div v-else>
-            <i class="fas fa-question icon"></i>
-          </div>
-        </h1>
       </div>
     </div>
+    <forecast v-if="showForecast" @closeForecast="toggle5DayForecast" />
   </div>
 </template>
 
@@ -110,13 +113,16 @@
 import VueInputAutoWidth from 'vue-input-autowidth';
 import Vue from 'vue';
 Vue.use(VueInputAutoWidth);
+import Forecast from '@/components/Weather/5DayForecast.vue';
 export default {
   name: 'Weather',
   props: ['weatherData'],
+  components: { Forecast },
   data() {
     return {
       gotWeather: false,
       showWeatherColor: false,
+      showForecast: false,
       // To get weather
       coord: {
         lat: null,
@@ -201,6 +207,16 @@ export default {
         'December',
       ];
       this.month = month[date.getMonth()];
+    },
+    // Weather control
+    toggle5DayForecast() {
+      console.log('before toggle');
+      if (this.showForecast == true) {
+        this.showForecast = false;
+      } else if (this.showForecast == false) {
+        this.showForecast = true;
+      }
+      console.log('after toggle');
     },
 
     // Check the weather condition to then style the widget accordingly
@@ -369,7 +385,6 @@ export default {
       this.city.changeCity = false;
     },
   },
-  components: {},
 };
 </script>
 

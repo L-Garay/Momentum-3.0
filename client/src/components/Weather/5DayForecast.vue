@@ -1,11 +1,28 @@
 <template>
-  <div class="forecastComponent">
+  <div class="forecastComponent" id="test">
     <div class="mainDisplayArea">
       <div class="weatherDataArea">
         <div class="mainWeatherData">
-          {{ DayOne }}
+          <div class="dateLocation">
+            <p>{{ Today.name }} / Date goes here</p>
+          </div>
+          <div class="tempCondition">
+            <h1 class="temp">
+              {{ Math.round(Today.main.temp) }}
+              <p id="degree"><small>&#176;</small></p>
+            </h1>
+            <div class="condition">
+              <i v-if="sunny" class="fas fa-sun icon"></i>
+              <i v-else-if="rain" class="fas fa-cloud-showers-heavy icon"></i>
+              <i v-else-if="cloudy" class="fas fa-cloud icon"></i>
+              <i v-else-if="snow" class="far fa-snowflake icon"></i>
+              <i v-else-if="fog" class="fas fa-smog icon"></i>
+              <i v-else-if="mist" class="fas fa-smog icon"></i>
+              <i v-else class="fas fa-question icon"></i>
+            </div>
+          </div>
+          <div class="extraWeatherData"></div>
         </div>
-        <div class="extraWeatherData"></div>
       </div>
       <div class="settingsArea"></div>
     </div>
@@ -19,10 +36,34 @@
 export default {
   name: 'FiveDayForecastComponent',
   data() {
-    return {};
+    return {
+      // Possible weather conditions
+      sunny: false,
+      rain: false,
+      snow: false,
+      cloudy: false,
+      fog: false,
+      mist: false,
+      unkownCondition: false,
+    };
   },
-  mounted() {},
+  mounted() {
+    setTimeout(() => {
+      document.addEventListener('click', this.setupEventListener(), true);
+    }, 1000);
+    // setTimeout(() => {
+    //   document.addEventListener('click', (event) => {
+    //     this.eventListenerTest(event);
+    //   });
+    // }, 1000);
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.setupEventListener(), true);
+  },
   computed: {
+    Today() {
+      return this.$store.state.weather.weather;
+    },
     DayOne() {
       return this.$store.state.weather.forecast.dayOne;
     },
@@ -39,7 +80,22 @@ export default {
       return this.$store.state.weather.forecast.dayFive;
     },
   },
-  methods: {},
+  methods: {
+    setupEventListener() {
+      document.addEventListener('click', (event) => {
+        this.eventListenerTest(event);
+      });
+    },
+    eventListenerTest(event) {
+      console.log('doiddi');
+      // let component = document.getElementById('test');
+      if (!this.$el.contains(event.target)) {
+        this.$emit('closeForecast');
+        console.log('removed');
+        document.removeEventListener('');
+      }
+    },
+  },
 };
 </script>
 
@@ -48,6 +104,7 @@ div.forecastComponent {
   position: absolute;
   right: 15px;
   top: 95px;
+  z-index: 1000;
   height: 250px;
   width: 475px;
   background-color: rgba(0, 0, 0, 0.85);

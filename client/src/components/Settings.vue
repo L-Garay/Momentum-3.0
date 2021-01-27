@@ -1,55 +1,56 @@
 <template>
   <div class="dropdown">
-    <div id="dLabel" role="button" data-toggle="dropdown">
+    <div id="dLabel" role="button" data-toggle="dropdown" class="toggleButton">
       <p>Settings</p>
     </div>
     <ul
+      id="dropdownMenu"
       class="dropdown-menu multi-level"
       role="menu"
       aria-labelledby="dropdownMenu"
     >
-      <li class="dropdown-submenu">
+      <li class="dropdown-submenu test">
         <a tabindex="-1">Photos</a>
         <ul class="dropdown-menu">
-          <li @click="getNewPhoto">
+          <li @click.stop="getNewPhoto">
             Get New Photo
           </li>
-          <li @click="savePhoto">
+          <li @click.stop="savePhoto">
             Save Photo
           </li>
-          <li @click="openPhotosModal">
+          <li @click.stop="openPhotosModal">
             Choose Saved Photo
           </li>
         </ul>
       </li>
-      <li class="dropdown-submenu">
+      <li class="dropdown-submenu test">
         <a tabindex="-1">Quotes</a>
         <ul class="dropdown-menu">
-          <li @click="getNewQuote">
+          <li @click.stop="getNewQuote">
             Get New Quote
           </li>
-          <li @click="saveQuote">
+          <li @click.stop="saveQuote">
             Save Quote
           </li>
-          <li @click="openQuotesModal">
+          <li @click.stop="openQuotesModal">
             Choose Saved Quote
           </li>
         </ul>
       </li>
-      <li class="dropdown-submenu">
+      <li class="dropdown-submenu test">
         <a tabindex="-1">Clock</a>
         <ul class="dropdown-menu">
-          <li @click="setMilitaryTime">
+          <li @click.stop="setMilitaryTime">
             Military Time
           </li>
-          <li @click="setStandardTime">
+          <li @click.stop="setStandardTime">
             Standard Time
           </li>
         </ul>
       </li>
-      <li @click="toggleCalculator">Toggle Calculator</li>
-      <li @click="toggleNews">Toggle News</li>
-      <li @click="toggleGames">Toggle Games</li>
+      <li class="test" @click.stop="toggleCalculator">Toggle Calculator</li>
+      <li class="test" @click.stop="toggleNews">Toggle News</li>
+      <li class="test" @click.stop="toggleGames">Toggle Games</li>
     </ul>
   </div>
   <!--  NOTE This was the original modal, however the way it was setup meant you had to click the button to open AND close the modal, you couldn't click on the screen and have it disappear. However, I liked that when you selected 'Get Photo/Quote' or 'Save Photo/Quote' and the time options, it didn't close; as this allowed the user to quickly get new photos or quotes without having to navigate back to those buttons everytime. So I guess this would come down to user preference. I'm leaving it here to be able to change if needed; both are fully functional.
@@ -116,6 +117,22 @@
 </template>
 
 <script>
+// document.getElementById('dropdownMenu').addEventListener('click', (event) => {
+//   console.log('hit the event listener');
+//   event.stopPropagation();
+// });
+// window.onclick = (event) => {
+//   console.log('hit the onclick');
+//   if (!event.target.matches('.toggleButton')) {
+//     let dropdowns = document.getElementsByClassName('test');
+//     for (let i = 0; i < dropdowns.length; i++) {
+//       let openDropdown = dropdowns[i];
+//       if (openDropdown.classList.contains('show')) {
+//         openDropdown.classList.remove('show');
+//       }
+//     }
+//   }
+// };
 export default {
   name: 'Settings',
   data() {

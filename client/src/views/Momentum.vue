@@ -20,12 +20,12 @@
           </div>
         </div>
         <div class="col-3 offset-7">
-          <div @click="toggle5DayForecast"><weather /></div>
-          <transition name="fade">
+          <div><weather /></div>
+          <!-- <transition name="fade">
             <div v-if="show5DayForecast">
               <forecast />
             </div>
-          </transition>
+          </transition> -->
         </div>
         <div class="col-1">
           <!-- <calculator /> -->
@@ -122,7 +122,7 @@
 
 <script>
 import Weather from '@/components/Weather/Weather.vue';
-import Forecast from '@/components/Weather/5DayForecast.vue';
+// import Forecast from '@/components/Weather/5DayForecast.vue';
 import Quote from '@/components/Quote.vue';
 import Settings from '@/components/Settings.vue';
 import Clock from '@/components/Greeting/Clock.vue';
@@ -148,7 +148,7 @@ export default {
     NewsModal,
     Utilities,
     Game,
-    Forecast,
+    // Forecast,
   },
   data() {
     return {
@@ -209,14 +209,14 @@ export default {
     closeQuotesModal() {
       this.showQuoteModal = false;
     },
-    // Weather control
-    toggle5DayForecast() {
-      if (this.show5DayForecast == true) {
-        this.show5DayForecast = false;
-      } else if (this.show5DayForecast == false) {
-        this.show5DayForecast = true;
-      }
-    },
+    // // Weather control
+    // toggle5DayForecast() {
+    //   if (this.show5DayForecast == true) {
+    //     this.show5DayForecast = false;
+    //   } else if (this.show5DayForecast == false) {
+    //     this.show5DayForecast = true;
+    //   }
+    // },
     // News Modal control
     toggleNews() {
       if (this.toggledNews == true) {
