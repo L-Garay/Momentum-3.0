@@ -49,16 +49,8 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      document.addEventListener('click', this.setupEventListener());
+      document.addEventListener('click', this.setupEventListener, false);
     }, 1000);
-    // setTimeout(() => {
-    //   document.addEventListener('click', (event) => {
-    //     this.eventListenerTest(event);
-    //   });
-    // }, 1000);
-  },
-  beforeDestroy() {
-    document.removeEventListener('click', this.setupEventListener());
   },
   computed: {
     Today() {
@@ -81,18 +73,10 @@ export default {
     },
   },
   methods: {
-    setupEventListener() {
-      document.addEventListener('click', (event) => {
-        this.eventListenerTest(event);
-      });
-    },
-    eventListenerTest(event) {
-      console.log('doiddi');
-      // let component = document.getElementById('test');
+    setupEventListener(event) {
       if (!this.$el.contains(event.target)) {
         this.$emit('closeForecast');
-        console.log('removed');
-        document.removeEventListener('click', this.setupEventListener());
+        document.removeEventListener('click', this.setupEventListener, false);
       }
     },
   },

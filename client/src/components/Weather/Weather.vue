@@ -210,13 +210,11 @@ export default {
     },
     // Weather control
     toggle5DayForecast() {
-      console.log('before toggle');
       if (this.showForecast == true) {
         this.showForecast = false;
       } else if (this.showForecast == false) {
         this.showForecast = true;
       }
-      console.log('after toggle');
     },
 
     // Check the weather condition to then style the widget accordingly
