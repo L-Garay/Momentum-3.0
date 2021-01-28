@@ -341,6 +341,7 @@ export default new Vuex.Store({
           humidity_low: 100,
           wind_speed_high: 0,
           wind_speed_low: 100,
+          date: '',
         };
         // Create empty array to push modified objects into
         let data = [];
@@ -384,6 +385,8 @@ export default new Vuex.Store({
           if (dayOneRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayOneRaw[i].wind.speed;
           }
+          // Get the date
+          day.date = dayOneRaw[i].dt_txt.slice(0, 10);
         }
         // Then I just used the 5th data point (4th index), which is equivalent to noon, to grab the weather condition for that day.
         day.condition = dayOneRaw[4].weather[0].main;
@@ -400,6 +403,7 @@ export default new Vuex.Store({
           humidity_low: 100,
           wind_speed_high: 0,
           wind_speed_low: 100,
+          date: '',
         };
         for (let i = 0; i < dayTwoRaw.length; i++) {
           // Get the day high
@@ -434,8 +438,10 @@ export default new Vuex.Store({
           if (dayTwoRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayTwoRaw[i].wind.speed;
           }
+          // Get the date
+          day.date = dayTwoRaw[i].dt_txt.slice(0, 10);
         }
-        day.condition = dayOneRaw[4].weather[0].main;
+        day.condition = dayTwoRaw[4].weather[0].main;
         data.push(day);
         day = {
           high: 0,
@@ -447,6 +453,7 @@ export default new Vuex.Store({
           humidity_low: 100,
           wind_speed_high: 0,
           wind_speed_low: 100,
+          date: '',
         };
         for (let i = 0; i < dayThreeRaw.length; i++) {
           // Get the day high
@@ -481,8 +488,10 @@ export default new Vuex.Store({
           if (dayThreeRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayThreeRaw[i].wind.speed;
           }
+          // Get the date
+          day.date = dayThreeRaw[i].dt_txt.slice(0, 10);
         }
-        day.condition = dayOneRaw[4].weather[0].main;
+        day.condition = dayThreeRaw[4].weather[0].main;
         data.push(day);
         day = {
           high: 0,
@@ -494,6 +503,7 @@ export default new Vuex.Store({
           humidity_low: 100,
           wind_speed_high: 0,
           wind_speed_low: 100,
+          date: '',
         };
         for (let i = 0; i < dayFourRaw.length; i++) {
           // Get the day high
@@ -528,8 +538,10 @@ export default new Vuex.Store({
           if (dayFourRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayFourRaw[i].wind.speed;
           }
+          // Get the date
+          day.date = dayFourRaw[i].dt_txt.slice(0, 10);
         }
-        day.condition = dayOneRaw[4].weather[0].main;
+        day.condition = dayFourRaw[4].weather[0].main;
         data.push(day);
         day = {
           high: 0,
@@ -541,6 +553,7 @@ export default new Vuex.Store({
           humidity_low: 100,
           wind_speed_high: 0,
           wind_speed_low: 100,
+          date: '',
         };
         for (let i = 0; i < dayFiveRaw.length; i++) {
           // Get the day high
@@ -575,8 +588,10 @@ export default new Vuex.Store({
           if (dayFiveRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayFiveRaw[i].wind.speed;
           }
+          // Get the date
+          day.date = dayFiveRaw[i].dt_txt.slice(0, 10);
         }
-        day.condition = dayOneRaw[4].weather[0].main;
+        day.condition = dayFiveRaw[4].weather[0].main;
         data.push(day);
         // Finally send the data array (which should now have 5 objects (days) with weather data)
         commit('setWeatherForecast', data);
@@ -590,6 +605,7 @@ export default new Vuex.Store({
           humidity_low: 100,
           wind_speed_high: 0,
           wind_speed_low: 100,
+          date: '',
         };
       } catch (error) {
         console.log(error);
@@ -598,6 +614,7 @@ export default new Vuex.Store({
     async getWeatherForecast({ commit }, coords) {
       try {
         let res = await api.post('weather/forecast', coords);
+        console.log(res.data.list);
         // Create basic weather data object
         let day = {
           high: 0,
@@ -609,6 +626,7 @@ export default new Vuex.Store({
           humidity_low: 100,
           wind_speed_high: 0,
           wind_speed_low: 100,
+          date: '',
         };
         // Create empty array to push modified objects into
         let data = [];
@@ -652,6 +670,8 @@ export default new Vuex.Store({
           if (dayOneRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayOneRaw[i].wind.speed;
           }
+          // Get the date
+          day.date = dayOneRaw[i].dt_txt.slice(0, 10);
         }
         // Then I just used the 5th data point (4th index), which is equivalent to noon, to grab the weather condition for that day.
         day.condition = dayOneRaw[4].weather[0].main;
@@ -668,6 +688,7 @@ export default new Vuex.Store({
           humidity_low: 100,
           wind_speed_high: 0,
           wind_speed_low: 100,
+          date: '',
         };
         for (let i = 0; i < dayTwoRaw.length; i++) {
           // Get the day high
@@ -702,8 +723,10 @@ export default new Vuex.Store({
           if (dayTwoRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayTwoRaw[i].wind.speed;
           }
+          // Get the date
+          day.date = dayTwoRaw[i].dt_txt.slice(0, 10);
         }
-        day.condition = dayOneRaw[4].weather[0].main;
+        day.condition = dayTwoRaw[4].weather[0].main;
         data.push(day);
         day = {
           high: 0,
@@ -715,6 +738,7 @@ export default new Vuex.Store({
           humidity_low: 100,
           wind_speed_high: 0,
           wind_speed_low: 100,
+          date: '',
         };
         for (let i = 0; i < dayThreeRaw.length; i++) {
           // Get the day high
@@ -749,8 +773,10 @@ export default new Vuex.Store({
           if (dayThreeRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayThreeRaw[i].wind.speed;
           }
+          // Get the date
+          day.date = dayThreeRaw[i].dt_txt.slice(0, 10);
         }
-        day.condition = dayOneRaw[4].weather[0].main;
+        day.condition = dayThreeRaw[4].weather[0].main;
         data.push(day);
         day = {
           high: 0,
@@ -762,6 +788,7 @@ export default new Vuex.Store({
           humidity_low: 100,
           wind_speed_high: 0,
           wind_speed_low: 100,
+          date: '',
         };
         for (let i = 0; i < dayFourRaw.length; i++) {
           // Get the day high
@@ -796,8 +823,10 @@ export default new Vuex.Store({
           if (dayFourRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayFourRaw[i].wind.speed;
           }
+          // Get the date
+          day.date = dayFourRaw[i].dt_txt.slice(0, 10);
         }
-        day.condition = dayOneRaw[4].weather[0].main;
+        day.condition = dayFourRaw[4].weather[0].main;
         data.push(day);
         day = {
           high: 0,
@@ -809,6 +838,7 @@ export default new Vuex.Store({
           humidity_low: 100,
           wind_speed_high: 0,
           wind_speed_low: 100,
+          date: '',
         };
         for (let i = 0; i < dayFiveRaw.length; i++) {
           // Get the day high
@@ -843,8 +873,10 @@ export default new Vuex.Store({
           if (dayFiveRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayFiveRaw[i].wind.speed;
           }
+          // Get the date
+          day.date = dayFiveRaw[i].dt_txt.slice(0, 10);
         }
-        day.condition = dayOneRaw[4].weather[0].main;
+        day.condition = dayFiveRaw[4].weather[0].main;
         data.push(day);
         // Finally send the data array (which should now have 5 objects (days) with weather data)
         commit('setWeatherForecast', data);
@@ -858,6 +890,7 @@ export default new Vuex.Store({
           humidity_low: 100,
           wind_speed_high: 0,
           wind_speed_low: 100,
+          date: '',
         };
       } catch (error) {
         console.log(error);
