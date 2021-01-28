@@ -4,7 +4,9 @@
       <div v-if="show.today" class="weatherDataArea">
         <div class="mainWeatherData">
           <div class="dateLocation">
-            <p>{{ Today.name }} / Date goes here</p>
+            <p>
+              {{ Today.name }} / {{ weather.date.month }} {{ weather.date.day }}
+            </p>
             <p v-show="show.today == false"><small>Today</small></p>
           </div>
           <div class="weatherData">
@@ -80,7 +82,15 @@
       <div v-else class="weatherDataArea">
         <div class="mainWeatherData">
           <div class="dateLocation">
-            <p>{{ Current.name || 'fix me' }} / Date goes here</p>
+            <p>
+              {{ Today.name }} /
+              {{
+                this.$luxon(Current.date, {
+                  input: { format: 'yyyy-MM-dd' },
+                  output: 'date_full',
+                }).slice(0, 10)
+              }}
+            </p>
             <p @click="switchWeather('Today')"><small>Today</small></p>
           </div>
           <div class="weatherData">
@@ -199,7 +209,14 @@
     <div class="forecastArea container-fluid">
       <div class="row">
         <div class="col forecast" @click="switchWeather('DayOne')">
-          <p class="weekday">DayOne</p>
+          <p class="weekday">
+            {{
+              this.$luxon(DayOne.date, {
+                input: { format: 'yyyy-MM-dd' },
+                output: 'date_medd',
+              }).slice(0, 3)
+            }}
+          </p>
           <div class="forecastData">
             <div class="forecastCondition">
               <i v-if="DayOne.condition == 'Clear'" class="fas fa-sun icon"></i>
@@ -240,7 +257,14 @@
           </div>
         </div>
         <div class="col forecast" @click="switchWeather('DayTwo')">
-          <p class="weekday">DayTwo</p>
+          <p class="weekday">
+            {{
+              this.$luxon(DayTwo.date, {
+                input: { format: 'yyyy-MM-dd' },
+                output: 'date_medd',
+              }).slice(0, 3)
+            }}
+          </p>
           <div class="forecastData">
             <div class="forecastCondition">
               <i v-if="DayTwo.condition == 'Clear'" class="fas fa-sun icon"></i>
@@ -281,7 +305,14 @@
           </div>
         </div>
         <div class="col forecast" @click="switchWeather('DayThree')">
-          <p class="weekday">DayThree</p>
+          <p class="weekday">
+            {{
+              this.$luxon(DayThree.date, {
+                input: { format: 'yyyy-MM-dd' },
+                output: 'date_medd',
+              }).slice(0, 3)
+            }}
+          </p>
           <div class="forecastData">
             <div class="forecastCondition">
               <i
@@ -325,7 +356,14 @@
           </div>
         </div>
         <div class="col forecast" @click="switchWeather('DayFour')">
-          <p class="weekday">DayFour</p>
+          <p class="weekday">
+            {{
+              this.$luxon(DayFour.date, {
+                input: { format: 'yyyy-MM-dd' },
+                output: 'date_medd',
+              }).slice(0, 3)
+            }}
+          </p>
           <div class="forecastData">
             <div class="forecastCondition">
               <i
@@ -369,7 +407,14 @@
           </div>
         </div>
         <div class="col forecast" @click="switchWeather('DayFive')">
-          <p class="weekday">DayFive</p>
+          <p class="weekday">
+            {{
+              this.$luxon(DayFive.date, {
+                input: { format: 'yyyy-MM-dd' },
+                output: 'date_medd',
+              }).slice(0, 3)
+            }}
+          </p>
           <div class="forecastData">
             <div class="forecastCondition">
               <i
@@ -421,6 +466,8 @@
 import VueInputAutoWidth from 'vue-input-autowidth';
 import Vue from 'vue';
 Vue.use(VueInputAutoWidth);
+import VueLuxon from 'vue-luxon';
+Vue.use(VueLuxon);
 export default {
   name: 'FiveDayForecastComponent',
   props: ['weatherData'],

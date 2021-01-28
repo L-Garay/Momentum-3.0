@@ -73,7 +73,10 @@
       <div class="background">
         <div class="content">
           <div class="TimeLocation">
-            <h1 class="Time">{{ month }} {{ day }} / {{ Weather.name }}</h1>
+            <h1 class="Time">
+              {{ weather.date.month }} {{ weather.date.day }} /
+              {{ Weather.name }}
+            </h1>
           </div>
           <h1 class="Temp" v-if="gotWeather">
             {{ Math.round(Weather.main.temp) }}
@@ -135,9 +138,6 @@ export default {
         changeCity: false,
         name: '',
       },
-      // For Date
-      day: '',
-      month: '',
       // Possible weather conditions
       weather: {
         condition: {
@@ -154,6 +154,10 @@ export default {
           textColor: 'black',
           iconColor: '',
           locationIconColor: 'black',
+        },
+        date: {
+          day: '',
+          month: '',
         },
       },
     };
@@ -199,7 +203,7 @@ export default {
     // Get current date
     getDate() {
       let date = new Date();
-      this.day = date.getDate();
+      this.weather.date.day = date.getDate();
       let month = [
         'January',
         'February',
@@ -214,7 +218,7 @@ export default {
         'November',
         'December',
       ];
-      this.month = month[date.getMonth()];
+      this.weather.date.month = month[date.getMonth()];
     },
     // Weather control
     toggle5DayForecast() {
