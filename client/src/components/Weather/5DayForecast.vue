@@ -163,7 +163,7 @@
         </div>
       </div>
       <div class="settingsArea">
-        <div class="switch">
+        <div class="unitSwitch">
           <div class="custom-control custom-switch">
             <input
               type="checkbox"
@@ -175,6 +175,24 @@
               >Toggle Metric Units</label
             >
           </div>
+        </div>
+        <div class="locationSwitch">
+          <p @click="changeLocation">
+            Change Location <i class="fas fa-pencil-alt"></i>
+          </p>
+          <input
+            v-if="city.change"
+            v-on:blur="onClickOutside"
+            type="text"
+            ref="focus"
+            v-model="city.name"
+            v-on:keyup.enter="submitNewCity"
+            v-autowidth="{
+              maxWidth: '140px',
+              minWidth: '70px',
+              comfortZone: 10,
+            }"
+          />
         </div>
       </div>
     </div>
@@ -400,6 +418,9 @@
 </template>
 
 <script>
+import VueInputAutoWidth from 'vue-input-autowidth';
+import Vue from 'vue';
+Vue.use(VueInputAutoWidth);
 export default {
   name: 'FiveDayForecastComponent',
   props: ['weatherData'],
@@ -411,6 +432,10 @@ export default {
       },
       use: {
         metric: false,
+      },
+      city: {
+        change: false,
+        name: '',
       },
     };
   },
@@ -495,6 +520,19 @@ export default {
       }
       console.log(this.use.metric);
     },
+    changeLocation() {
+      this.city.name = '';
+      this.city.change = true;
+      this.$nextTick(() => this.$refs.focus.focus());
+    },
+    async submitNewCity() {
+      await this.$store.dispatch('getNewWeather', this.city);
+      this.city.change = false;
+    },
+    onClickOutside() {
+      this.city.name = '';
+      this.city.change = false;
+    },
   },
 };
 </script>
@@ -543,6 +581,25 @@ p.degree {
 div.settingsArea {
   width: 165px;
   border-left: 1pt solid white;
+}
+div.locationSwitch {
+  text-align: center;
+}
+div.locationSwitch p {
+  text-align: start;
+}
+div.locationSwitch p:hover {
+  cursor: pointer;
+}
+div.locationSwitch input {
+  border: none;
+  border-bottom: 1pt solid white;
+  text-align: center;
+  background-color: transparent;
+  color: white;
+}
+div.locationSwitch input:focus {
+  outline: none;
 }
 div.forecastArea {
   border-top: 1pt solid white;
