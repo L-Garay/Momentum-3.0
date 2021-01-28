@@ -8,7 +8,8 @@ export class WeathersController extends BaseController {
     this.router
       .post('', this.getWeather)
       .post('/change', this.getNewWeather)
-      .post('/forecast', this.getWeatherForecast);
+      .post('/forecast', this.getWeatherForecast)
+      .post('/forecast/new', this.getNewWeatherForecast);
   }
 
   async getWeather(req, res, next) {
@@ -32,6 +33,14 @@ export class WeathersController extends BaseController {
   async getWeatherForecast(req, res, next) {
     try {
       let data = await weatherService.getWeatherForecast(req.body);
+      return res.status(200).send(data.data);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getNewWeatherForecast(req, res, next) {
+    try {
+      let data = await weatherService.getNewWeatherForecast(req.body);
       return res.status(200).send(data.data);
     } catch (error) {
       next(error);
