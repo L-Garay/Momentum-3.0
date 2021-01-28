@@ -20,32 +20,26 @@
                 <p id="degree">&#176;</p>
               </h1>
               <div class="condition">
-                <i v-if="weather.condition.sunny" class="fas fa-sun icon"></i>
+                <i v-if="weather.condition.sunny" class="fas fa-sun"></i>
                 <i
                   v-else-if="weather.condition.rain"
-                  class="fas fa-cloud-showers-heavy icon"
+                  class="fas fa-cloud-showers-heavy"
                 ></i>
                 <i
                   v-else-if="weather.condition.cloudy"
-                  class="fas fa-cloud icon"
+                  class="fas fa-cloud"
                 ></i>
                 <i
                   v-else-if="weather.condition.snow"
-                  class="far fa-snowflake icon"
+                  class="far fa-snowflake"
                 ></i>
-                <i
-                  v-else-if="weather.condition.fog"
-                  class="fas fa-smog icon"
-                ></i>
-                <i
-                  v-else-if="weather.condition.mist"
-                  class="fas fa-smog icon"
-                ></i>
-                <i v-else class="fas fa-question icon"></i>
+                <i v-else-if="weather.condition.fog" class="fas fa-smog"></i>
+                <i v-else-if="weather.condition.mist" class="fas fa-smog"></i>
+                <i v-else class="fas fa-question"></i>
               </div>
             </div>
             <div class="extraWeatherData">
-              <div v-if="show.today" class="today">
+              <div class="today">
                 <p v-if="use.metric">
                   <small
                     >Feels Like:
@@ -130,6 +124,12 @@
                 ></i>
                 <i v-else class="fas fa-question icon"></i>
               </div>
+              <div v-if="use.metric" class="low">
+                <h5>{{ Math.round(Current.low - 32 / 1.8) }}&#176;</h5>
+              </div>
+              <div v-else class="low">
+                <h5>{{ Math.round(Current.low) }}&#176;</h5>
+              </div>
             </div>
             <div class="extraWeatherData">
               <div class="extraWeather">
@@ -208,255 +208,36 @@
     </div>
     <div class="forecastArea container-fluid">
       <div class="row">
-        <div class="col forecast" @click="switchWeather('DayOne')">
-          <p class="weekday">
-            {{
-              this.$luxon(DayOne.date, {
-                input: { format: 'yyyy-MM-dd' },
-                output: 'date_medd',
-              }).slice(0, 3)
-            }}
-          </p>
-          <div class="forecastData">
-            <div class="forecastCondition">
-              <i v-if="DayOne.condition == 'Clear'" class="fas fa-sun icon"></i>
-              <i
-                v-else-if="DayOne.condition == 'Rain'"
-                class="fas fa-cloud-showers-heavy icon"
-              ></i>
-              <i
-                v-else-if="DayOne.condition == 'Clouds'"
-                class="fas fa-cloud icon"
-              ></i>
-              <i
-                v-else-if="DayOne.condition == 'Snow'"
-                class="far fa-snowflake icon"
-              ></i>
-              <i
-                v-else-if="DayOne.condition == 'Fog'"
-                class="fas fa-smog icon"
-              ></i>
-              <i
-                v-else-if="DayOne.condition == 'Mist'"
-                class="fas fa-smog icon"
-              ></i>
-              <i v-else class="fas fa-question icon"></i>
-            </div>
-            <div class="forecastTemp">
-              <div class="forecastHigh">
-                <p>
-                  <small>{{ Math.round(DayOne.high) }}&#176;</small>
-                </p>
-              </div>
-              <div class="forecastLow">
-                <p>
-                  <small>{{ Math.round(DayOne.low) }}&#176;</small>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col forecast" @click="switchWeather('DayTwo')">
-          <p class="weekday">
-            {{
-              this.$luxon(DayTwo.date, {
-                input: { format: 'yyyy-MM-dd' },
-                output: 'date_medd',
-              }).slice(0, 3)
-            }}
-          </p>
-          <div class="forecastData">
-            <div class="forecastCondition">
-              <i v-if="DayTwo.condition == 'Clear'" class="fas fa-sun icon"></i>
-              <i
-                v-else-if="DayTwo.condition == 'Rain'"
-                class="fas fa-cloud-showers-heavy icon"
-              ></i>
-              <i
-                v-else-if="DayTwo.condition == 'Clouds'"
-                class="fas fa-cloud icon"
-              ></i>
-              <i
-                v-else-if="DayTwo.condition == 'Snow'"
-                class="far fa-snowflake icon"
-              ></i>
-              <i
-                v-else-if="DayTwo.condition == 'Fog'"
-                class="fas fa-smog icon"
-              ></i>
-              <i
-                v-else-if="DayTwo.condition == 'Mist'"
-                class="fas fa-smog icon"
-              ></i>
-              <i v-else class="fas fa-question icon"></i>
-            </div>
-            <div class="forecastTemp">
-              <div class="forecastHigh">
-                <p>
-                  <small>{{ Math.round(DayTwo.high) }}&#176;</small>
-                </p>
-              </div>
-              <div class="forecastLow">
-                <p>
-                  <small>{{ Math.round(DayTwo.low) }}&#176;</small>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col forecast" @click="switchWeather('DayThree')">
-          <p class="weekday">
-            {{
-              this.$luxon(DayThree.date, {
-                input: { format: 'yyyy-MM-dd' },
-                output: 'date_medd',
-              }).slice(0, 3)
-            }}
-          </p>
-          <div class="forecastData">
-            <div class="forecastCondition">
-              <i
-                v-if="DayThree.condition == 'Clear'"
-                class="fas fa-sun icon"
-              ></i>
-              <i
-                v-else-if="DayThree.condition == 'Rain'"
-                class="fas fa-cloud-showers-heavy icon"
-              ></i>
-              <i
-                v-else-if="DayThree.condition == 'Clouds'"
-                class="fas fa-cloud icon"
-              ></i>
-              <i
-                v-else-if="DayThree.condition == 'Snow'"
-                class="far fa-snowflake icon"
-              ></i>
-              <i
-                v-else-if="DayThree.condition == 'Fog'"
-                class="fas fa-smog icon"
-              ></i>
-              <i
-                v-else-if="DayThree.condition == 'Mist'"
-                class="fas fa-smog icon"
-              ></i>
-              <i v-else class="fas fa-question icon"></i>
-            </div>
-            <div class="forecastTemp">
-              <div class="forecastHigh">
-                <p>
-                  <small>{{ Math.round(DayThree.high) }}&#176;</small>
-                </p>
-              </div>
-              <div class="forecastLow">
-                <p>
-                  <small>{{ Math.round(DayThree.low) }}&#176;</small>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col forecast" @click="switchWeather('DayFour')">
-          <p class="weekday">
-            {{
-              this.$luxon(DayFour.date, {
-                input: { format: 'yyyy-MM-dd' },
-                output: 'date_medd',
-              }).slice(0, 3)
-            }}
-          </p>
-          <div class="forecastData">
-            <div class="forecastCondition">
-              <i
-                v-if="DayFour.condition == 'Clear'"
-                class="fas fa-sun icon"
-              ></i>
-              <i
-                v-else-if="DayFour.condition == 'Rain'"
-                class="fas fa-cloud-showers-heavy icon"
-              ></i>
-              <i
-                v-else-if="DayFour.condition == 'Clouds'"
-                class="fas fa-cloud icon"
-              ></i>
-              <i
-                v-else-if="DayFour.condition == 'Snow'"
-                class="far fa-snowflake icon"
-              ></i>
-              <i
-                v-else-if="DayFour.condition == 'Fog'"
-                class="fas fa-smog icon"
-              ></i>
-              <i
-                v-else-if="DayFour.condition == 'Mist'"
-                class="fas fa-smog icon"
-              ></i>
-              <i v-else class="fas fa-question icon"></i>
-            </div>
-            <div class="forecastTemp">
-              <div class="forecastHigh">
-                <p>
-                  <small>{{ Math.round(DayFour.high) }}&#176;</small>
-                </p>
-              </div>
-              <div class="forecastLow">
-                <p>
-                  <small>{{ Math.round(DayFour.low) }}&#176;</small>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col forecast" @click="switchWeather('DayFive')">
-          <p class="weekday">
-            {{
-              this.$luxon(DayFive.date, {
-                input: { format: 'yyyy-MM-dd' },
-                output: 'date_medd',
-              }).slice(0, 3)
-            }}
-          </p>
-          <div class="forecastData">
-            <div class="forecastCondition">
-              <i
-                v-if="DayFive.condition == 'Clear'"
-                class="fas fa-sun icon"
-              ></i>
-              <i
-                v-else-if="DayFive.condition == 'Rain'"
-                class="fas fa-cloud-showers-heavy icon"
-              ></i>
-              <i
-                v-else-if="DayFive.condition == 'Clouds'"
-                class="fas fa-cloud icon"
-              ></i>
-              <i
-                v-else-if="DayFive.condition == 'Snow'"
-                class="far fa-snowflake icon"
-              ></i>
-              <i
-                v-else-if="DayFive.condition == 'Fog'"
-                class="fas fa-smog icon"
-              ></i>
-              <i
-                v-else-if="DayFive.condition == 'Mist'"
-                class="fas fa-smog icon"
-              ></i>
-              <i v-else class="fas fa-question icon"></i>
-            </div>
-            <div class="forecastTemp">
-              <div class="forecastHigh">
-                <p>
-                  <small>{{ Math.round(DayFive.high) }}&#176;</small>
-                </p>
-              </div>
-              <div class="forecastLow">
-                <p>
-                  <small>{{ Math.round(DayFive.low) }}&#176;</small>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <forecast-day
+          @click.native="switchWeather('DayOne')"
+          :activeData="active.dayOne"
+          :forecastData="DayOne"
+          :metricData="use.metric"
+        />
+        <forecast-day
+          @click.native="switchWeather('DayTwo')"
+          :activeData="active.dayTwo"
+          :forecastData="DayTwo"
+          :metricData="use.metric"
+        />
+        <forecast-day
+          @click.native="switchWeather('DayThree')"
+          :activeData="active.dayThree"
+          :forecastData="DayThree"
+          :metricData="use.metric"
+        />
+        <forecast-day
+          @click.native="switchWeather('DayFour')"
+          :activeData="active.dayFour"
+          :forecastData="DayFour"
+          :metricData="use.metric"
+        />
+        <forecast-day
+          @click.native="switchWeather('DayFive')"
+          :activeData="active.dayFive"
+          :forecastData="DayFive"
+          :metricData="use.metric"
+        />
       </div>
     </div>
   </div>
@@ -468,9 +249,13 @@ import Vue from 'vue';
 Vue.use(VueInputAutoWidth);
 import VueLuxon from 'vue-luxon';
 Vue.use(VueLuxon);
+import ForecastDay from '@/components/Weather/ForecastDay.vue';
 export default {
   name: 'FiveDayForecastComponent',
   props: ['weatherData'],
+  components: {
+    ForecastDay,
+  },
   data() {
     return {
       weather: this.weatherData,
@@ -483,6 +268,13 @@ export default {
       city: {
         change: false,
         name: '',
+      },
+      active: {
+        dayOne: false,
+        dayTwo: false,
+        dayThree: false,
+        dayFour: false,
+        dayFive: false,
       },
     };
   },
@@ -531,28 +323,59 @@ export default {
     switchWeather(day) {
       switch (day) {
         case 'DayOne':
+          console.log('hit me');
           this.$store.state.weather.forecast.current = this.$store.state.weather.forecast.dayOne;
           this.show.today = false;
+          this.active.dayOne = true;
+          this.active.dayTwo = false;
+          this.active.dayThree = false;
+          this.active.dayFour = false;
+          this.active.dayFive = false;
           break;
         case 'DayTwo':
           this.$store.state.weather.forecast.current = this.$store.state.weather.forecast.dayTwo;
           this.show.today = false;
+          this.active.dayOne = false;
+          this.active.dayTwo = true;
+          this.active.dayThree = false;
+          this.active.dayFour = false;
+          this.active.dayFive = false;
           break;
         case 'DayThree':
           this.$store.state.weather.forecast.current = this.$store.state.weather.forecast.dayThree;
           this.show.today = false;
+          this.active.dayOne = false;
+          this.active.dayTwo = false;
+          this.active.dayThree = true;
+          this.active.dayFour = false;
+          this.active.dayFive = false;
           break;
         case 'DayFour':
           this.$store.state.weather.forecast.current = this.$store.state.weather.forecast.dayFour;
           this.show.today = false;
+          this.active.dayOne = false;
+          this.active.dayTwo = false;
+          this.active.dayThree = false;
+          this.active.dayFour = true;
+          this.active.dayFive = false;
           break;
         case 'DayFive':
           this.$store.state.weather.forecast.current = this.$store.state.weather.forecast.dayFive;
           this.show.today = false;
+          this.active.dayOne = false;
+          this.active.dayTwo = false;
+          this.active.dayThree = false;
+          this.active.dayFour = false;
+          this.active.dayFive = true;
           break;
         case 'Today':
           this.$store.state.weather.forecast.current = this.$store.state.weather.weather;
           this.show.today = true;
+          this.active.dayOne = false;
+          this.active.dayTwo = false;
+          this.active.dayThree = false;
+          this.active.dayFour = false;
+          this.active.dayFive = false;
           break;
         default:
           this.$store.state.weather.forecast.current = this.$store.state.weather.weather;
@@ -609,34 +432,85 @@ div.weatherData {
 }
 div.dateLocation {
   display: flex;
+  padding: 10px 0 0 25px;
+}
+div.dateLocation p {
+  margin-bottom: 0;
+  font-size: 22px;
 }
 div.dateLocation p:last-of-type {
   color: gray;
   margin-left: 12px;
+  font-size: 18px;
+  margin-top: 3px;
 }
 div.dateLocation p:last-of-type:hover {
   color: white;
   cursor: pointer;
 }
+div.tempCondition {
+  padding-left: 25px;
+  width: 130px;
+  margin-top: -7px;
+}
 h1.temp {
   display: flex;
+  margin-bottom: 0;
+  font-size: 56px;
 }
 p.degree {
   margin-top: -10px;
   font-size: 74px;
 }
+div.condition i {
+  font-size: 40px;
+  margin-top: -10px;
+  padding-left: 10px;
+}
+div.low {
+  position: absolute;
+  bottom: 115px;
+  left: 85px;
+}
+div.low h5 {
+  font-size: 36px;
+  color: rgb(153, 153, 153);
+}
+div.extraWeatherData {
+  padding-left: 20px;
+  align-self: center;
+  padding-right: 5px;
+}
+div.extraWeatherData p {
+  margin-bottom: 0;
+  font-size: 17px;
+}
 div.settingsArea {
   width: 165px;
+  height: 125px;
+  padding-top: 8px;
   border-left: 1pt solid white;
+  align-self: center;
+}
+div.unitSwitch {
+  padding-left: 7px;
+  margin-bottom: 4px;
+}
+label.custom-control-label:hover,
+input.custom-control-input:hover {
+  cursor: pointer;
 }
 div.locationSwitch {
   text-align: center;
+  padding-left: 7px;
 }
 div.locationSwitch p {
   text-align: start;
+  margin-bottom: 5px;
 }
 div.locationSwitch p:hover {
   cursor: pointer;
+  text-shadow: 2px 0px 8px white;
 }
 div.locationSwitch input {
   border: none;
@@ -651,25 +525,5 @@ div.locationSwitch input:focus {
 div.forecastArea {
   border-top: 1pt solid white;
   height: 85px;
-}
-div.forecastData {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-div.forecast {
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-top: 5px;
-  padding-left: 0px;
-  padding-right: 0px;
-  text-align: center;
-}
-div.forecast p {
-  margin-bottom: 0;
-}
-div.forecast:hover {
-  cursor: pointer;
-  background-color: lightslategrey;
 }
 </style>

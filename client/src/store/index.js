@@ -19,11 +19,11 @@ export default new Vuex.Store({
       weather: {},
       forecast: {
         current: {},
-        dayOne: {},
-        dayTwo: {},
-        dayThree: {},
-        dayFour: {},
-        dayFive: {},
+        dayOne: [],
+        dayTwo: [],
+        dayThree: [],
+        dayFour: [],
+        dayFive: [],
       },
     },
     quote: {
@@ -342,6 +342,7 @@ export default new Vuex.Store({
           wind_speed_high: 0,
           wind_speed_low: 100,
           date: '',
+          name: '',
         };
         // Create empty array to push modified objects into
         let data = [];
@@ -385,6 +386,8 @@ export default new Vuex.Store({
           if (dayOneRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayOneRaw[i].wind.speed;
           }
+          // Set name
+          day.name = 'dayOne';
           // Get the date
           day.date = dayOneRaw[i].dt_txt.slice(0, 10);
         }
@@ -404,6 +407,7 @@ export default new Vuex.Store({
           wind_speed_high: 0,
           wind_speed_low: 100,
           date: '',
+          name: '',
         };
         for (let i = 0; i < dayTwoRaw.length; i++) {
           // Get the day high
@@ -438,6 +442,8 @@ export default new Vuex.Store({
           if (dayTwoRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayTwoRaw[i].wind.speed;
           }
+          // Set name
+          day.name = 'dayTwo';
           // Get the date
           day.date = dayTwoRaw[i].dt_txt.slice(0, 10);
         }
@@ -454,6 +460,7 @@ export default new Vuex.Store({
           wind_speed_high: 0,
           wind_speed_low: 100,
           date: '',
+          name: '',
         };
         for (let i = 0; i < dayThreeRaw.length; i++) {
           // Get the day high
@@ -488,6 +495,8 @@ export default new Vuex.Store({
           if (dayThreeRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayThreeRaw[i].wind.speed;
           }
+          // Set name
+          day.name = 'dayThree';
           // Get the date
           day.date = dayThreeRaw[i].dt_txt.slice(0, 10);
         }
@@ -504,6 +513,7 @@ export default new Vuex.Store({
           wind_speed_high: 0,
           wind_speed_low: 100,
           date: '',
+          name: '',
         };
         for (let i = 0; i < dayFourRaw.length; i++) {
           // Get the day high
@@ -538,6 +548,8 @@ export default new Vuex.Store({
           if (dayFourRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayFourRaw[i].wind.speed;
           }
+          // Set name
+          day.name = 'dayFour';
           // Get the date
           day.date = dayFourRaw[i].dt_txt.slice(0, 10);
         }
@@ -554,6 +566,7 @@ export default new Vuex.Store({
           wind_speed_high: 0,
           wind_speed_low: 100,
           date: '',
+          name: '',
         };
         for (let i = 0; i < dayFiveRaw.length; i++) {
           // Get the day high
@@ -588,6 +601,8 @@ export default new Vuex.Store({
           if (dayFiveRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayFiveRaw[i].wind.speed;
           }
+          // Set name
+          day.name = 'dayFive';
           // Get the date
           day.date = dayFiveRaw[i].dt_txt.slice(0, 10);
         }
@@ -606,6 +621,7 @@ export default new Vuex.Store({
           wind_speed_high: 0,
           wind_speed_low: 100,
           date: '',
+          name: '',
         };
       } catch (error) {
         console.log(error);
@@ -627,6 +643,7 @@ export default new Vuex.Store({
           wind_speed_high: 0,
           wind_speed_low: 100,
           date: '',
+          name: '',
         };
         // Create empty array to push modified objects into
         let data = [];
@@ -670,6 +687,8 @@ export default new Vuex.Store({
           if (dayOneRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayOneRaw[i].wind.speed;
           }
+          // Set name
+          day.name = 'dayOne';
           // Get the date
           day.date = dayOneRaw[i].dt_txt.slice(0, 10);
         }
@@ -689,6 +708,7 @@ export default new Vuex.Store({
           wind_speed_high: 0,
           wind_speed_low: 100,
           date: '',
+          name: '',
         };
         for (let i = 0; i < dayTwoRaw.length; i++) {
           // Get the day high
@@ -723,6 +743,8 @@ export default new Vuex.Store({
           if (dayTwoRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayTwoRaw[i].wind.speed;
           }
+          // Set name
+          day.name = 'dayTwo';
           // Get the date
           day.date = dayTwoRaw[i].dt_txt.slice(0, 10);
         }
@@ -739,6 +761,7 @@ export default new Vuex.Store({
           wind_speed_high: 0,
           wind_speed_low: 100,
           date: '',
+          name: '',
         };
         for (let i = 0; i < dayThreeRaw.length; i++) {
           // Get the day high
@@ -773,6 +796,8 @@ export default new Vuex.Store({
           if (dayThreeRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayThreeRaw[i].wind.speed;
           }
+          // Set name
+          day.name = 'dayThree';
           // Get the date
           day.date = dayThreeRaw[i].dt_txt.slice(0, 10);
         }
@@ -789,6 +814,7 @@ export default new Vuex.Store({
           wind_speed_high: 0,
           wind_speed_low: 100,
           date: '',
+          name: '',
         };
         for (let i = 0; i < dayFourRaw.length; i++) {
           // Get the day high
@@ -823,6 +849,8 @@ export default new Vuex.Store({
           if (dayFourRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayFourRaw[i].wind.speed;
           }
+          // Set name
+          day.name = 'dayFour';
           // Get the date
           day.date = dayFourRaw[i].dt_txt.slice(0, 10);
         }
@@ -839,6 +867,7 @@ export default new Vuex.Store({
           wind_speed_high: 0,
           wind_speed_low: 100,
           date: '',
+          name: '',
         };
         for (let i = 0; i < dayFiveRaw.length; i++) {
           // Get the day high
@@ -873,6 +902,8 @@ export default new Vuex.Store({
           if (dayFiveRaw[i].wind.speed < day.wind_speed_low) {
             day.wind_speed_low = dayFiveRaw[i].wind.speed;
           }
+          // Set name
+          day.name = 'dayFive';
           // Get the date
           day.date = dayFiveRaw[i].dt_txt.slice(0, 10);
         }
@@ -891,6 +922,7 @@ export default new Vuex.Store({
           wind_speed_high: 0,
           wind_speed_low: 100,
           date: '',
+          name: '',
         };
       } catch (error) {
         console.log(error);
