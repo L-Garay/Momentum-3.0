@@ -326,6 +326,10 @@ export default new Vuex.Store({
         weather.forecast = await api.post('weather/forecast/new', city);
         console.log('weather', weather);
         commit('setNewWeather', weather);
+        // TODO Fix this wet code and make it into it's own seperate function
+        // NOTE see TODO above
+        // TODO see NOTE above
+        // NOTE see TODO above
         // Create basic weather data object
         let day = {
           high: 0,
