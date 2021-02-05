@@ -111,6 +111,7 @@
     <forecast
       v-if="showForecast"
       @closeForecast="toggle5DayForecast"
+      @useCoordinates="getLocation"
       :weatherData="weather"
     />
   </div>

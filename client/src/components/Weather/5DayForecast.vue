@@ -190,19 +190,27 @@
           <p @click="changeLocation">
             Change Location <i class="fas fa-pencil-alt"></i>
           </p>
-          <input
-            v-if="city.change"
-            v-on:blur="onClickOutside"
-            type="text"
-            ref="focus"
-            v-model="city.name"
-            v-on:keyup.enter="submitNewCity"
-            v-autowidth="{
-              maxWidth: '140px',
-              minWidth: '70px',
-              comfortZone: 10,
-            }"
-          />
+          <div v-if="city.change" class="locationInput">
+            <input
+              v-on:blur="onClickOutside"
+              type="text"
+              ref="focus"
+              v-model="city.name"
+              v-on:keyup.enter="submitNewCity"
+              v-autowidth="{
+                maxWidth: '140px',
+                minWidth: '70px',
+                comfortZone: 10,
+              }"
+            />
+            <i
+              class="fas fa-crosshairs"
+              data-toggle="tooltip"
+              data-placement="bottom"
+              title="Use current coordinates"
+              @click="useCoordinates"
+            ></i>
+          </div>
         </div>
       </div>
     </div>
@@ -400,8 +408,14 @@ export default {
       this.city.change = false;
     },
     onClickOutside() {
-      this.city.name = '';
-      this.city.change = false;
+      setTimeout(() => {
+        this.city.name = '';
+        this.city.change = false;
+      }, 200);
+    },
+    useCoordinates() {
+      console.log('hit me');
+      this.$emit('useCoordinates');
     },
   },
 };
@@ -513,6 +527,7 @@ div.locationSwitch p:hover {
   text-shadow: 2px 0px 8px white;
 }
 div.locationSwitch input {
+  margin-left: 12px;
   border: none;
   border-bottom: 1pt solid white;
   text-align: center;
@@ -521,6 +536,20 @@ div.locationSwitch input {
 }
 div.locationSwitch input:focus {
   outline: none;
+}
+div.locationSwitch .locationInput {
+  display: flex;
+  justify-content: center;
+}
+div.locationInput i {
+  align-self: center;
+  font-size: 16px;
+  margin-left: 10px;
+  color: rgba(163, 163, 163, 0.685);
+}
+div.locationInput i:hover {
+  cursor: pointer;
+  color: white;
 }
 div.forecastArea {
   border-top: 1pt solid white;
