@@ -270,7 +270,7 @@ export default {
         name: '',
       },
       active: {
-        dayOne: false,
+        dayOne: true,
         dayTwo: false,
         dayThree: false,
         dayFour: false,
@@ -325,7 +325,7 @@ export default {
         case 'DayOne':
           console.log('hit me');
           this.$store.state.weather.forecast.current = this.$store.state.weather.forecast.dayOne;
-          this.show.today = false;
+          this.show.today = true;
           this.active.dayOne = true;
           this.active.dayTwo = false;
           this.active.dayThree = false;
@@ -371,7 +371,7 @@ export default {
         case 'Today':
           this.$store.state.weather.forecast.current = this.$store.state.weather.weather;
           this.show.today = true;
-          this.active.dayOne = false;
+          this.active.dayOne = true;
           this.active.dayTwo = false;
           this.active.dayThree = false;
           this.active.dayFour = false;
