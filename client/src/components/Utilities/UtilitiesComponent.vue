@@ -76,19 +76,20 @@ export default {
 
 <style scoped>
 .utilitiesComponent {
-  background-color: rgba(245, 245, 245, 0.815);
-  border: 1pt solid black;
+  background-color: rgba(0, 0, 0, 0.85);
+  border-radius: 6px 6px 6px 6px;
   width: 500px;
   height: 415px;
   position: absolute;
   z-index: 5;
   bottom: 65px;
   right: 15px;
+  color: white;
 }
 
 div.Navbar {
   display: flex;
-  border-bottom: 2pt solid black;
+  border-bottom: 2pt solid white;
 }
 div.Navbar h5 {
   padding: 5px 0;
