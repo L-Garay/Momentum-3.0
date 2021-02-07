@@ -69,7 +69,7 @@
                 minWidth: '50px',
                 comfortZone: 10,
               }"
-              v-if="showListInput"
+              v-show="showListInput"
             />
           </div>
         </div>
@@ -332,18 +332,19 @@ export default {
 div.todoList {
   text-align: center;
   text-align: -webkit-center;
-  margin-top: 40px;
+  margin-top: 12px;
 }
 #todoDropdown {
   background-color: transparent;
   border: none;
-  width: 375px;
-  height: 325px;
+  width: 475px;
+  height: 355px;
+  background-color: transparent;
 }
 /* Header section styling */
 .header {
-  border-bottom: 1pt solid black;
-  padding-bottom: 7pt;
+  border-bottom: 1pt solid white;
+  padding-bottom: 10pt;
 }
 /* List button and list styling */
 div.customLists:hover {
@@ -352,21 +353,23 @@ div.customLists:hover {
 button.btn {
   background-color: transparent;
   border-radius: 5px 5px 5px 5px;
-  border: 1pt solid black;
+  border: 1pt solid white;
   margin: 10px 0 0 7px;
-  color: black;
+  color: white;
 }
 button.btn:hover {
   background-color: lightgray;
   color: black;
-  box-shadow: 1pt 0pt 6pt black;
+  box-shadow: 1pt 0pt 6pt white;
 }
 button.btn:active {
-  background-color: lightgray !important;
+  background-color: white !important;
+  color: black !important;
 }
 button.btn:focus {
-  background-color: transparent;
-  color: black;
+  background-color: rgba(128, 128, 128, 0.39);
+  border: 1pt solid white;
+  color: white;
   box-shadow: 1pt 0pt 10pt rgba(0, 0, 0, 0.692) !important;
 }
 p.dropdown-item {
@@ -385,18 +388,33 @@ p.dropdown-item:hover {
 .listInput {
   padding: 13px 0 0 20px;
 }
+input.listInputBox {
+  border: none;
+  border-bottom: 1pt solid white;
+  background-color: transparent;
+  color: white;
+}
+input.listInputBox::placeholder {
+  color: white;
+}
+input.listInputBox:-ms-input-placeholder {
+  color: white;
+}
+input.listInputBox:focus {
+  outline: none;
+}
 /* Todo list styling */
 .descriptions {
   display: flex;
   justify-content: space-between;
 }
 .content {
-  color: black;
+  color: white;
   text-align: start;
-  height: 275px;
+  height: 315px;
 }
 .todoItems {
-  max-height: 210px;
+  max-height: 235px;
   padding-top: 5px;
   overflow-y: auto;
 }
@@ -410,16 +428,41 @@ p.dropdown-item:hover {
   text-align: center;
   height: 50px;
 }
-button.createBtn {
-  color: black;
+.input input {
+  border: none;
+  border-bottom: 1pt solid white;
   background-color: transparent;
-  border: 1pt solid black;
-  border-radius: 5px 5px 5px 5px;
+  color: white;
+}
+.input input::placeholder {
+  color: white;
+}
+.input input:-ms-input-placeholder {
+  color: white;
+}
+.input input:focus {
+  outline: none;
+}
+button.createBtn {
+  color: white;
+  background-color: transparent;
+  border: none;
 }
 button.createBtn:hover {
-  background-color: lightgray;
-  color: black;
-  box-shadow: 1pt 0pt 5pt rgba(0, 0, 0, 0.692);
+  color: white;
+  text-shadow: 10px 0px 20px white;
+}
+button.createBtn:active {
+  outline: none;
+}
+div.input::after {
+  position: absolute;
+  content: '';
+  width: 70%;
+  height: 1px;
+  bottom: 15%;
+  right: 15%;
+  background: white;
 }
 /* Font awesome styling */
 i.far,
