@@ -106,6 +106,7 @@ export default {
         newsSelected: false,
         gamesSelected: false,
         createdTodoLists: [],
+        contacts: [],
       },
     };
   },

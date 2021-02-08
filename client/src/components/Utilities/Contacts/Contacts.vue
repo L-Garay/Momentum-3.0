@@ -36,11 +36,11 @@
           </div>
         </div>
         <div class="mainBody">
-          This is where the different contacts will go
+          {{ SpecificLetter }}
         </div>
       </div>
       <div v-if="show.form" class="formSection">
-        <contacts-form />
+        <contacts-form @submittedForm="showMain" />
       </div>
       <div v-if="show.details" class="contactDetailsSection">
         <contact-detail />
@@ -68,12 +68,27 @@ export default {
       },
     };
   },
-  mounted() {},
-  computed: {},
+  mounted() {
+    this.$store.dispatch(
+      'getContactsByUserId',
+      this.$store.state.user.user._id
+    );
+  },
+  computed: {
+    SpecificLetter() {
+      return this.$store.state.contacts.all;
+    },
+  },
   methods: {
     showForm() {
       this.show.main = false;
+      this.show.details = false;
       this.show.form = true;
+    },
+    showMain() {
+      this.show.form = false;
+      this.show.details = false;
+      this.show.main = true;
     },
   },
 };
