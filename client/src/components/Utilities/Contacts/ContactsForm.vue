@@ -112,16 +112,16 @@ export default {
   data() {
     return {
       contact: {
-        firstName: '',
-        lastName: '',
-        phone: '',
-        email: '',
-        address: '',
-        city: '',
-        state: '',
-        zip: 0,
-        notes: '',
-        userId: '',
+        // firstName: '',
+        // lastName: '',
+        // phone: '',
+        // email: '',
+        // address: '',
+        // city: '',
+        // state: '',
+        // zip: 0,
+        // notes: '',
+        // userId: '',
       },
     };
   },
