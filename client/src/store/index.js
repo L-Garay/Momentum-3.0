@@ -77,6 +77,11 @@ export default new Vuex.Store({
       upcoming15: [],
       previous15: [],
     },
+    contacts: {
+      all: [],
+      specificLetter: [],
+      contact: {},
+    },
   },
   mutations: {
     //#region --Photo Methods--
@@ -274,6 +279,12 @@ export default new Vuex.Store({
       state.sports.previous15 = games.previous.data.events;
       state.sports.upcoming15 = games.upcoming.data.events;
     },
+    //#endregion
+
+    //#region --Contacts Methods--
+    setContacts(state, contacts) {
+      state.contacts.all = contacts;
+    }
     //#endregion
   },
   actions: {
@@ -1239,6 +1250,17 @@ export default new Vuex.Store({
       games.upcoming = await api.get('sports/games/upcoming/' + id);
       commit('setGames', games);
     },
+    //#endregion
+
+    //#region --Contacts Methods--
+    async createContact({dispatch}, contact) {
+      await api.post('contacts', contact);
+      dispatch('getContactsByUserId', contact.userId);
+    },
+    async getContactsByUserId({commit}, id) {
+      let res = await api.get('users/' + id + '/contacts');
+      commit('setContacts', res.data);
+    }
     //#endregion
   },
   modules: {},
