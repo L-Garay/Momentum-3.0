@@ -111,18 +111,7 @@ export default {
   name: 'ContactsFormComponent',
   data() {
     return {
-      contact: {
-        // firstName: '',
-        // lastName: '',
-        // phone: '',
-        // email: '',
-        // address: '',
-        // city: '',
-        // state: '',
-        // zip: 0,
-        // notes: '',
-        // userId: '',
-      },
+      contact: {},
     };
   },
   mounted() {},
