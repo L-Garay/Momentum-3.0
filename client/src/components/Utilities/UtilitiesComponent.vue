@@ -25,7 +25,7 @@
 <script>
 import Todo from '@/components/Utilities/Todo.vue';
 import Calendar from '@/components/Utilities/Calendar.vue';
-import Contacts from '@/components/Utilities/Contacts.vue';
+import Contacts from '@/components/Utilities/Contacts/Contacts.vue';
 export default {
   name: 'UtilitiesComponent',
   components: {
