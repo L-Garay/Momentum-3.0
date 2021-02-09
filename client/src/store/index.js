@@ -1266,7 +1266,10 @@ export default new Vuex.Store({
     },
     filterContacts({ commit, state }, letter) {
       let letterGroup = state.contacts.all.filter((c) => {
-        if (c.lastName[0] == letter) {
+        if (
+          c.lastName[0] == letter ||
+          c.lastName[0].toLowerCase() == letter.toLowerCase()
+        ) {
           return true;
         } else {
           return false;
