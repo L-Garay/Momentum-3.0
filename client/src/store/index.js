@@ -284,7 +284,7 @@ export default new Vuex.Store({
     //#region --Contacts Methods--
     setContacts(state, contacts) {
       state.contacts.all = contacts;
-    }
+    },
     //#endregion
   },
   actions: {
@@ -1253,14 +1253,15 @@ export default new Vuex.Store({
     //#endregion
 
     //#region --Contacts Methods--
-    async createContact({dispatch}, contact) {
+    async createContact({ dispatch }, contact) {
       await api.post('contacts', contact);
       dispatch('getContactsByUserId', contact.userId);
     },
-    async getContactsByUserId({commit}, id) {
+    async getContactsByUserId({ commit }, id) {
       let res = await api.get('users/' + id + '/contacts');
       commit('setContacts', res.data);
-    }
+    },
+    filterContacts({ commit, state }, letter) {},
     //#endregion
   },
   modules: {},
