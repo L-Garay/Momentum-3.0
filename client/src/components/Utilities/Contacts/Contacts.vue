@@ -15,7 +15,7 @@
             <div class="buffer" id="D" @click="selectLetter('D')"><p>D</p></div>
             <div class="buffer" id="E" @click="selectLetter('E')"><p>E</p></div>
             <!-- I have to use 'f' for the id and method parameter for some reason, as a capital 'F' will not work properly; the selectLetter's getElementById doesn't capture the capital 'F' (maybe it's a reserved letter) -->
-            <div class="buffer activeLetter" id="f" @click="selectLetter('f')">
+            <div class="buffer" id="f" @click="selectLetter('f')">
               <p>F</p>
             </div>
             <div class="buffer" id="G" @click="selectLetter('G')"><p>G</p></div>
@@ -42,7 +42,9 @@
             </div>
           </div>
         </div>
-        <div class="mainBody"></div>
+        <div class="mainBody">
+          {{ SpecificLetter }}
+        </div>
       </div>
       <div v-if="show.form" class="formSection">
         <contacts-form @submittedForm="showMain" />
@@ -85,7 +87,7 @@ export default {
   },
   computed: {
     SpecificLetter() {
-      return this.$store.state.contacts.all;
+      return this.$store.state.contacts.specificLetter;
     },
   },
   methods: {
