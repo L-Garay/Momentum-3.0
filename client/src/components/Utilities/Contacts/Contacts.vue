@@ -53,15 +53,23 @@
                 v-for="contact in SpecificLetter"
                 :key="contact._id"
               >
-                <div class="contactName">
+                <div class="contactName" @click="showDetails(contact)">
                   <p class="firstName">{{ contact.firstName }}</p>
 
                   <p class="lastName">{{ contact.lastName }}</p>
                 </div>
                 <div class="contactOptions">
-                  <div class="edit"><i class="fas fa-edit fa-xs"></i></div>
+                  <div class="edit">
+                    <i
+                      @click="showDetails(contact)"
+                      class="fas fa-edit fa-xs"
+                    ></i>
+                  </div>
                   <div class="delete">
-                    <i class="fas fa-user-minus fa-xs"></i>
+                    <i
+                      @click="deleteContact(contact._id)"
+                      class="fas fa-user-minus fa-xs"
+                    ></i>
                   </div>
                 </div>
               </div>
@@ -70,10 +78,13 @@
         </div>
       </div>
       <div v-if="show.form" class="formSection">
-        <contacts-form />
+        <contacts-form @cancel="cancel" />
       </div>
       <div v-if="show.details" class="contactDetailsSection">
-        <contact-detail />
+        <contact-detail :contactData="contact" @cancel="cancel" />
+      </div>
+      <div v-if="show.editForm" class="editFormSection">
+        <edit-form :contactData="contact" @cancel="cancel" />
       </div>
     </div>
   </div>
@@ -82,11 +93,13 @@
 <script>
 import ContactsForm from '@/components/Utilities/Contacts/ContactsForm.vue';
 import ContactDetail from '@/components/Utilities/Contacts/ContactDetail.vue';
+import EditForm from '@/components/Utilities/Contacts/EditForm.vue';
 export default {
   name: 'ContactsComponent',
   components: {
     ContactsForm,
     ContactDetail,
+    EditForm,
   },
   props: [],
   data() {
@@ -100,6 +113,7 @@ export default {
         current: '',
         new: '',
       },
+      contact: {},
     };
   },
   mounted() {
@@ -107,7 +121,7 @@ export default {
       this.showMain();
       this.checkLetter(lastName);
     });
-    this.checkForHighlight();
+    this.checkHighlightAndRepopulate();
   },
   beforeDestroy() {
     this.$store.state.contacts.currentLetter = 'A';
@@ -125,18 +139,38 @@ export default {
     showForm() {
       this.show.main = false;
       this.show.details = false;
+
       this.show.form = true;
     },
     showMain() {
       this.show.form = false;
       this.show.details = false;
+
       this.show.main = true;
     },
-    checkForHighlight() {
-      document
-        .getElementById(this.$store.state.contacts.currentLetter)
-        .classList.add('activeLetter');
+    cancel() {
+      this.show.form = false;
+      this.show.details = false;
+
+      this.show.main = true;
+      setTimeout(() => {
+        this.checkForHighlight();
+      }, 50);
+    },
+    // NOTE these two methods are called when the component gets mounted; i.e when a user opens the contacts tab for the first time or goes from contacts->calendar->contacts
+    checkHighlightAndRepopulate() {
+      this.checkForHighlight();
       this.repopulate();
+    },
+    checkForHighlight() {
+      console.log('hit checkfor');
+      if (this.$store.state.contacts.currentLetter === 'F') {
+        document.getElementById('f').classList.add('activeLetter');
+      } else {
+        document
+          .getElementById(this.$store.state.contacts.currentLetter)
+          .classList.add('activeLetter');
+      }
     },
     repopulate() {
       this.$store.dispatch(
@@ -144,6 +178,7 @@ export default {
         this.$store.state.contacts.currentLetter
       );
     },
+    // NOTE this method is only called when a user selects a letter from the index
     selectLetter(letter) {
       // NOTE Since the getElementById wont capture an uppercase 'F', we have to manually check to see if the capital 'F' is passed in, and if it is tell the getElementById to grab the proper element (use a lowercase 'f' for the id); both for adding and removing the activeLetter class.
       if (letter === 'F') {
@@ -166,6 +201,7 @@ export default {
         this.$store.dispatch('filterContacts', letter);
       }
     },
+    // NOTE this method is only called when a user creates a new contact
     checkLetter(lastName) {
       console.log(lastName[0]);
       setTimeout(async () => {
@@ -191,6 +227,15 @@ export default {
         );
         this.$store.dispatch('filterContacts', lastName[0]);
       }, 100);
+    },
+    deleteContact(id) {
+      this.$store.dispatch('deleteContact', id);
+    },
+    showDetails(contact) {
+      this.contact = contact;
+      this.show.form = false;
+      this.show.details = true;
+      this.show.main = false;
     },
   },
 };

@@ -3,11 +3,11 @@
     <form>
       <div class="form-row">
         <div class="col-md-3 mb-1">
-          <label class="left" for="validationDefault01">First name</label>
+          <label class="left" for="firstName">First name</label>
           <input
             type="text"
             class="form-control form-control-sm"
-            id="validationDefault01"
+            id="firstName"
             placeholder="Bob"
             required
             v-model="contact.firstName"
@@ -99,6 +99,9 @@
         </div>
       </div>
 
+      <button class="btn btn-secondary" type="button" @click="cancel">
+        Cancel
+      </button>
       <button class="btn btn-primary" type="button" @click="createContact">
         Submit form
       </button>
@@ -123,6 +126,9 @@ export default {
       let lastName = this.contact.lastName;
       this.$root.$emit('submittedForm', lastName);
       this.contact = {};
+    },
+    cancel() {
+      this.$emit('cancel');
     },
   },
 };
