@@ -81,6 +81,7 @@ export default new Vuex.Store({
       all: [],
       specificLetter: [],
       contact: {},
+      currentLetter: 'A',
     },
   },
   mutations: {
@@ -284,6 +285,9 @@ export default new Vuex.Store({
     //#region --Contacts Methods--
     setContacts(state, contacts) {
       state.contacts.all = contacts;
+    },
+    setFilteredContacts(state, contacts) {
+      state.contacts.specificLetter = contacts;
     },
     //#endregion
   },
@@ -1261,7 +1265,20 @@ export default new Vuex.Store({
       let res = await api.get('users/' + id + '/contacts');
       commit('setContacts', res.data);
     },
-    filterContacts({ commit, state }, letter) {},
+    filterContacts({ commit, state }, letter) {
+      let letterGroup = state.contacts.all.filter((c) => {
+        if (
+          c.lastName[0] == letter ||
+          c.lastName[0].toLowerCase() == letter.toLowerCase()
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      console.log(letterGroup);
+      commit('setFilteredContacts', letterGroup);
+    },
     //#endregion
   },
   modules: {},

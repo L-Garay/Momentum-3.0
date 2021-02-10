@@ -42,7 +42,9 @@ export default {
       },
     };
   },
-  mounted() {},
+  mounted() {
+    this.setupContacts();
+  },
   computed: {},
   methods: {
     toggleUtility(utility) {
@@ -69,6 +71,13 @@ export default {
           this.show.contacts = false;
           break;
       }
+    },
+    async setupContacts() {
+      await this.$store.dispatch(
+        'getContactsByUserId',
+        this.$store.state.user.user._id
+      );
+      this.$store.dispatch('filterContacts', 'A');
     },
   },
 };
