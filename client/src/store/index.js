@@ -81,6 +81,7 @@ export default new Vuex.Store({
       all: [],
       specificLetter: [],
       contact: {},
+      currentLetter: 'A',
     },
   },
   mutations: {

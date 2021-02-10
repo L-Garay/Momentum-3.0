@@ -7,7 +7,7 @@
             <p @click="showForm">Add new Contact</p>
           </div>
           <div class="letterIndex">
-            <div class="buffer activeLetter" id="A" @click="selectLetter('A')">
+            <div class="buffer" id="A" @click="selectLetter('A')">
               <p>A</p>
             </div>
             <div class="buffer" id="B" @click="selectLetter('B')"><p>B</p></div>
@@ -45,7 +45,7 @@
         <div class="mainBody">
           <div class="contactListWrapper">
             <div class="contactListHeader">
-              <p>{{ letter.current }}</p>
+              <p>{{ CurrentLetter }}</p>
             </div>
             <div class="contactListSection">
               <div
@@ -70,7 +70,7 @@
         </div>
       </div>
       <div v-if="show.form" class="formSection">
-        <contacts-form @submittedForm="showMain" />
+        <contacts-form />
       </div>
       <div v-if="show.details" class="contactDetailsSection">
         <contact-detail />
@@ -97,20 +97,28 @@ export default {
         details: false,
       },
       letter: {
-        current: 'A',
+        current: '',
         new: '',
       },
     };
   },
   mounted() {
-    this.$store.dispatch(
-      'getContactsByUserId',
-      this.$store.state.user.user._id
-    );
+    this.$root.$on('submittedForm', (lastName) => {
+      this.showMain();
+      this.checkLetter(lastName);
+    });
+    this.checkForHighlight();
+  },
+  beforeDestroy() {
+    this.$store.state.contacts.currentLetter = 'A';
+    this.$store.state.contacts.specificLetter = [];
   },
   computed: {
     SpecificLetter() {
       return this.$store.state.contacts.specificLetter;
+    },
+    CurrentLetter() {
+      return this.$store.state.contacts.currentLetter;
     },
   },
   methods: {
@@ -124,27 +132,65 @@ export default {
       this.show.details = false;
       this.show.main = true;
     },
+    checkForHighlight() {
+      document
+        .getElementById(this.$store.state.contacts.currentLetter)
+        .classList.add('activeLetter');
+      this.repopulate();
+    },
+    repopulate() {
+      this.$store.dispatch(
+        'filterContacts',
+        this.$store.state.contacts.currentLetter
+      );
+    },
     selectLetter(letter) {
       // NOTE Since the getElementById wont capture an uppercase 'F', we have to manually check to see if the capital 'F' is passed in, and if it is tell the getElementById to grab the proper element (use a lowercase 'f' for the id); both for adding and removing the activeLetter class.
       if (letter === 'F') {
         document
-          .getElementById(this.letter.current)
+          .getElementById(this.$store.state.contacts.currentLetter)
           .classList.remove('activeLetter');
         document.getElementById('f').classList.add('activeLetter');
-        this.letter.current = letter;
+        this.$store.state.contacts.currentLetter = letter;
         this.$store.dispatch('filterContacts', letter);
       } else if (letter !== 'F') {
-        if (this.letter.current === 'F') {
+        if (this.$store.state.contacts.currentLetter === 'F') {
           document.getElementById('f').classList.remove('activeLetter');
-        } else if (this.letter.current !== 'F') {
+        } else if (this.$store.state.contacts.currentLetter !== 'F') {
           document
-            .getElementById(this.letter.current)
+            .getElementById(this.$store.state.contacts.currentLetter)
             .classList.remove('activeLetter');
         }
         document.getElementById(letter).classList.add('activeLetter');
-        this.letter.current = letter;
+        this.$store.state.contacts.currentLetter = letter;
         this.$store.dispatch('filterContacts', letter);
       }
+    },
+    checkLetter(lastName) {
+      console.log(lastName[0]);
+      setTimeout(async () => {
+        if (lastName[0].toUpperCase() === 'F') {
+          document
+            .getElementById(this.$store.state.contacts.currentLetter)
+            .classList.remove('activeLetter');
+          document.getElementById('f').classList.add('activeLetter');
+        } else if (lastName[0].toUpperCase() !== 'F') {
+          if (this.$store.state.contacts.currentLetter === 'F') {
+            document.getElementById('f').classList.remove('activeLetter');
+          } else if (this.$store.state.contacts.currentLetter !== 'F') {
+            document
+              .getElementById(this.$store.state.contacts.currentLetter)
+              .classList.remove('activeLetter');
+          }
+          document.getElementById(lastName[0]).classList.add('activeLetter');
+        }
+        this.$store.state.contacts.currentLetter = lastName[0].toUpperCase();
+        await this.$store.dispatch(
+          'getContactsByUserId',
+          this.$store.state.user.user._id
+        );
+        this.$store.dispatch('filterContacts', lastName[0]);
+      }, 100);
     },
   },
 };

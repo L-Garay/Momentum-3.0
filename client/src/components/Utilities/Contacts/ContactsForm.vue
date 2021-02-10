@@ -120,8 +120,9 @@ export default {
     createContact() {
       this.contact.userId = this.$store.state.user.user._id;
       this.$store.dispatch('createContact', this.contact);
+      let lastName = this.contact.lastName;
+      this.$root.$emit('submittedForm', lastName);
       this.contact = {};
-      this.$emit('submittedForm');
     },
   },
 };
