@@ -53,13 +53,18 @@
                 v-for="contact in SpecificLetter"
                 :key="contact._id"
               >
-                <div class="contactName">
+                <div class="contactName" @click="showDetails(contact)">
                   <p class="firstName">{{ contact.firstName }}</p>
 
                   <p class="lastName">{{ contact.lastName }}</p>
                 </div>
                 <div class="contactOptions">
-                  <div class="edit"><i class="fas fa-edit fa-xs"></i></div>
+                  <div class="edit">
+                    <i
+                      @click="showDetails(contact)"
+                      class="fas fa-edit fa-xs"
+                    ></i>
+                  </div>
                   <div class="delete">
                     <i
                       @click="deleteContact(contact._id)"
@@ -73,10 +78,13 @@
         </div>
       </div>
       <div v-if="show.form" class="formSection">
-        <contacts-form />
+        <contacts-form @cancel="cancel" />
       </div>
       <div v-if="show.details" class="contactDetailsSection">
-        <contact-detail />
+        <contact-detail :contactData="contact" @cancel="cancel" />
+      </div>
+      <div v-if="show.editForm" class="editFormSection">
+        <edit-form :contactData="contact" @cancel="cancel" />
       </div>
     </div>
   </div>
@@ -85,11 +93,13 @@
 <script>
 import ContactsForm from '@/components/Utilities/Contacts/ContactsForm.vue';
 import ContactDetail from '@/components/Utilities/Contacts/ContactDetail.vue';
+import EditForm from '@/components/Utilities/Contacts/EditForm.vue';
 export default {
   name: 'ContactsComponent',
   components: {
     ContactsForm,
     ContactDetail,
+    EditForm,
   },
   props: [],
   data() {
@@ -103,6 +113,7 @@ export default {
         current: '',
         new: '',
       },
+      contact: {},
     };
   },
   mounted() {
@@ -110,7 +121,7 @@ export default {
       this.showMain();
       this.checkLetter(lastName);
     });
-    this.checkForHighlight();
+    this.checkHighlightAndRepopulate();
   },
   beforeDestroy() {
     this.$store.state.contacts.currentLetter = 'A';
@@ -128,19 +139,38 @@ export default {
     showForm() {
       this.show.main = false;
       this.show.details = false;
+
       this.show.form = true;
     },
     showMain() {
       this.show.form = false;
       this.show.details = false;
+
       this.show.main = true;
     },
+    cancel() {
+      this.show.form = false;
+      this.show.details = false;
+
+      this.show.main = true;
+      setTimeout(() => {
+        this.checkForHighlight();
+      }, 50);
+    },
     // NOTE these two methods are called when the component gets mounted; i.e when a user opens the contacts tab for the first time or goes from contacts->calendar->contacts
-    checkForHighlight() {
-      document
-        .getElementById(this.$store.state.contacts.currentLetter)
-        .classList.add('activeLetter');
+    checkHighlightAndRepopulate() {
+      this.checkForHighlight();
       this.repopulate();
+    },
+    checkForHighlight() {
+      console.log('hit checkfor');
+      if (this.$store.state.contacts.currentLetter === 'F') {
+        document.getElementById('f').classList.add('activeLetter');
+      } else {
+        document
+          .getElementById(this.$store.state.contacts.currentLetter)
+          .classList.add('activeLetter');
+      }
     },
     repopulate() {
       this.$store.dispatch(
@@ -200,6 +230,12 @@ export default {
     },
     deleteContact(id) {
       this.$store.dispatch('deleteContact', id);
+    },
+    showDetails(contact) {
+      this.contact = contact;
+      this.show.form = false;
+      this.show.details = true;
+      this.show.main = false;
     },
   },
 };

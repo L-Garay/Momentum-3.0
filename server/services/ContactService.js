@@ -32,6 +32,19 @@ class ContactService {
       );
     }
   }
+  async editContact(contact) {
+    try {
+      return await dbContext.Contact.findByIdAndUpdate(
+        { _id: contact._id },
+        contact
+      );
+    } catch (error) {
+      throw new ErrorResponse(
+        `Can't edit contact with id ${contact._id}. ${error}`,
+        error.response.status
+      );
+    }
+  }
 }
 
 export const contactService = new ContactService();
