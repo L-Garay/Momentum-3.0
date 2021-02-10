@@ -61,7 +61,10 @@
                 <div class="contactOptions">
                   <div class="edit"><i class="fas fa-edit fa-xs"></i></div>
                   <div class="delete">
-                    <i class="fas fa-user-minus fa-xs"></i>
+                    <i
+                      @click="deleteContact(contact._id)"
+                      class="fas fa-user-minus fa-xs"
+                    ></i>
                   </div>
                 </div>
               </div>
@@ -132,6 +135,7 @@ export default {
       this.show.details = false;
       this.show.main = true;
     },
+    // NOTE these two methods are called when the component gets mounted; i.e when a user opens the contacts tab for the first time or goes from contacts->calendar->contacts
     checkForHighlight() {
       document
         .getElementById(this.$store.state.contacts.currentLetter)
@@ -144,6 +148,7 @@ export default {
         this.$store.state.contacts.currentLetter
       );
     },
+    // NOTE this method is only called when a user selects a letter from the index
     selectLetter(letter) {
       // NOTE Since the getElementById wont capture an uppercase 'F', we have to manually check to see if the capital 'F' is passed in, and if it is tell the getElementById to grab the proper element (use a lowercase 'f' for the id); both for adding and removing the activeLetter class.
       if (letter === 'F') {
@@ -166,6 +171,7 @@ export default {
         this.$store.dispatch('filterContacts', letter);
       }
     },
+    // NOTE this method is only called when a user creates a new contact
     checkLetter(lastName) {
       console.log(lastName[0]);
       setTimeout(async () => {
@@ -191,6 +197,9 @@ export default {
         );
         this.$store.dispatch('filterContacts', lastName[0]);
       }, 100);
+    },
+    deleteContact(id) {
+      this.$store.dispatch('deleteContact', id);
     },
   },
 };

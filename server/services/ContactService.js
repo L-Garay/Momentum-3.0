@@ -22,6 +22,16 @@ class ContactService {
       );
     }
   }
+  async deleteContact(id) {
+    try {
+      return await dbContext.Contact.findByIdAndDelete(id);
+    } catch (error) {
+      throw new ErrorResponse(
+        `Can't delete contact with id ${id}. ${error}`,
+        error.response.status
+      );
+    }
+  }
 }
 
 export const contactService = new ContactService();

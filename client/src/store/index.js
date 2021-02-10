@@ -1276,8 +1276,12 @@ export default new Vuex.Store({
           return false;
         }
       });
-      console.log(letterGroup);
       commit('setFilteredContacts', letterGroup);
+    },
+    async deleteContact({ dispatch, state }, id) {
+      await api.delete('contacts/' + id);
+      await dispatch('getContactsByUserId', state.user.user._id);
+      dispatch('filterContacts', state.contacts.currentLetter);
     },
     //#endregion
   },
