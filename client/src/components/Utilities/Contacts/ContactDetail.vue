@@ -93,7 +93,7 @@
         </button>
       </div>
       <div class="editButton">
-        <button class="btn btn-primary" type="button" @click="toggleEdit">
+        <button class="btn btn-primary" type="button" @click="startEditing">
           Edit
         </button>
       </div>
@@ -440,12 +440,17 @@
     </div>
     <div class="detailsRow5">
       <div class="backButton">
-        <button class="btn btn-secondary" type="button" @click="toggleEdit">
+        <button class="btn btn-secondary" type="button" @click="stopEditing">
           Cancel
         </button>
       </div>
       <div class="submitButton">
-        <button class="btn btn-primary" type="button" @click="updateContact">
+        <button
+          id="confirmBtn"
+          class="btn btn-primary"
+          type="button"
+          @click="updateContact"
+        >
           Confirm
         </button>
       </div>
@@ -498,10 +503,21 @@ export default {
     back() {
       this.$emit('back');
     },
-    toggleEdit() {
-      this.editContact = !this.editContact;
-      this.newContact = { ...this.contactData };
+    startEditing() {
+      this.editContact = true;
+      setTimeout(() => {
+        document.getElementById('confirmBtn').disabled = true;
+      }, 100);
     },
+    stopEditing() {
+      this.editContact = false;
+      this.newContact = { ...this.contactData };
+      document.getElementById('confirmBtn').disabled = false;
+    },
+    // toggleEdit() {
+    //   this.editContact = !this.editContact;
+    //   this.newContact = { ...this.contactData };
+    // },
     switchEdit(field) {
       switch (field) {
         case 'firstName':
@@ -649,38 +665,47 @@ export default {
         case 'firstName':
           this.hasEdited.firstName = true;
           this.edit.firstName = false;
+          document.getElementById('confirmBtn').disabled = false;
           break;
         case 'lastName':
           this.hasEdited.lastName = true;
           this.edit.lastName = false;
+          document.getElementById('confirmBtn').disabled = false;
           break;
         case 'phone':
           this.hasEdited.phone = true;
           this.edit.phone = false;
+          document.getElementById('confirmBtn').disabled = false;
           break;
         case 'email':
           this.hasEdited.email = true;
           this.edit.email = false;
+          document.getElementById('confirmBtn').disabled = false;
           break;
         case 'address':
           this.hasEdited.address = true;
           this.edit.address = false;
+          document.getElementById('confirmBtn').disabled = false;
           break;
         case 'city':
           this.hasEdited.city = true;
           this.edit.city = false;
+          document.getElementById('confirmBtn').disabled = false;
           break;
         case 'state':
           this.hasEdited.state = true;
           this.edit.state = false;
+          document.getElementById('confirmBtn').disabled = false;
           break;
         case 'zip':
           this.hasEdited.zip = true;
           this.edit.zip = false;
+          document.getElementById('confirmBtn').disabled = false;
           break;
         case 'notes':
           this.hasEdited.notes = true;
           this.edit.notes = false;
+          document.getElementById('confirmBtn').disabled = false;
           break;
 
         default:
