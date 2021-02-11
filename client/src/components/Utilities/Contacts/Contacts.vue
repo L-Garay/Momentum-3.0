@@ -83,9 +83,6 @@
       <div v-if="show.details" class="contactDetailsSection">
         <contact-detail :contactData="contact" @back="cancel" />
       </div>
-      <div v-if="show.editForm" class="editFormSection">
-        <edit-form :contactData="contact" @cancel="cancel" />
-      </div>
     </div>
   </div>
 </template>
@@ -93,13 +90,11 @@
 <script>
 import ContactsForm from '@/components/Utilities/Contacts/ContactsForm.vue';
 import ContactDetail from '@/components/Utilities/Contacts/ContactDetail.vue';
-import EditForm from '@/components/Utilities/Contacts/EditForm.vue';
 export default {
   name: 'ContactsComponent',
   components: {
     ContactsForm,
     ContactDetail,
-    EditForm,
   },
   props: [],
   data() {
