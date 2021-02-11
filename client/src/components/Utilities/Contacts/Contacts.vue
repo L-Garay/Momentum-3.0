@@ -81,7 +81,7 @@
         <contacts-form @cancel="cancel" />
       </div>
       <div v-if="show.details" class="contactDetailsSection">
-        <contact-detail :contactData="contact" @cancel="cancel" />
+        <contact-detail :contactData="contact" @back="cancel" />
       </div>
       <div v-if="show.editForm" class="editFormSection">
         <edit-form :contactData="contact" @cancel="cancel" />

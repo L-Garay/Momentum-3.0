@@ -1283,7 +1283,7 @@ export default new Vuex.Store({
       await dispatch('getContactsByUserId', state.user.user._id);
       dispatch('filterContacts', state.contacts.currentLetter);
     },
-    async editContact({ dispatch, state }, contact) {
+    async updateContact({ dispatch, state }, contact) {
       await api.put('contacts/' + contact._id, contact);
       await dispatch('getContactsByUserId', contact.userId);
       dispatch('filterContacts', state.contacts.currentLetter);
