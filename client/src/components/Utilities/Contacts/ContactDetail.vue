@@ -1,38 +1,89 @@
 <template>
   <div v-if="editContact == false" class="detailsWrapper">
     <div class="detailsRow1">
-      <div class="firstName">
-        <p>{{ contactData.firstName }}</p>
+      <div class="firstNameWrapper">
+        <div v-if="hasConfirmed == false" class="firstName">
+          <p>{{ contactData.firstName }}</p>
+        </div>
+        <div v-else class="confirmed">
+          <p>{{ newContact.firstName }}</p>
+        </div>
       </div>
-      <div v-if="contactData.lastName" class="lastName">
-        <p>{{ contactData.lastName }}</p>
+      <div class="lastNameWrapper">
+        <div
+          v-if="contactData.lastName && hasConfirmed == false"
+          class="lastName"
+        >
+          <p>{{ contactData.lastName }}</p>
+        </div>
+        <div v-else-if="hasConfirmed == true" class="confirmed">
+          <p>{{ newContact.lastName }}</p>
+        </div>
       </div>
     </div>
     <div class="detailsRow2">
-      <div v-if="contactData.phone" class="phone">
-        <p>{{ contactData.phone }}</p>
+      <div class="phoneWrapper">
+        <div v-if="contactData.phone && hasConfirmed == false" class="phone">
+          <p>{{ contactData.phone }}</p>
+        </div>
+        <div v-else-if="hasConfirmed == true" class="confirmed">
+          <p>{{ newContact.phone }}</p>
+        </div>
       </div>
-      <div v-if="contactData.email" class="email">
-        <p>{{ contactData.email }}</p>
+      <div class="emailWrapper">
+        <div v-if="contactData.email && hasConfirmed == false" class="email">
+          <p>{{ contactData.email }}</p>
+        </div>
+        <div v-else-if="hasConfirmed == true" class="confirmed">
+          <p>{{ newContact.email }}</p>
+        </div>
       </div>
     </div>
     <div class="detailsRow3">
-      <div v-if="contactData.address" class="address">
-        <p>{{ contactData.address }}</p>
+      <div class="addressWrapper">
+        <div
+          v-if="contactData.address && hasConfirmed == false"
+          class="address"
+        >
+          <p>{{ contactData.address }}</p>
+        </div>
+        <div v-else-if="hasConfirmed == true" class="confirmed">
+          <p>{{ newContact.address }}</p>
+        </div>
       </div>
-      <div v-if="contactData.city" class="city">
-        <p>{{ contactData.city }},</p>
+      <div class="cityWrapper">
+        <div v-if="contactData.city && hasConfirmed == false" class="city">
+          <p>{{ contactData.city }},</p>
+        </div>
+        <div v-else-if="hasConfirmed == true" class="confirmed">
+          <p>{{ newContact.city }}</p>
+        </div>
       </div>
-      <div v-if="contactData.state" class="state">
-        <p>{{ contactData.state }}</p>
+      <div class="stateWrapper">
+        <div v-if="contactData.state && hasConfirmed == false" class="state">
+          <p>{{ contactData.state }}</p>
+        </div>
+        <div v-else-if="hasConfirmed == true" class="confirmed">
+          <p>{{ newContact.state }}</p>
+        </div>
       </div>
-      <div v-if="contactData.city" class="zip">
-        <p>({{ contactData.zip }})</p>
+      <div class="zipWrapper">
+        <div v-if="contactData.city && hasConfirmed == false" class="zip">
+          <p>({{ contactData.zip }})</p>
+        </div>
+        <div v-else-if="hasConfirmed == true" class="confirmed">
+          <p>{{ newContact.zip }}</p>
+        </div>
       </div>
     </div>
     <div class="detailsRow4">
-      <div v-if="contactData.notes" class="notes">
-        <p>{{ contactData.notes }}</p>
+      <div class="notesWrapper">
+        <div v-if="contactData.notes && hasConfirmed == false" class="notes">
+          <p>{{ contactData.notes }}</p>
+        </div>
+        <div v-else-if="hasConfirmed == true" class="confirmed">
+          <p>{{ newContact.notes }}</p>
+        </div>
       </div>
     </div>
     <div class="detailsRow5">
@@ -50,293 +101,341 @@
   </div>
   <div v-else class="detailsWrapper">
     <div class="detailsRow1">
-      <div
-        v-if="edit.firstName == false && hasEdited.firstName == false"
-        class="firstName"
-      >
-        <p>{{ contactData.firstName }}</p>
-        <i @click="switchEdit('firstName')" class="fas fa-edit fa-xs"></i>
+      <div class="firstNameWrapper">
+        <div
+          v-if="edit.firstName == false && hasEdited.firstName == false"
+          class="firstName"
+        >
+          <p>{{ contactData.firstName }}</p>
+          <i @click="switchEdit('firstName')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <div v-else-if="edit.firstName == true" class="firstNameEdit">
+          <input
+            type="text"
+            ref="focusFirstName"
+            v-model="newContact.firstName"
+            v-on:keyup.enter="finishEditing('firstName')"
+            v-autowidth="{
+              maxWidth: '140px',
+              minWidth: '80px',
+              comfortZone: 5,
+            }"
+          />
+          <i
+            @click="cancelEditing('firstName')"
+            class="far fa-times-circle"
+          ></i>
+        </div>
+        <div
+          v-else-if="hasEdited.firstName == true && edit.firstName == false"
+          class="editedFirstName"
+        >
+          <p>{{ newContact.firstName }}</p>
+          <i @click="switchEdit('firstName')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <!-- <div v-else-if="hasConfirmed == true" class="confirmed">
+          <p>{{ newContact.firstName }}</p>
+        </div> -->
       </div>
-      <div v-else-if="edit.firstName == true" class="firstNameEdit">
-        <input
-          type="text"
-          ref="focusFirstName"
-          v-model="newContact.firstName"
-          v-on:keyup.enter="finishEditing('firstName')"
-          v-autowidth="{
-            maxWidth: '140px',
-            minWidth: '80px',
-            comfortZone: 5,
-          }"
-        />
-      </div>
-      <div
-        v-else-if="hasEdited.firstName == true && edit.firstName == false"
-        class="editedFirstName"
-      >
-        <p>{{ newContact.firstName }}</p>
-        <i @click="switchEdit('firstName')" class="fas fa-edit fa-xs"></i>
-      </div>
-      <div
-        v-if="
-          contactData.lastName &&
-            edit.lastName == false &&
-            hasEdited.lastName == false
-        "
-        class="lastName"
-      >
-        <p>{{ contactData.lastName }}</p>
-        <i @click="switchEdit('lastName')" class="fas fa-edit fa-xs"></i>
-      </div>
-      <div
-        v-else-if="contactData.lastName && edit.lastName == true"
-        class="lastNameEdit"
-      >
-        <input
-          type="text"
-          ref="focusLastName"
-          v-model="newContact.lastName"
-          v-on:keyup.enter="finishEditing('lastName')"
-          v-autowidth="{
-            maxWidth: '140px',
-            minWidth: '80px',
-            comfortZone: 5,
-          }"
-        />
-      </div>
-      <div
-        v-else-if="hasEdited.lastName == true && edit.lastName == false"
-        class="editedLastName"
-      >
-        <p>{{ newContact.lastName }}</p>
-        <i @click="switchEdit('lastName')" class="fas fa-edit fa-xs"></i>
+      <div class="lastNameWrapper">
+        <div
+          v-if="
+            contactData.lastName &&
+              edit.lastName == false &&
+              hasEdited.lastName == false
+          "
+          class="lastName"
+        >
+          <p>{{ contactData.lastName }}</p>
+          <i @click="switchEdit('lastName')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <div
+          v-else-if="contactData.lastName && edit.lastName == true"
+          class="lastNameEdit"
+        >
+          <input
+            type="text"
+            ref="focusLastName"
+            v-model="newContact.lastName"
+            v-on:keyup.enter="finishEditing('lastName')"
+            v-autowidth="{
+              maxWidth: '140px',
+              minWidth: '80px',
+              comfortZone: 5,
+            }"
+          /><i
+            @click="cancelEditing('lastName')"
+            class="far fa-times-circle"
+          ></i>
+        </div>
+        <div
+          v-else-if="hasEdited.lastName == true && edit.lastName == false"
+          class="editedLastName"
+        >
+          <p>{{ newContact.lastName }}</p>
+          <i @click="switchEdit('lastName')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <!-- <div v-else-if="hasConfirmed == true" class="confirmed">
+          <p>{{ newContact.lastName }}</p>
+        </div> -->
       </div>
     </div>
     <div class="detailsRow2">
-      <div
-        v-if="
-          contactData.phone && edit.phone == false && hasEdited.phone == false
-        "
-        class="phone"
-      >
-        <p>{{ contactData.phone }}</p>
-        <i @click="switchEdit('phone')" class="fas fa-edit fa-xs"></i>
+      <div class="phoneWrapper">
+        <div
+          v-if="
+            contactData.phone && edit.phone == false && hasEdited.phone == false
+          "
+          class="phone"
+        >
+          <p>{{ contactData.phone }}</p>
+          <i @click="switchEdit('phone')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <div
+          v-else-if="contactData.phone && edit.phone == true"
+          class="phoneEdit"
+        >
+          <input
+            type="text"
+            ref="focusPhone"
+            v-model="newContact.phone"
+            v-on:keyup.enter="finishEditing('phone')"
+            v-autowidth="{
+              maxWidth: '140px',
+              minWidth: '80px',
+              comfortZone: 5,
+            }"
+          /><i @click="cancelEditing('phone')" class="far fa-times-circle"></i>
+        </div>
+        <div
+          v-else-if="hasEdited.phone == true && edit.phone == false"
+          class="editedPhone"
+        >
+          <p>{{ newContact.phone }}</p>
+          <i @click="switchEdit('phone')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <!-- <div v-else-if="hasConfirmed == true" class="confirmed">
+          <p>{{ newContact.phone }}</p>
+        </div> -->
       </div>
-      <div
-        v-else-if="contactData.phone && edit.phone == true"
-        class="phoneEdit"
-      >
-        <input
-          type="text"
-          ref="focusPhone"
-          v-model="newContact.phone"
-          v-on:keyup.enter="finishEditing('phone')"
-          v-autowidth="{
-            maxWidth: '140px',
-            minWidth: '80px',
-            comfortZone: 5,
-          }"
-        />
-      </div>
-      <div
-        v-else-if="hasEdited.phone == true && edit.phone == false"
-        class="editedPhone"
-      >
-        <p>{{ newContact.phone }}</p>
-        <i @click="switchEdit('phone')" class="fas fa-edit fa-xs"></i>
-      </div>
-      <div
-        v-if="
-          contactData.email && edit.email == false && hasEdited.email == false
-        "
-        class="email"
-      >
-        <p>{{ contactData.email }}</p>
-        <i @click="switchEdit('email')" class="fas fa-edit fa-xs"></i>
-      </div>
-      <div
-        v-else-if="contactData.email && edit.email == true"
-        class="emailEdit"
-      >
-        <input
-          type="text"
-          ref="focusEmail"
-          v-model="newContact.email"
-          v-on:keyup.enter="finishEditing('email')"
-          v-autowidth="{
-            maxWidth: '140px',
-            minWidth: '80px',
-            comfortZone: 5,
-          }"
-        />
-      </div>
-      <div
-        v-else-if="hasEdited.email == true && edit.email == false"
-        class="editedEmail"
-      >
-        <p>{{ newContact.email }}</p>
-        <i @click="switchEdit('email')" class="fas fa-edit fa-xs"></i>
+      <div class="emailWrapper">
+        <div
+          v-if="
+            contactData.email && edit.email == false && hasEdited.email == false
+          "
+          class="email"
+        >
+          <p>{{ contactData.email }}</p>
+          <i @click="switchEdit('email')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <div
+          v-else-if="contactData.email && edit.email == true"
+          class="emailEdit"
+        >
+          <input
+            type="text"
+            ref="focusEmail"
+            v-model="newContact.email"
+            v-on:keyup.enter="finishEditing('email')"
+            v-autowidth="{
+              maxWidth: '140px',
+              minWidth: '80px',
+              comfortZone: 5,
+            }"
+          /><i @click="cancelEditing('email')" class="far fa-times-circle"></i>
+        </div>
+        <div
+          v-else-if="hasEdited.email == true && edit.email == false"
+          class="editedEmail"
+        >
+          <p>{{ newContact.email }}</p>
+          <i @click="switchEdit('email')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <!-- <div v-else-if="hasConfirmed == true" class="confirmed">
+          <p>{{ newContact.email }}</p>
+        </div> -->
       </div>
     </div>
     <div class="detailsRow3">
-      <div
-        v-if="
-          contactData.address &&
-            edit.address == false &&
-            hasEdited.address == false
-        "
-        class="address"
-      >
-        <p>{{ contactData.address }}</p>
-        <i @click="switchEdit('address')" class="fas fa-edit fa-xs"></i>
+      <div class="addressWrapper">
+        <div
+          v-if="
+            contactData.address &&
+              edit.address == false &&
+              hasEdited.address == false
+          "
+          class="address"
+        >
+          <p>{{ contactData.address }}</p>
+          <i @click="switchEdit('address')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <div
+          v-else-if="contactData.address && edit.address == true"
+          class="phoneEdit"
+        >
+          <input
+            type="text"
+            ref="focusAddress"
+            v-model="newContact.address"
+            v-on:keyup.enter="finishEditing('address')"
+            v-autowidth="{
+              maxWidth: '140px',
+              minWidth: '80px',
+              comfortZone: 5,
+            }"
+          /><i
+            @click="cancelEditing('address')"
+            class="far fa-times-circle"
+          ></i>
+        </div>
+        <div
+          v-else-if="hasEdited.address == true && edit.address == false"
+          class="editedAddress"
+        >
+          <p>{{ newContact.address }}</p>
+          <i @click="switchEdit('address')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <!-- <div v-else-if="hasConfirmed == true" class="confirmed">
+          <p>{{ newContact.address }}</p>
+        </div> -->
       </div>
-      <div
-        v-else-if="contactData.address && edit.address == true"
-        class="phoneEdit"
-      >
-        <input
-          type="text"
-          ref="focusAddress"
-          v-model="newContact.address"
-          v-on:keyup.enter="finishEditing('address')"
-          v-autowidth="{
-            maxWidth: '140px',
-            minWidth: '80px',
-            comfortZone: 5,
-          }"
-        />
+      <div class="cityWrapper">
+        <div
+          v-if="
+            contactData.city && edit.city == false && hasEdited.city == false
+          "
+          class="city"
+        >
+          <p>{{ contactData.city }},</p>
+          <i @click="switchEdit('city')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <div v-else-if="contactData.city && edit.city == true" class="cityEdit">
+          <input
+            type="text"
+            ref="focusCity"
+            v-model="newContact.city"
+            v-on:keyup.enter="finishEditing('city')"
+            v-autowidth="{
+              maxWidth: '140px',
+              minWidth: '80px',
+              comfortZone: 5,
+            }"
+          /><i @click="cancelEditing('city')" class="far fa-times-circle"></i>
+        </div>
+        <div
+          v-else-if="hasEdited.city == true && edit.city == false"
+          class="editedCity"
+        >
+          <p>{{ newContact.city }}</p>
+          <i @click="switchEdit('city')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <!-- <div v-else-if="hasConfirmed == true" class="confirmed">
+          <p>{{ newContact.city }}</p>
+        </div> -->
       </div>
-      <div
-        v-else-if="hasEdited.address == true && edit.address == false"
-        class="editedAddress"
-      >
-        <p>{{ newContact.address }}</p>
-        <i @click="switchEdit('address')" class="fas fa-edit fa-xs"></i>
+      <div class="stateWrapper">
+        <div
+          v-if="
+            contactData.state && edit.state == false && hasEdited.city == false
+          "
+          class="state"
+        >
+          <p>{{ contactData.state }}</p>
+          <i @click="switchEdit('state')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <div
+          v-else-if="contactData.state && edit.state == true"
+          class="stateEdit"
+        >
+          <input
+            type="text"
+            ref="focusState"
+            v-model="newContact.state"
+            v-on:keyup.enter="finishEditing('state')"
+            v-autowidth="{
+              maxWidth: '140px',
+              minWidth: '80px',
+              comfortZone: 5,
+            }"
+          /><i @click="cancelEditing('state')" class="far fa-times-circle"></i>
+        </div>
+        <div
+          v-else-if="hasEdited.state == true && edit.state == false"
+          class="editedState"
+        >
+          <p>{{ newContact.state }}</p>
+          <i @click="switchEdit('state')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <!-- <div v-else-if="hasConfirmed == true" class="confirmed">
+          <p>{{ newContact.state }}</p>
+        </div> -->
       </div>
-      <div
-        v-if="contactData.city && edit.city == false && hasEdited.city == false"
-        class="city"
-      >
-        <p>{{ contactData.city }},</p>
-        <i @click="switchEdit('city')" class="fas fa-edit fa-xs"></i>
-      </div>
-      <div v-else-if="contactData.city && edit.city == true" class="cityEdit">
-        <input
-          type="text"
-          ref="focusCity"
-          v-model="newContact.city"
-          v-on:keyup.enter="finishEditing('city')"
-          v-autowidth="{
-            maxWidth: '140px',
-            minWidth: '80px',
-            comfortZone: 5,
-          }"
-        />
-      </div>
-      <div
-        v-else-if="hasEdited.city == true && edit.city == false"
-        class="editedCity"
-      >
-        <p>{{ newContact.city }}</p>
-        <i @click="switchEdit('city')" class="fas fa-edit fa-xs"></i>
-      </div>
-      <div
-        v-if="
-          contactData.state && edit.state == false && hasEdited.city == false
-        "
-        class="state"
-      >
-        <p>{{ contactData.state }}</p>
-        <i @click="switchEdit('state')" class="fas fa-edit fa-xs"></i>
-      </div>
-      <div
-        v-else-if="contactData.state && edit.state == true"
-        class="stateEdit"
-      >
-        <input
-          type="text"
-          ref="focusState"
-          v-model="newContact.state"
-          v-on:keyup.enter="finishEditing('state')"
-          v-autowidth="{
-            maxWidth: '140px',
-            minWidth: '80px',
-            comfortZone: 5,
-          }"
-        />
-      </div>
-      <div
-        v-else-if="hasEdited.state == true && edit.state == false"
-        class="editedState"
-      >
-        <p>{{ newContact.state }}</p>
-        <i @click="switchEdit('state')" class="fas fa-edit fa-xs"></i>
-      </div>
-      <div
-        v-if="contactData.zip && edit.zip == false && hasEdited.zip == false"
-        class="zip"
-      >
-        <p>({{ contactData.zip }})</p>
-        <i @click="switchEdit('zip')" class="fas fa-edit fa-xs"></i>
-      </div>
-      <div v-else-if="contactData.zip && edit.zip == true" class="zipEdit">
-        <input
-          type="text"
-          ref="focusZip"
-          v-model="newContact.zip"
-          v-on:keyup.enter="finishEditing('zip')"
-          v-autowidth="{
-            maxWidth: '140px',
-            minWidth: '80px',
-            comfortZone: 5,
-          }"
-        />
-      </div>
-      <div
-        v-else-if="hasEdited.zip == true && edit.zip == false"
-        class="editedZip"
-      >
-        <p>{{ newContact.zip }}</p>
-        <i @click="switchEdit('zip')" class="fas fa-edit fa-xs"></i>
+      <div class="zipWrapper">
+        <div
+          v-if="contactData.zip && edit.zip == false && hasEdited.zip == false"
+          class="zip"
+        >
+          <p>({{ contactData.zip }})</p>
+          <i @click="switchEdit('zip')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <div v-else-if="contactData.zip && edit.zip == true" class="zipEdit">
+          <input
+            type="text"
+            ref="focusZip"
+            v-model="newContact.zip"
+            v-on:keyup.enter="finishEditing('zip')"
+            v-autowidth="{
+              maxWidth: '140px',
+              minWidth: '80px',
+              comfortZone: 5,
+            }"
+          /><i @click="cancelEditing('zip')" class="far fa-times-circle"></i>
+        </div>
+        <div
+          v-else-if="hasEdited.zip == true && edit.zip == false"
+          class="editedZip"
+        >
+          <p>{{ newContact.zip }}</p>
+          <i @click="switchEdit('zip')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <!-- <div v-else-if="hasConfirmed == true" class="confirmed">
+          <p>{{ newContact.state }}</p>
+        </div> -->
       </div>
     </div>
     <div class="detailsRow4">
-      <div
-        v-if="
-          contactData.notes && edit.notes == false && hasEdited.notes == false
-        "
-        class="notes"
-      >
-        <p>{{ contactData.notes }}</p>
-        <i @click="switchEdit('notes')" class="fas fa-edit fa-xs"></i>
-      </div>
-      <div
-        v-else-if="contactData.notes && edit.notes == true"
-        class="notesEdit"
-      >
-        <!-- <input
-          type="text"
-          ref="focusNotes"
-          v-model="newContact.notes"
-          v-on:keyup.enter="finishEditing('notes')"
-          v-autowidth="{
-            maxWidth: '140px',
-            minWidth: '80px',
-            comfortZone: 5,
-          }"
-        /> -->
-        <textarea
-          id="NotesTextArea"
-          rows="3"
-          v-model="newContact.notes"
-        ></textarea>
-      </div>
-      <div
-        v-else-if="hasEdited.notes == true && edit.notes == false"
-        class="editedNotes"
-      >
-        <p>{{ newContact.notes }}</p>
-        <i @click="switchEdit('notes')" class="fas fa-edit fa-xs"></i>
+      <div class="notesWrapper">
+        <div
+          v-if="
+            contactData.notes && edit.notes == false && hasEdited.notes == false
+          "
+          class="notes"
+        >
+          <p>{{ contactData.notes }}</p>
+          <i @click="switchEdit('notes')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <div
+          v-else-if="contactData.notes && edit.notes == true"
+          class="notesEdit"
+        >
+          <textarea
+            id="NotesTextArea"
+            rows="3"
+            v-model="newContact.notes"
+            v-on:keyup.enter="finishEditing('notes')"
+          ></textarea
+          ><i @click="cancelEditing('notes')" class="far fa-times-circle"></i>
+        </div>
+        <div
+          v-else-if="hasEdited.notes == true && edit.notes == false"
+          class="editedNotes"
+        >
+          <p>{{ newContact.notes }}</p>
+          <i @click="switchEdit('notes')" class="fas fa-edit fa-xs"></i>
+        </div>
+        <!-- <div v-else-if="hasConfirmed == true" class="confirmed">
+          <p>{{ newContact.notes }}</p>
+        </div> -->
       </div>
     </div>
     <div class="detailsRow5">
@@ -344,6 +443,14 @@
         <button class="btn btn-secondary" type="button" @click="toggleEdit">
           Cancel
         </button>
+      </div>
+      <div class="submitButton">
+        <button class="btn btn-primary" type="button" @click="updateContact">
+          Confirm
+        </button>
+      </div>
+      <div class="reminder">
+        <p><small>**Don't forget to confirm your changes**</small></p>
       </div>
     </div>
   </div>
@@ -382,6 +489,7 @@ export default {
         zip: false,
         notes: false,
       },
+      hasConfirmed: false,
     };
   },
   mounted() {},
@@ -392,6 +500,7 @@ export default {
     },
     toggleEdit() {
       this.editContact = !this.editContact;
+      this.newContact = { ...this.contactData };
     },
     switchEdit(field) {
       switch (field) {
@@ -500,6 +609,41 @@ export default {
           break;
       }
     },
+    cancelEditing(field) {
+      switch (field) {
+        case 'firstName':
+          this.edit.firstName = false;
+          break;
+        case 'lastName':
+          this.edit.lastName = false;
+          break;
+        case 'phone':
+          this.edit.phone = false;
+          break;
+        case 'email':
+          this.edit.email = false;
+          break;
+        case 'address':
+          this.edit.address = false;
+          break;
+        case 'city':
+          this.edit.city = false;
+          break;
+        case 'state':
+          this.edit.state = false;
+          break;
+        case 'zip':
+          this.edit.zip = false;
+          break;
+        case 'notes':
+          this.edit.notes = false;
+          break;
+
+        default:
+          this.editContact = false;
+          break;
+      }
+    },
     finishEditing(field) {
       switch (field) {
         case 'firstName':
@@ -543,6 +687,11 @@ export default {
           this.editContact = false;
           break;
       }
+    },
+    updateContact() {
+      this.$store.dispatch('updateContact', this.newContact);
+      this.hasConfirmed = true;
+      this.editContact = false;
     },
   },
 };
