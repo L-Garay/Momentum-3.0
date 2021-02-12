@@ -112,9 +112,9 @@ export default {
     };
   },
   mounted() {
-    this.$root.$on('submittedForm', (lastName) => {
+    this.$root.$on('submittedForm', (name) => {
       this.showMain();
-      this.checkLetter(lastName);
+      this.checkLetter(name);
     });
     this.checkHighlightAndRepopulate();
   },
@@ -197,15 +197,15 @@ export default {
       }
     },
     // NOTE this method is only called when a user creates a new contact
-    checkLetter(lastName) {
-      console.log(lastName[0]);
+    checkLetter(name) {
+      console.log(name[0]);
       setTimeout(async () => {
-        if (lastName[0].toUpperCase() === 'F') {
+        if (name[0].toUpperCase() === 'F') {
           document
             .getElementById(this.$store.state.contacts.currentLetter)
             .classList.remove('activeLetter');
           document.getElementById('f').classList.add('activeLetter');
-        } else if (lastName[0].toUpperCase() !== 'F') {
+        } else if (name[0].toUpperCase() !== 'F') {
           if (this.$store.state.contacts.currentLetter === 'F') {
             document.getElementById('f').classList.remove('activeLetter');
           } else if (this.$store.state.contacts.currentLetter !== 'F') {
@@ -213,14 +213,14 @@ export default {
               .getElementById(this.$store.state.contacts.currentLetter)
               .classList.remove('activeLetter');
           }
-          document.getElementById(lastName[0]).classList.add('activeLetter');
+          document.getElementById(name[0]).classList.add('activeLetter');
         }
-        this.$store.state.contacts.currentLetter = lastName[0].toUpperCase();
+        this.$store.state.contacts.currentLetter = name[0].toUpperCase();
         await this.$store.dispatch(
           'getContactsByUserId',
           this.$store.state.user.user._id
         );
-        this.$store.dispatch('filterContacts', lastName[0]);
+        this.$store.dispatch('filterContacts', name[0]);
       }, 100);
     },
     deleteContact(id) {

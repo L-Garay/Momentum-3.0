@@ -312,6 +312,115 @@
       </div>
     </div>
     <div class="detailsRow5">
+      <!-- <div class="optionsWrapper">
+        <div class="optionsColumn1">
+          <div v-if="hasProperty.lastName == false" class="option">
+            <p><small>Add Last Name</small></p>
+            <input
+              type="text"
+              ref="focusLastName"
+              v-model="newContact.lastName"
+              v-autowidth="{
+                maxWidth: '120px',
+                minWidth: '100px',
+                comfortZone: 5,
+              }"
+            />
+          </div>
+          <div v-if="hasProperty.phone == false" class="option">
+            <p><small>Add Phone</small></p>
+            <input
+              type="text"
+              ref="focusPhone"
+              v-model="newContact.phone"
+              v-autowidth="{
+                maxWidth: '120px',
+                minWidth: '100px',
+                comfortZone: 5,
+              }"
+            />
+          </div>
+          <div v-if="hasProperty.email == false" class="option">
+            <p><small>Add Email</small></p>
+            <input
+              type="text"
+              ref="focusEmail"
+              v-model="newContact.email"
+              v-autowidth="{
+                maxWidth: '120px',
+                minWidth: '100px',
+                comfortZone: 5,
+              }"
+            />
+          </div>
+          <div v-if="hasProperty.notes == false" class="option">
+            <p><small>Add Notes</small></p>
+            <textarea
+              id="addNotesTextArea"
+              rows="3"
+              v-model="newContact.notes"
+            ></textarea>
+          </div>
+        </div>
+        <div class="optionsColumn2">
+          <div v-if="hasProperty.address == false" class="option">
+            <p><small>Add Address</small></p>
+            <input
+              type="text"
+              ref="focusAddress"
+              v-model="newContact.address"
+              v-autowidth="{
+                maxWidth: '120px',
+                minWidth: '100px',
+                comfortZone: 5,
+              }"
+            />
+          </div>
+          <div v-if="hasProperty.city == false" class="option">
+            <p><small>Add City</small></p>
+            <input
+              type="text"
+              ref="focusCity"
+              v-model="newContact.city"
+              v-autowidth="{
+                maxWidth: '120px',
+                minWidth: '100px',
+                comfortZone: 5,
+              }"
+            />
+          </div>
+          <div v-if="hasProperty.state == false" class="option">
+            <p><small>Add State</small></p>
+            <input
+              type="text"
+              ref="focusState"
+              v-model="newContact.state"
+              v-autowidth="{
+                maxWidth: '120px',
+                minWidth: '100px',
+                comfortZone: 5,
+              }"
+            />
+          </div>
+
+          <div v-if="hasProperty.zip == false" class="option">
+            <p><small>Add Zip</small></p>
+            <input
+              type="text"
+              ref="focusZip"
+              v-model="newContact.zip"
+              v-autowidth="{
+                maxWidth: '120px',
+                minWidth: '100px',
+                comfortZone: 5,
+              }"
+            />
+          </div>
+        </div>
+      </div> -->
+      <add-to-contact :contactData="newContact" :property="hasProperty" />
+    </div>
+    <div class="detailsRow6">
       <div class="backButton">
         <button class="btn btn-secondary" type="button" @click="stopEditing">
           Cancel
@@ -335,12 +444,29 @@
 </template>
 
 <script>
+import VueInputAutoWidth from 'vue-input-autowidth';
+import Vue from 'vue';
+Vue.use(VueInputAutoWidth);
+import AddToContact from '@/components/Utilities/Contacts/AddToContact.vue';
 export default {
   name: 'EditContactComponent',
   props: ['contactData'],
+  components: {
+    AddToContact,
+  },
   data() {
     return {
       newContact: { ...this.contactData },
+      hasProperty: {
+        lastName: false,
+        phone: false,
+        email: false,
+        address: false,
+        city: false,
+        state: false,
+        zip: false,
+        notes: false,
+      },
       edit: {
         firstName: false,
         lastName: false,
@@ -367,9 +493,36 @@ export default {
   },
   mounted() {
     document.getElementById('confirmBtn').disabled = true;
+    this.checkForProperties();
   },
   computed: {},
   methods: {
+    checkForProperties() {
+      if (this.contactData.lastName) {
+        this.hasProperty.lastName = true;
+      }
+      if (this.contactData.phone) {
+        this.hasProperty.phone = true;
+      }
+      if (this.contactData.email) {
+        this.hasProperty.email = true;
+      }
+      if (this.contactData.address) {
+        this.hasProperty.address = true;
+      }
+      if (this.contactData.city) {
+        this.hasProperty.city = true;
+      }
+      if (this.contactData.state) {
+        this.hasProperty.state = true;
+      }
+      if (this.contactData.zip) {
+        this.hasProperty.zip = true;
+      }
+      if (this.contactData.notes) {
+        this.hasProperty.notes = true;
+      }
+    },
     stopEditing() {
       this.$emit('stopEditing');
       this.newContact = { ...this.contactData };
@@ -635,7 +788,7 @@ div.detailsRow3 div.zip {
   margin-left: 5px;
 }
 
-div.detailsRow5 {
+div.detailsRow6 {
   display: flex;
   justify-content: center;
 }

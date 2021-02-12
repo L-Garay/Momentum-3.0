@@ -123,8 +123,14 @@ export default {
     createContact() {
       this.contact.userId = this.$store.state.user.user._id;
       this.$store.dispatch('createContact', this.contact);
-      let lastName = this.contact.lastName;
-      this.$root.$emit('submittedForm', lastName);
+      if (this.contact.lastName) {
+        let name = this.contact.lastName;
+        this.$root.$emit('submittedForm', name);
+      } else {
+        let name = this.contact.firstName;
+        this.$root.$emit('submittedForm', name);
+      }
+
       this.contact = {};
     },
     cancel() {
