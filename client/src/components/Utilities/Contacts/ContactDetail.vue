@@ -1,101 +1,105 @@
 <template>
   <div v-if="editContact == false" class="detailsWrapper">
-    <div class="detailsRow1">
-      <div class="firstNameWrapper">
-        <div v-if="hasConfirmed == false" class="firstName">
-          <p>{{ contactData.firstName }}</p>
+    <div class="detailsBody">
+      <div class="detailsRow1">
+        <div class="firstNameWrapper">
+          <div v-if="hasConfirmed == false" class="firstName">
+            <p>{{ contactData.firstName }}</p>
+          </div>
+          <div v-else class="confirmed">
+            <p>{{ newContact.firstName }}</p>
+          </div>
         </div>
-        <div v-else class="confirmed">
-          <p>{{ newContact.firstName }}</p>
+        <div class="lastNameWrapper">
+          <div
+            v-if="contactData.lastName && hasConfirmed == false"
+            class="lastName"
+          >
+            <p>{{ contactData.lastName }}</p>
+          </div>
+          <div v-else-if="hasConfirmed == true" class="confirmed">
+            <p>{{ newContact.lastName }}</p>
+          </div>
         </div>
       </div>
-      <div class="lastNameWrapper">
-        <div
-          v-if="contactData.lastName && hasConfirmed == false"
-          class="lastName"
-        >
-          <p>{{ contactData.lastName }}</p>
+      <div class="detailsRow2">
+        <div class="phoneWrapper">
+          <div v-if="contactData.phone && hasConfirmed == false" class="phone">
+            <p>{{ contactData.phone }}</p>
+          </div>
+          <div v-else-if="hasConfirmed == true" class="confirmed">
+            <p>{{ newContact.phone }}</p>
+          </div>
         </div>
-        <div v-else-if="hasConfirmed == true" class="confirmed">
-          <p>{{ newContact.lastName }}</p>
+        <div class="emailWrapper">
+          <div v-if="contactData.email && hasConfirmed == false" class="email">
+            <p>{{ contactData.email }}</p>
+          </div>
+          <div v-else-if="hasConfirmed == true" class="confirmed">
+            <p>{{ newContact.email }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="detailsRow3">
+        <div class="addressWrapper">
+          <div
+            v-if="contactData.address && hasConfirmed == false"
+            class="address"
+          >
+            <p>{{ contactData.address }}</p>
+          </div>
+          <div v-else-if="hasConfirmed == true" class="confirmed">
+            <p>{{ newContact.address }}</p>
+          </div>
+        </div>
+        <div class="cityWrapper">
+          <div v-if="contactData.city && hasConfirmed == false" class="city">
+            <p>{{ contactData.city }},</p>
+          </div>
+          <div v-else-if="hasConfirmed == true" class="confirmed">
+            <p>{{ newContact.city }}</p>
+          </div>
+        </div>
+        <div class="stateWrapper">
+          <div v-if="contactData.state && hasConfirmed == false" class="state">
+            <p>{{ contactData.state }}</p>
+          </div>
+          <div v-else-if="hasConfirmed == true" class="confirmed">
+            <p>{{ newContact.state }}</p>
+          </div>
+        </div>
+        <div class="zipWrapper">
+          <div v-if="contactData.city && hasConfirmed == false" class="zip">
+            <p>({{ contactData.zip }})</p>
+          </div>
+          <div v-else-if="hasConfirmed == true" class="confirmed">
+            <p>{{ newContact.zip }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="detailsRow4">
+        <div class="notesWrapper">
+          <div v-if="contactData.notes && hasConfirmed == false" class="notes">
+            <p>{{ contactData.notes }}</p>
+          </div>
+          <div v-else-if="hasConfirmed == true" class="confirmed">
+            <p>{{ newContact.notes }}</p>
+          </div>
         </div>
       </div>
     </div>
-    <div class="detailsRow2">
-      <div class="phoneWrapper">
-        <div v-if="contactData.phone && hasConfirmed == false" class="phone">
-          <p>{{ contactData.phone }}</p>
+    <div class="detailsFooter">
+      <div class="detailsRow5">
+        <div class="backButton">
+          <button class="btn btn-secondary" type="button" @click="back">
+            Back
+          </button>
         </div>
-        <div v-else-if="hasConfirmed == true" class="confirmed">
-          <p>{{ newContact.phone }}</p>
+        <div class="editButton">
+          <button class="btn btn-primary" type="button" @click="startEditing">
+            Edit
+          </button>
         </div>
-      </div>
-      <div class="emailWrapper">
-        <div v-if="contactData.email && hasConfirmed == false" class="email">
-          <p>{{ contactData.email }}</p>
-        </div>
-        <div v-else-if="hasConfirmed == true" class="confirmed">
-          <p>{{ newContact.email }}</p>
-        </div>
-      </div>
-    </div>
-    <div class="detailsRow3">
-      <div class="addressWrapper">
-        <div
-          v-if="contactData.address && hasConfirmed == false"
-          class="address"
-        >
-          <p>{{ contactData.address }}</p>
-        </div>
-        <div v-else-if="hasConfirmed == true" class="confirmed">
-          <p>{{ newContact.address }}</p>
-        </div>
-      </div>
-      <div class="cityWrapper">
-        <div v-if="contactData.city && hasConfirmed == false" class="city">
-          <p>{{ contactData.city }},</p>
-        </div>
-        <div v-else-if="hasConfirmed == true" class="confirmed">
-          <p>{{ newContact.city }}</p>
-        </div>
-      </div>
-      <div class="stateWrapper">
-        <div v-if="contactData.state && hasConfirmed == false" class="state">
-          <p>{{ contactData.state }}</p>
-        </div>
-        <div v-else-if="hasConfirmed == true" class="confirmed">
-          <p>{{ newContact.state }}</p>
-        </div>
-      </div>
-      <div class="zipWrapper">
-        <div v-if="contactData.city && hasConfirmed == false" class="zip">
-          <p>({{ contactData.zip }})</p>
-        </div>
-        <div v-else-if="hasConfirmed == true" class="confirmed">
-          <p>{{ newContact.zip }}</p>
-        </div>
-      </div>
-    </div>
-    <div class="detailsRow4">
-      <div class="notesWrapper">
-        <div v-if="contactData.notes && hasConfirmed == false" class="notes">
-          <p>{{ contactData.notes }}</p>
-        </div>
-        <div v-else-if="hasConfirmed == true" class="confirmed">
-          <p>{{ newContact.notes }}</p>
-        </div>
-      </div>
-    </div>
-    <div class="detailsRow5">
-      <div class="backButton">
-        <button class="btn btn-secondary" type="button" @click="back">
-          Back
-        </button>
-      </div>
-      <div class="editButton">
-        <button class="btn btn-primary" type="button" @click="startEditing">
-          Edit
-        </button>
       </div>
     </div>
   </div>
@@ -150,6 +154,12 @@ export default {
 </script>
 
 <style scoped>
+div.detailsBody {
+  height: 300px;
+}
+div.detailsFooter {
+  height: 55px;
+}
 div.detailsRow1 {
   display: flex;
   font-size: 36px;
