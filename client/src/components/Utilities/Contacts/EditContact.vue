@@ -418,7 +418,11 @@
           </div>
         </div>
       </div> -->
-      <add-to-contact :contactData="newContact" :property="hasProperty" />
+      <add-to-contact
+        :contactData="newContact"
+        :property="hasProperty"
+        @added="addedProperty"
+      />
     </div>
     <div class="detailsRow6">
       <div class="backButton">
@@ -673,55 +677,76 @@ export default {
     finishEditing(field) {
       switch (field) {
         case 'firstName':
-          this.hasEdited.firstName = true;
-          this.edit.firstName = false;
-          document.getElementById('confirmBtn').disabled = false;
+          if (this.newContact.firstName) {
+            this.hasEdited.firstName = true;
+            this.edit.firstName = false;
+            document.getElementById('confirmBtn').disabled = false;
+          }
           break;
         case 'lastName':
-          this.hasEdited.lastName = true;
-          this.edit.lastName = false;
-          document.getElementById('confirmBtn').disabled = false;
+          if (this.newContact.lastName) {
+            this.hasEdited.lastName = true;
+            this.edit.lastName = false;
+            document.getElementById('confirmBtn').disabled = false;
+          }
           break;
         case 'phone':
-          this.hasEdited.phone = true;
-          this.edit.phone = false;
-          document.getElementById('confirmBtn').disabled = false;
+          if (this.newContact.phone) {
+            this.hasEdited.phone = true;
+            this.edit.phone = false;
+            document.getElementById('confirmBtn').disabled = false;
+          }
           break;
         case 'email':
-          this.hasEdited.email = true;
-          this.edit.email = false;
-          document.getElementById('confirmBtn').disabled = false;
+          if (this.newContact.email) {
+            this.hasEdited.email = true;
+            this.edit.email = false;
+            document.getElementById('confirmBtn').disabled = false;
+          }
           break;
         case 'address':
-          this.hasEdited.address = true;
-          this.edit.address = false;
-          document.getElementById('confirmBtn').disabled = false;
+          if (this.newContact.address) {
+            this.hasEdited.address = true;
+            this.edit.address = false;
+            document.getElementById('confirmBtn').disabled = false;
+          }
           break;
         case 'city':
-          this.hasEdited.city = true;
-          this.edit.city = false;
-          document.getElementById('confirmBtn').disabled = false;
+          if (this.newContact.city) {
+            this.hasEdited.city = true;
+            this.edit.city = false;
+            document.getElementById('confirmBtn').disabled = false;
+          }
           break;
         case 'state':
-          this.hasEdited.state = true;
-          this.edit.state = false;
-          document.getElementById('confirmBtn').disabled = false;
+          if (this.newContact.state) {
+            this.hasEdited.state = true;
+            this.edit.state = false;
+            document.getElementById('confirmBtn').disabled = false;
+          }
           break;
         case 'zip':
-          this.hasEdited.zip = true;
-          this.edit.zip = false;
-          document.getElementById('confirmBtn').disabled = false;
+          if (this.newContact.zip) {
+            this.hasEdited.zip = true;
+            this.edit.zip = false;
+            document.getElementById('confirmBtn').disabled = false;
+          }
           break;
         case 'notes':
-          this.hasEdited.notes = true;
-          this.edit.notes = false;
-          document.getElementById('confirmBtn').disabled = false;
+          if (this.newContact.notes) {
+            this.hasEdited.notes = true;
+            this.edit.notes = false;
+            document.getElementById('confirmBtn').disabled = false;
+          }
           break;
-
         default:
           this.editContact = false;
           break;
       }
+    },
+    addedProperty(newContact) {
+      this.newContact = newContact;
+      document.getElementById('confirmBtn').disabled = false;
     },
     updateContact() {
       this.$store.dispatch('updateContact', this.newContact);
