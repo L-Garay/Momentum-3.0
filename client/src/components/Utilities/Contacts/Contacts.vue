@@ -247,8 +247,6 @@ export default {
   width: 475px;
   height: 355px;
 }
-.mainHeader {
-}
 .newContactBtn p {
   display: inline-block;
 }
