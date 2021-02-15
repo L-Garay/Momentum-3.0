@@ -1,5 +1,8 @@
 <template>
-  <div v-if="editContact == false" class="detailsWrapper">
+  <div
+    v-if="editContact == false && straightToEdit == false"
+    class="detailsWrapper"
+  >
     <div class="detailsBody">
       <div class="detailsRow1">
         <div class="firstNameWrapper">
@@ -104,7 +107,7 @@
     </div>
   </div>
   <edit-contact
-    v-else
+    v-else-if="editContact == true || straightToEdit == true"
     :contactData="newContact"
     @stopEditing="stopEditing"
     @hasConfirmed="confirmed"
@@ -119,7 +122,7 @@ import EditContact from '@/components/Utilities/Contacts/EditContact.vue';
 Vue.use(VueInputAutoWidth);
 export default {
   name: 'ContactDetailComponent',
-  props: ['contactData'],
+  props: ['contactData', 'toEdit'],
   components: {
     EditContact,
   },
@@ -128,11 +131,26 @@ export default {
       newContact: { ...this.contactData },
       editContact: false,
       hasConfirmed: false,
+      straightToEdit: this.toEdit,
     };
   },
   mounted() {},
-  computed: {},
+  computed: {
+    ToEdit() {
+      this.checkStraightToEdit();
+      return this.toEdit;
+    },
+  },
   methods: {
+    checkStraightToEdit() {
+      if (this.toEdit == true) {
+        this.editContact = true;
+        this.straightToEdit = true;
+      } else if (this.toEdit == false) {
+        this.editContact = false;
+        this.straightToEdit = false;
+      }
+    },
     back() {
       this.$emit('back');
     },
@@ -141,6 +159,8 @@ export default {
     },
     stopEditing() {
       this.editContact = false;
+      this.straightToEdit = false;
+      // this.$emit('stopEditing');
     },
     confirmed() {
       this.hasConfirmed = true;

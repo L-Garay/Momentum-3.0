@@ -156,6 +156,9 @@
 </template>
 
 <script>
+import VueInputAutoWidth from 'vue-input-autowidth';
+import Vue from 'vue';
+Vue.use(VueInputAutoWidth);
 export default {
   name: 'AddToContactComponent',
   props: ['contactData', 'property'],

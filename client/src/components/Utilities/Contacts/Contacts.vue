@@ -60,10 +60,7 @@
                 </div>
                 <div class="contactOptions">
                   <div class="edit">
-                    <i
-                      @click="showDetails(contact)"
-                      class="fas fa-edit fa-xs"
-                    ></i>
+                    <i @click="toEdit(contact)" class="fas fa-edit fa-xs"></i>
                   </div>
                   <div class="delete">
                     <i
@@ -81,7 +78,11 @@
         <contacts-form @cancel="cancel" />
       </div>
       <div v-if="show.details" class="contactDetailsSection">
-        <contact-detail :contactData="contact" @back="cancel" />
+        <contact-detail
+          :contactData="contact"
+          :toEdit="straightToEdit"
+          @back="cancel"
+        />
       </div>
     </div>
   </div>
@@ -109,6 +110,7 @@ export default {
         new: '',
       },
       contact: {},
+      straightToEdit: false,
     };
   },
   mounted() {
@@ -134,20 +136,34 @@ export default {
     showForm() {
       this.show.main = false;
       this.show.details = false;
-
       this.show.form = true;
+      this.straightToEdit = false;
     },
     showMain() {
       this.show.form = false;
       this.show.details = false;
-
       this.show.main = true;
+      this.straightToEdit = false;
+    },
+    showDetails(contact) {
+      this.contact = contact;
+      this.show.form = false;
+      this.show.details = true;
+      this.show.main = false;
+      this.straightToEdit = false;
+    },
+    toEdit(contact) {
+      this.contact = contact;
+      this.show.form = false;
+      this.show.details = true;
+      this.show.main = false;
+      this.straightToEdit = true;
     },
     cancel() {
       this.show.form = false;
       this.show.details = false;
-
       this.show.main = true;
+      this.straightToEdit = false;
       setTimeout(() => {
         this.checkForHighlight();
       }, 50);
@@ -213,7 +229,9 @@ export default {
               .getElementById(this.$store.state.contacts.currentLetter)
               .classList.remove('activeLetter');
           }
-          document.getElementById(name[0]).classList.add('activeLetter');
+          document
+            .getElementById(name[0].toUpperCase())
+            .classList.add('activeLetter');
         }
         this.$store.state.contacts.currentLetter = name[0].toUpperCase();
         await this.$store.dispatch(
@@ -225,12 +243,6 @@ export default {
     },
     deleteContact(id) {
       this.$store.dispatch('deleteContact', id);
-    },
-    showDetails(contact) {
-      this.contact = contact;
-      this.show.form = false;
-      this.show.details = true;
-      this.show.main = false;
     },
   },
 };
@@ -277,7 +289,13 @@ div.buffer.activeLetter p {
   text-shadow: 1px 0pt 8pt white, 1px 0pt 8pt white, 1px 0pt 8pt white;
   /* text-shadow: 10px 0 50px red; */
 }
-
+div.contactListHeader p {
+  margin-bottom: 0;
+}
+div.contactListSection {
+  max-height: 260px;
+  overflow-y: auto;
+}
 .contact {
   display: flex;
   justify-content: space-between;
