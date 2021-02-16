@@ -20,7 +20,7 @@
           >
             <p>{{ contactData.lastName }}</p>
           </div>
-          <div v-else-if="hasConfirmed == true" class="confirmed">
+          <div v-else-if="hasConfirmed == true" class="confirmed lastName">
             <p>{{ newContact.lastName }}</p>
           </div>
         </div>
@@ -35,10 +35,36 @@
           </div>
         </div>
         <div class="emailWrapper">
-          <div v-if="contactData.email && hasConfirmed == false" class="email">
+          <div
+            v-if="
+              contactData.email && contactData.phone && hasConfirmed == false
+            "
+            class="email"
+          >
             <p>{{ contactData.email }}</p>
           </div>
-          <div v-else-if="hasConfirmed == true" class="confirmed">
+          <div
+            v-else-if="newContact.phone && hasConfirmed == true"
+            class="confirmed email"
+          >
+            <p>{{ newContact.email }}</p>
+          </div>
+        </div>
+        <!-- If there is an email, but no phone, we need to push the email all the way to the left.  -->
+        <div class="emailNoPhoneWrapper">
+          <div
+            v-if="
+              contactData.email && !contactData.phone && hasConfirmed == false
+            "
+            class="emailNoPhone"
+          >
+            <p>{{ contactData.email }}</p>
+          </div>
+          <!-- Since someone could add a phone number when editing a contact, this needs to check that there still is no phone in the new updated contact. -->
+          <div
+            v-else-if="!newContact.phone && hasConfirmed == true"
+            class="confirmed emailNoPhone"
+          >
             <p>{{ newContact.email }}</p>
           </div>
         </div>
@@ -49,33 +75,45 @@
             v-if="contactData.address && hasConfirmed == false"
             class="address"
           >
-            <p>{{ contactData.address }}</p>
+            <p>{{ contactData.address }},</p>
           </div>
-          <div v-else-if="hasConfirmed == true" class="confirmed">
-            <p>{{ newContact.address }}</p>
+          <div
+            v-else-if="newContact.address && hasConfirmed == true"
+            class="confirmed"
+          >
+            <p>{{ newContact.address }},</p>
           </div>
         </div>
         <div class="cityWrapper">
           <div v-if="contactData.city && hasConfirmed == false" class="city">
             <p>{{ contactData.city }},</p>
           </div>
-          <div v-else-if="hasConfirmed == true" class="confirmed">
-            <p>{{ newContact.city }}</p>
+          <div
+            v-else-if="newContact.city && hasConfirmed == true"
+            class="confirmed city"
+          >
+            <p>{{ newContact.city }},</p>
           </div>
         </div>
         <div class="stateWrapper">
           <div v-if="contactData.state && hasConfirmed == false" class="state">
             <p>{{ contactData.state }}</p>
           </div>
-          <div v-else-if="hasConfirmed == true" class="confirmed">
+          <div
+            v-else-if="newContact.state && hasConfirmed == true"
+            class="confirmed state"
+          >
             <p>{{ newContact.state }}</p>
           </div>
         </div>
         <div class="zipWrapper">
-          <div v-if="contactData.city && hasConfirmed == false" class="zip">
+          <div v-if="contactData.zip && hasConfirmed == false" class="zip">
             <p>({{ contactData.zip }})</p>
           </div>
-          <div v-else-if="hasConfirmed == true" class="confirmed">
+          <div
+            v-else-if="newContact.zip && hasConfirmed == true"
+            class="confirmed zip"
+          >
             <p>{{ newContact.zip }}</p>
           </div>
         </div>
@@ -85,7 +123,7 @@
           <div v-if="contactData.notes && hasConfirmed == false" class="notes">
             <p>{{ contactData.notes }}</p>
           </div>
-          <div v-else-if="hasConfirmed == true" class="confirmed">
+          <div v-else-if="hasConfirmed == true" class="confirmed notes">
             <p>{{ newContact.notes }}</p>
           </div>
         </div>
@@ -174,6 +212,9 @@ export default {
 </script>
 
 <style scoped>
+p {
+  margin-bottom: 8px;
+}
 div.detailsBody {
   height: 300px;
 }
@@ -182,10 +223,10 @@ div.detailsFooter {
 }
 div.detailsRow1 {
   display: flex;
-  font-size: 36px;
+  font-size: 33px;
 }
 div.detailsRow1 div.lastName {
-  margin-left: 7px;
+  margin-left: 10px;
 }
 div.firstName,
 div.lastName,
@@ -218,7 +259,7 @@ div.notes i {
 
 div.detailsRow2 {
   display: flex;
-  font-size: 26px;
+  font-size: 25px;
 }
 div.detailsRow2 div.email {
   margin-left: 45px;
@@ -226,7 +267,8 @@ div.detailsRow2 div.email {
 
 div.detailsRow3 {
   display: flex;
-  font-size: 21px;
+  font-size: 20px;
+  margin-bottom: 2px;
 }
 div.detailsRow3 div.city,
 div.detailsRow3 div.state,
@@ -234,8 +276,22 @@ div.detailsRow3 div.zip {
   margin-left: 5px;
 }
 
+div.notes {
+  height: 163px;
+  overflow-y: auto;
+  background-color: rgba(116, 116, 116, 0.534);
+  text-align: start;
+  font-size: 13px;
+}
+div.detailsFooter {
+  padding-top: 15px;
+}
 div.detailsRow5 {
   display: flex;
   justify-content: center;
+}
+div.backButton,
+div.editButton {
+  margin: 0 5px;
 }
 </style>

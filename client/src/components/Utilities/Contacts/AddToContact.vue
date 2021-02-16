@@ -64,12 +64,13 @@
           <textarea
             id="addNotesTextArea"
             ref="focusNotes"
+            cols="25"
             rows="3"
             v-model="newContact.notes"
             v-on:keyup.enter="finishAdding('notes')"
           ></textarea>
         </div>
-        <div v-else class="addedProperty">
+        <div v-else class="addedPropertyNotes">
           <p>{{ newContact.notes }}</p>
         </div>
       </div>
@@ -298,6 +299,10 @@ div.option p {
   width: 80px;
   text-align: start;
 }
+div.addedProperty p {
+  width: 110px;
+  color: goldenrod;
+}
 div.inputWrapper {
   height: 35px;
   width: 110px;
@@ -305,5 +310,23 @@ div.inputWrapper {
 div.textAreaWrapper {
   height: 80px;
   width: 170px;
+}
+textarea {
+  font-size: 12px;
+  margin-left: -5px;
+}
+div.addedPropertyNotes {
+  max-height: 150px;
+  overflow-y: auto;
+  width: 170px;
+  background-color: rgba(116, 116, 116, 0.534);
+  border: 1pt solid grey;
+  text-align: start;
+  font-size: 13px;
+}
+div.addedPropertyNotes p {
+  width: 165px;
+  padding-left: 3px;
+  color: goldenrod;
 }
 </style>

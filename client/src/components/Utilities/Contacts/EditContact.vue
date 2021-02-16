@@ -119,10 +119,23 @@
           <div
             v-if="
               contactData.email &&
+                contactData.phone &&
                 edit.email == false &&
                 hasEdited.email == false
             "
             class="email"
+          >
+            <p>{{ contactData.email }}</p>
+            <i @click="switchEdit('email')" class="fas fa-edit fa-xs"></i>
+          </div>
+          <div
+            v-else-if="
+              contactData.email &&
+                !contactData.phone &&
+                edit.email == false &&
+                hasEdited.email == false
+            "
+            class="emailNoPhone"
           >
             <p>{{ contactData.email }}</p>
             <i @click="switchEdit('email')" class="fas fa-edit fa-xs"></i>
@@ -165,7 +178,7 @@
             "
             class="address"
           >
-            <p>{{ contactData.address }}</p>
+            <p>{{ contactData.address }},</p>
             <i @click="switchEdit('address')" class="fas fa-edit fa-xs"></i>
           </div>
           <div
@@ -191,7 +204,7 @@
             v-else-if="hasEdited.address == true && edit.address == false"
             class="editedAddress"
           >
-            <p>{{ newContact.address }}</p>
+            <p>{{ newContact.address }},</p>
             <i @click="switchEdit('address')" class="fas fa-edit fa-xs"></i>
           </div>
         </div>
@@ -319,7 +332,8 @@
           >
             <textarea
               id="NotesTextArea"
-              rows="3"
+              cols="55"
+              rows="7"
               v-model="newContact.notes"
               v-on:keyup.enter="finishEditing('notes')"
             ></textarea
@@ -327,7 +341,7 @@
           </div>
           <div
             v-else-if="hasEdited.notes == true && edit.notes == false"
-            class="editedNotes"
+            class="editedNotes notes"
           >
             <p>{{ newContact.notes }}</p>
             <i @click="switchEdit('notes')" class="fas fa-edit fa-xs"></i>
@@ -699,18 +713,21 @@ export default {
 </script>
 
 <style scoped>
+p {
+  margin-bottom: 8px;
+}
 div.detailsBody {
-  height: 300px;
+  height: 285px;
 }
 div.detailsFooter {
   height: 55px;
 }
 div.detailsRow1 {
   display: flex;
-  font-size: 36px;
+  font-size: 33px;
 }
 div.detailsRow1 div.lastName {
-  margin-left: 7px;
+  margin-left: 10px;
 }
 div.firstName,
 div.lastName,
@@ -743,7 +760,7 @@ div.notes i {
 
 div.detailsRow2 {
   display: flex;
-  font-size: 26px;
+  font-size: 25px;
 }
 div.detailsRow2 div.email {
   margin-left: 45px;
@@ -751,19 +768,35 @@ div.detailsRow2 div.email {
 
 div.detailsRow3 {
   display: flex;
-  font-size: 21px;
+  font-size: 20px;
+  margin-bottom: 2px;
 }
 div.detailsRow3 div.city,
 div.detailsRow3 div.state,
 div.detailsRow3 div.zip {
   margin-left: 5px;
 }
-
+div.notes {
+  height: 163px;
+  overflow-y: auto;
+  background-color: rgba(116, 116, 116, 0.534);
+  text-align: start;
+  font-size: 13px;
+}
+textarea {
+  font-size: 14px;
+}
+div.detailsFooter {
+  padding-top: 15px;
+}
 div.detailsRow6 {
   justify-content: center;
 }
 div.buttons {
   display: flex;
   justify-content: center;
+}
+button.btn {
+  margin: 0 5px;
 }
 </style>

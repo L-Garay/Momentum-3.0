@@ -191,9 +191,9 @@ input {
   color: goldenrod;
 }
 input:focus {
-  background-color: transparent;
+  background-color: rgba(116, 116, 116, 0.534);
   border: none;
-  border-bottom: 1pt solid white;
+  border: 1pt solid goldenrod;
   outline: none;
 }
 input::placeholder {
