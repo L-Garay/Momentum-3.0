@@ -35,10 +35,36 @@
           </div>
         </div>
         <div class="emailWrapper">
-          <div v-if="contactData.email && hasConfirmed == false" class="email">
+          <div
+            v-if="
+              contactData.email && contactData.phone && hasConfirmed == false
+            "
+            class="email"
+          >
             <p>{{ contactData.email }}</p>
           </div>
-          <div v-else-if="hasConfirmed == true" class="confirmed email">
+          <div
+            v-else-if="newContact.phone && hasConfirmed == true"
+            class="confirmed email"
+          >
+            <p>{{ newContact.email }}</p>
+          </div>
+        </div>
+        <!-- If there is an email, but no phone, we need to push the email all the way to the left.  -->
+        <div class="emailNoPhoneWrapper">
+          <div
+            v-if="
+              contactData.email && !contactData.phone && hasConfirmed == false
+            "
+            class="emailNoPhone"
+          >
+            <p>{{ contactData.email }}</p>
+          </div>
+          <!-- Since someone could add a phone number when editing a contact, this needs to check that there still is no phone in the new updated contact. -->
+          <div
+            v-else-if="!newContact.phone && hasConfirmed == true"
+            class="confirmed emailNoPhone"
+          >
             <p>{{ newContact.email }}</p>
           </div>
         </div>
@@ -51,7 +77,10 @@
           >
             <p>{{ contactData.address }},</p>
           </div>
-          <div v-else-if="hasConfirmed == true" class="confirmed">
+          <div
+            v-else-if="newContact.address && hasConfirmed == true"
+            class="confirmed"
+          >
             <p>{{ newContact.address }},</p>
           </div>
         </div>
@@ -59,7 +88,10 @@
           <div v-if="contactData.city && hasConfirmed == false" class="city">
             <p>{{ contactData.city }},</p>
           </div>
-          <div v-else-if="hasConfirmed == true" class="confirmed city">
+          <div
+            v-else-if="newContact.city && hasConfirmed == true"
+            class="confirmed city"
+          >
             <p>{{ newContact.city }},</p>
           </div>
         </div>
@@ -67,15 +99,21 @@
           <div v-if="contactData.state && hasConfirmed == false" class="state">
             <p>{{ contactData.state }}</p>
           </div>
-          <div v-else-if="hasConfirmed == true" class="confirmed state">
+          <div
+            v-else-if="newContact.state && hasConfirmed == true"
+            class="confirmed state"
+          >
             <p>{{ newContact.state }}</p>
           </div>
         </div>
         <div class="zipWrapper">
-          <div v-if="contactData.city && hasConfirmed == false" class="zip">
+          <div v-if="contactData.zip && hasConfirmed == false" class="zip">
             <p>({{ contactData.zip }})</p>
           </div>
-          <div v-else-if="hasConfirmed == true" class="confirmed zip">
+          <div
+            v-else-if="newContact.zip && hasConfirmed == true"
+            class="confirmed zip"
+          >
             <p>{{ newContact.zip }}</p>
           </div>
         </div>

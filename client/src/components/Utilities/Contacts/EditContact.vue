@@ -119,10 +119,23 @@
           <div
             v-if="
               contactData.email &&
+                contactData.phone &&
                 edit.email == false &&
                 hasEdited.email == false
             "
             class="email"
+          >
+            <p>{{ contactData.email }}</p>
+            <i @click="switchEdit('email')" class="fas fa-edit fa-xs"></i>
+          </div>
+          <div
+            v-else-if="
+              contactData.email &&
+                !contactData.phone &&
+                edit.email == false &&
+                hasEdited.email == false
+            "
+            class="emailNoPhone"
           >
             <p>{{ contactData.email }}</p>
             <i @click="switchEdit('email')" class="fas fa-edit fa-xs"></i>
@@ -704,7 +717,7 @@ p {
   margin-bottom: 8px;
 }
 div.detailsBody {
-  height: 300px;
+  height: 285px;
 }
 div.detailsFooter {
   height: 55px;
