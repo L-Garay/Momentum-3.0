@@ -62,7 +62,7 @@
                 </p>
                 <i
                   @click="deleteProperty('lastName')"
-                  class="delete deleteRow1 fas fa-trash-alt"
+                  class="delete deleteLastName fas fa-trash-alt"
                 ></i>
               </div>
               <div
@@ -91,7 +91,7 @@
                 <p @click="switchEdit('lastName')">{{ newContact.lastName }}</p>
                 <i
                   @click="deleteProperty('lastName')"
-                  class="delete deleteRow1 fas fa-trash-alt"
+                  class="delete deleteLastName fas fa-trash-alt"
                 ></i>
               </div>
             </div>
@@ -106,13 +106,15 @@
               "
             >
               <p class="label"><small>Birthdate:</small></p>
-              <p @click="switchEdit('birthdate')">
-                {{ contactData.birthdate }}
-              </p>
-              <i
-                @click="deleteProperty('birthdate')"
-                class="delete deleteRow1 fas fa-trash-alt"
-              ></i>
+              <div class="flexWrapper">
+                <p @click="switchEdit('birthdate')">
+                  {{ contactData.birthdate }}
+                </p>
+                <i
+                  @click="deleteProperty('birthdate')"
+                  class="delete deleteBirthdate fas fa-trash-alt"
+                ></i>
+              </div>
             </div>
             <div
               v-else-if="contactData.birthdate && edit.birthdate == true"
@@ -134,14 +136,14 @@
               ></i>
             </div>
             <div
-              class="confirmed"
+              class="birthdate"
               v-else-if="hasEdited.birthdate == true && edit.birthdate == false"
             >
               <p class="label"><small>Birthdate:</small></p>
               <p @click="switchEdit('birthdate')">{{ newContact.birthdate }}</p>
               <i
                 @click="deleteProperty('birthdate')"
-                class="delete deleteRow1 fas fa-trash-alt"
+                class="delete deleteBirthdate fas fa-trash-alt"
               ></i>
             </div>
           </div>
@@ -758,6 +760,16 @@ p {
   margin-bottom: 0;
   text-align: start;
 }
+div.flexWrapper {
+  display: flex;
+}
+i.delete {
+  color: rgba(189, 65, 65, 0.685);
+}
+i.delete:hover {
+  cursor: pointer;
+  color: red;
+}
 div.detailsWrapper {
   height: 355px;
 }
@@ -798,6 +810,33 @@ div.birthdateWrapper {
   margin-left: 45px;
   align-self: center;
   color: rgb(231, 231, 231);
+}
+div.firstNameEdit input {
+  margin-top: 10px;
+}
+div.firstNameEdit i,
+div.lastNameEdit i {
+  font-size: 17px;
+  position: absolute;
+  top: 12%;
+}
+div.lastName {
+  display: flex;
+}
+div.lastName i.deleteLastName {
+  font-size: 14px;
+  align-self: center;
+  padding: 10px 0 0 5px;
+}
+div.birthdateEdit i {
+  font-size: 13px;
+  position: absolute;
+  top: 15%;
+}
+div.birthdate i.deleteBirthdate {
+  font-size: 11px;
+  align-self: center;
+  padding: 1px 0 0 6px;
 }
 
 /* Phone/Email/Company styling */
