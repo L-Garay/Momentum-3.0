@@ -7,8 +7,7 @@
             v-if="edit.firstName == false && hasEdited.firstName == false"
             class="firstName"
           >
-            <p>{{ contactData.firstName }}</p>
-            <i @click="switchEdit('firstName')" class="fas fa-edit fa-xs"></i>
+            <p @click="switchEdit('firstName')">{{ contactData.firstName }}</p>
           </div>
           <div v-else-if="edit.firstName == true" class="firstNameEdit">
             <input
@@ -44,8 +43,11 @@
             "
             class="lastName"
           >
-            <p>{{ contactData.lastName }}</p>
-            <i @click="switchEdit('lastName')" class="fas fa-edit fa-xs"></i>
+            <p @click="switchEdit('lastName')">{{ contactData.lastName }}</p>
+            <i
+              @click="deleteProperty('lastName')"
+              class="delete deleteRow1 fas fa-trash-alt"
+            ></i>
           </div>
           <div
             v-else-if="contactData.lastName && edit.lastName == true"
@@ -68,10 +70,13 @@
           </div>
           <div
             v-else-if="hasEdited.lastName == true && edit.lastName == false"
-            class="editedLastName"
+            class="lastName editedLastName"
           >
-            <p>{{ newContact.lastName }}</p>
-            <i @click="switchEdit('lastName')" class="fas fa-edit fa-xs"></i>
+            <p @click="switchEdit('lastName')">{{ newContact.lastName }}</p>
+            <i
+              @click="deleteProperty('lastName')"
+              class="delete deleteRow1 fas fa-trash-alt"
+            ></i>
           </div>
         </div>
       </div>
@@ -85,8 +90,11 @@
             "
             class="phone"
           >
-            <p>{{ contactData.phone }}</p>
-            <i @click="switchEdit('phone')" class="fas fa-edit fa-xs"></i>
+            <p @click="switchEdit('phone')">{{ contactData.phone }}</p>
+            <i
+              @click="deleteProperty('phone')"
+              class="delete deleteRow2 fas fa-trash-alt"
+            ></i>
           </div>
           <div
             v-else-if="contactData.phone && edit.phone == true"
@@ -109,10 +117,13 @@
           </div>
           <div
             v-else-if="hasEdited.phone == true && edit.phone == false"
-            class="editedPhone"
+            class="phone editedPhone"
           >
-            <p>{{ newContact.phone }}</p>
-            <i @click="switchEdit('phone')" class="fas fa-edit fa-xs"></i>
+            <p @click="switchEdit('phone')">{{ newContact.phone }}</p>
+            <i
+              @click="deleteProperty('phone')"
+              class="delete deleteRow2 fas fa-trash-alt"
+            ></i>
           </div>
         </div>
         <div class="emailWrapper">
@@ -125,8 +136,11 @@
             "
             class="email"
           >
-            <p>{{ contactData.email }}</p>
-            <i @click="switchEdit('email')" class="fas fa-edit fa-xs"></i>
+            <p @click="switchEdit('email')">{{ contactData.email }}</p>
+            <i
+              @click="deleteProperty('email')"
+              class="delete deleteRow2 fas fa-trash-alt"
+            ></i>
           </div>
           <div
             v-else-if="
@@ -137,8 +151,11 @@
             "
             class="emailNoPhone"
           >
-            <p>{{ contactData.email }}</p>
-            <i @click="switchEdit('email')" class="fas fa-edit fa-xs"></i>
+            <p @click="switchEdit('email')">{{ contactData.email }}</p>
+            <i
+              @click="deleteProperty('email')"
+              class="delete deleteRow2 fas fa-trash-alt"
+            ></i>
           </div>
           <div
             v-else-if="contactData.email && edit.email == true"
@@ -161,10 +178,13 @@
           </div>
           <div
             v-else-if="hasEdited.email == true && edit.email == false"
-            class="editedEmail"
+            class="email editedEmail"
           >
             <p>{{ newContact.email }}</p>
-            <i @click="switchEdit('email')" class="fas fa-edit fa-xs"></i>
+            <i
+              @click="deleteProperty('email')"
+              class="delete deleteRow2 fas fa-trash-alt"
+            ></i>
           </div>
         </div>
       </div>
@@ -178,8 +198,11 @@
             "
             class="address"
           >
-            <p>{{ contactData.address }},</p>
-            <i @click="switchEdit('address')" class="fas fa-edit fa-xs"></i>
+            <p @click="switchEdit('address')">{{ contactData.address }},</p>
+            <i
+              @click="deleteProperty('address')"
+              class="delete deleteRow3 fas fa-trash-alt"
+            ></i>
           </div>
           <div
             v-else-if="contactData.address && edit.address == true"
@@ -202,10 +225,13 @@
           </div>
           <div
             v-else-if="hasEdited.address == true && edit.address == false"
-            class="editedAddress"
+            class="address editedAddress"
           >
-            <p>{{ newContact.address }},</p>
-            <i @click="switchEdit('address')" class="fas fa-edit fa-xs"></i>
+            <p @click="switchEdit('address')">{{ newContact.address }},</p>
+            <i
+              @click="deleteProperty('address')"
+              class="delete deleteRow3 fas fa-trash-alt"
+            ></i>
           </div>
         </div>
         <div class="cityWrapper">
@@ -215,8 +241,11 @@
             "
             class="city"
           >
-            <p>{{ contactData.city }},</p>
-            <i @click="switchEdit('city')" class="fas fa-edit fa-xs"></i>
+            <p @click="switchEdit('city')">{{ contactData.city }},</p>
+            <i
+              @click="deleteProperty('city')"
+              class="delete deleteRow3 fas fa-trash-alt"
+            ></i>
           </div>
           <div
             v-else-if="contactData.city && edit.city == true"
@@ -236,10 +265,13 @@
           </div>
           <div
             v-else-if="hasEdited.city == true && edit.city == false"
-            class="editedCity"
+            class="city editedCity"
           >
-            <p>{{ newContact.city }}</p>
-            <i @click="switchEdit('city')" class="fas fa-edit fa-xs"></i>
+            <p @click="switchEdit('city')">{{ newContact.city }}</p>
+            <i
+              @click="deleteProperty('city')"
+              class="delete deleteRow3 fas fa-trash-alt"
+            ></i>
           </div>
         </div>
         <div class="stateWrapper">
@@ -247,12 +279,15 @@
             v-if="
               contactData.state &&
                 edit.state == false &&
-                hasEdited.city == false
+                hasEdited.state == false
             "
             class="state"
           >
-            <p>{{ contactData.state }}</p>
-            <i @click="switchEdit('state')" class="fas fa-edit fa-xs"></i>
+            <p @click="switchEdit('state')">{{ contactData.state }}</p>
+            <i
+              @click="deleteProperty('state')"
+              class="delete deleteRow3 fas fa-trash-alt"
+            ></i>
           </div>
           <div
             v-else-if="contactData.state && edit.state == true"
@@ -275,10 +310,13 @@
           </div>
           <div
             v-else-if="hasEdited.state == true && edit.state == false"
-            class="editedState"
+            class="state editedState"
           >
-            <p>{{ newContact.state }}</p>
-            <i @click="switchEdit('state')" class="fas fa-edit fa-xs"></i>
+            <p @click="switchEdit('state')">{{ newContact.state }}</p>
+            <i
+              @click="deleteProperty('state')"
+              class="delete deleteRow3 fas fa-trash-alt"
+            ></i>
           </div>
         </div>
         <div class="zipWrapper">
@@ -288,8 +326,11 @@
             "
             class="zip"
           >
-            <p>({{ contactData.zip }})</p>
-            <i @click="switchEdit('zip')" class="fas fa-edit fa-xs"></i>
+            <p @click="switchEdit('zip')">({{ contactData.zip }})</p>
+            <i
+              @click="deleteProperty('zip')"
+              class="delete deleteRow3 fas fa-trash-alt"
+            ></i>
           </div>
           <div v-else-if="contactData.zip && edit.zip == true" class="zipEdit">
             <input
@@ -306,10 +347,13 @@
           </div>
           <div
             v-else-if="hasEdited.zip == true && edit.zip == false"
-            class="editedZip"
+            class="zip editedZip"
           >
-            <p>{{ newContact.zip }}</p>
-            <i @click="switchEdit('zip')" class="fas fa-edit fa-xs"></i>
+            <p @click="switchEdit('zip')">({{ newContact.zip }})</p>
+            <i
+              @click="deleteProperty('zip')"
+              class="delete deleteRow3 fas fa-trash-alt"
+            ></i>
           </div>
         </div>
       </div>
@@ -323,8 +367,11 @@
             "
             class="notes"
           >
-            <p>{{ contactData.notes }}</p>
-            <i @click="switchEdit('notes')" class="fas fa-edit fa-xs"></i>
+            <p @click="switchEdit('notes')">{{ contactData.notes }}</p>
+            <i
+              @click="deleteProperty('notes')"
+              class="delete deleteRow4 fas fa-trash-alt"
+            ></i>
           </div>
           <div
             v-else-if="contactData.notes && edit.notes == true"
@@ -343,8 +390,11 @@
             v-else-if="hasEdited.notes == true && edit.notes == false"
             class="editedNotes notes"
           >
-            <p>{{ newContact.notes }}</p>
-            <i @click="switchEdit('notes')" class="fas fa-edit fa-xs"></i>
+            <p @click="switchEdit('notes')">{{ newContact.notes }}</p>
+            <i
+              @click="deleteProperty('notes')"
+              class="delete deleteRow4 fas fa-trash-alt"
+            ></i>
           </div>
         </div>
       </div>
@@ -488,6 +538,7 @@ export default {
           this.edit.state = false;
           this.edit.zip = false;
           this.edit.notes = false;
+          this.$nextTick(() => this.$refs.focusFirstName.focus());
           break;
         case 'lastName':
           this.edit.firstName = false;
@@ -499,6 +550,7 @@ export default {
           this.edit.state = false;
           this.edit.zip = false;
           this.edit.notes = false;
+          this.$nextTick(() => this.$refs.focusLastName.focus());
           break;
         case 'phone':
           this.edit.firstName = false;
@@ -510,6 +562,7 @@ export default {
           this.edit.state = false;
           this.edit.zip = false;
           this.edit.notes = false;
+          this.$nextTick(() => this.$refs.focusPhone.focus());
           break;
         case 'email':
           this.edit.firstName = false;
@@ -521,6 +574,7 @@ export default {
           this.edit.state = false;
           this.edit.zip = false;
           this.edit.notes = false;
+          this.$nextTick(() => this.$refs.focusEmail.focus());
           break;
         case 'address':
           this.edit.firstName = false;
@@ -532,6 +586,7 @@ export default {
           this.edit.state = false;
           this.edit.zip = false;
           this.edit.notes = false;
+          this.$nextTick(() => this.$refs.focusAddress.focus());
           break;
         case 'city':
           this.edit.firstName = false;
@@ -543,6 +598,7 @@ export default {
           this.edit.state = false;
           this.edit.zip = false;
           this.edit.notes = false;
+          this.$nextTick(() => this.$refs.focusCity.focus());
           break;
         case 'state':
           this.edit.firstName = false;
@@ -554,6 +610,7 @@ export default {
           this.edit.state = true;
           this.edit.zip = false;
           this.edit.notes = false;
+          this.$nextTick(() => this.$refs.focusState.focus());
           break;
         case 'zip':
           this.edit.firstName = false;
@@ -565,6 +622,7 @@ export default {
           this.edit.state = false;
           this.edit.zip = true;
           this.edit.notes = false;
+          this.$nextTick(() => this.$refs.focusZip.focus());
           break;
         case 'notes':
           this.edit.firstName = false;
@@ -576,6 +634,7 @@ export default {
           this.edit.state = false;
           this.edit.zip = false;
           this.edit.notes = true;
+          this.$nextTick(() => this.$refs.focusNotes.focus());
           break;
 
         default:
@@ -798,5 +857,14 @@ div.buttons {
 }
 button.btn {
   margin: 0 5px;
+}
+i.delete {
+  align-self: center;
+  margin-left: 5px;
+  color: rgb(189, 63, 63);
+}
+i.delete:hover {
+  color: red;
+  cursor: pointer;
 }
 </style>
