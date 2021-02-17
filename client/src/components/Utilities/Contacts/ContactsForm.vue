@@ -2,7 +2,7 @@
   <div class="contactForm">
     <form>
       <div class="form-row">
-        <div class="col-md-3 mb-3 mr-4">
+        <div class="col-md-3 mb-3 mr-3">
           <label class="left" for="firstName">First name</label>
           <input
             type="text"
@@ -17,7 +17,7 @@
             }"
           />
         </div>
-        <div class="col-md-3 mb-3 mr-4">
+        <div class="col-md-3 mb-3 mr-3">
           <label class="left" for="validationDefault02">Last name</label>
           <input
             type="text"
@@ -31,7 +31,37 @@
             }"
           />
         </div>
-        <div class="col-md-3 mb-3">
+        <div class="col-md-3 mb-2">
+          <label class="left" for="validationDefault04">Birthdate</label>
+          <input
+            type="text"
+            id="validationDefault04"
+            placeholder="MM-DD-YYYY"
+            v-model="contact.birthdate"
+            v-autowidth="{
+              maxWidth: '115px',
+              minWidth: '80px',
+              comfortZone: 10,
+            }"
+          />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-md-3 mb-2 mr-3">
+          <label class="left" for="validationDefault04">Company</label>
+          <input
+            type="text"
+            id="validationDefault04"
+            placeholder="Big Tech LLC"
+            v-model="contact.company"
+            v-autowidth="{
+              maxWidth: '115px',
+              minWidth: '80px',
+              comfortZone: 10,
+            }"
+          />
+        </div>
+        <div class="col-md-3 mb-3 mr-3">
           <label class="left" for="validationDefaultUsername">Phone #</label>
           <input
             type="text"
@@ -45,7 +75,7 @@
             }"
           />
         </div>
-        <div class="col-md-5 mb-3 mr-2">
+        <div class="col-md-5 mb-3">
           <label class="left" for="validationDefaultUsername">Email</label>
           <input
             type="text"
@@ -59,23 +89,24 @@
             }"
           />
         </div>
-        <div class="col-md-5 mb-3">
+      </div>
+      <div class="form-row">
+        <div class="col-md-9 mb-3 address">
           <label class="left" for="validationDefault03">Address</label>
           <input
             type="text"
             id="validationDefault03"
-            placeholder="123 N Juliana St"
+            placeholder="123 N Juliana St, Boise, Idaho 83642"
             v-model="contact.address"
             v-autowidth="{
-              maxWidth: '200px',
-              minWidth: '90px',
+              maxWidth: '355px',
+              minWidth: '110px',
               comfortZone: 10,
             }"
           />
         </div>
-      </div>
-      <div class="form-row">
-        <div class="col-md-3 mb-2 mr-4">
+
+        <!-- <div class="col-md-3 mb-2 mr-4">
           <label class="left" for="validationDefault04">City</label>
           <input
             type="text"
@@ -116,7 +147,7 @@
               comfortZone: 10,
             }"
           />
-        </div>
+        </div> -->
         <div id="notes" class="col-md-9 mb-3 mt-1">
           <label for="NotesTextArea">Notes</label>
           <textarea
@@ -171,9 +202,9 @@ export default {
 </script>
 
 <style scoped>
-.col-md-2,
 .col-md-3,
 .col-md-5,
+.col-md-7,
 .col-md-9 {
   display: flex;
   flex-direction: column;
