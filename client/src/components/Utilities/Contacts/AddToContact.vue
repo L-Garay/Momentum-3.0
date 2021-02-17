@@ -17,7 +17,7 @@
           />
         </div>
         <div v-else class="addedProperty">
-          <p>{{ newContact.lastName }}</p>
+          <p @click="editAddition('lastName')">{{ newContact.lastName }}</p>
         </div>
       </div>
       <div v-if="HasProperty.phone == false" class="option">
@@ -36,7 +36,7 @@
           />
         </div>
         <div v-else class="addedProperty">
-          <p>{{ newContact.phone }}</p>
+          <p @click="editAddition('phone')">{{ newContact.phone }}</p>
         </div>
       </div>
       <div v-if="HasProperty.email == false" class="option">
@@ -55,7 +55,7 @@
           />
         </div>
         <div v-else class="addedProperty">
-          <p>{{ newContact.email }}</p>
+          <p @click="editAddition('email')">{{ newContact.email }}</p>
         </div>
       </div>
       <div v-if="HasProperty.notes == false" class="option">
@@ -70,8 +70,8 @@
             v-on:keyup.enter="finishAdding('notes')"
           ></textarea>
         </div>
-        <div v-else class="addedPropertyNotes">
-          <p>{{ newContact.notes }}</p>
+        <div v-else-if="added.notes == true" class="addedPropertyNotes">
+          <p @click="editAddition('notes')">{{ newContact.notes }}</p>
         </div>
       </div>
     </div>
@@ -92,7 +92,7 @@
           />
         </div>
         <div v-else class="addedProperty">
-          <p>{{ newContact.address }}</p>
+          <p @click="editAddition('address')">{{ newContact.address }}</p>
         </div>
       </div>
       <div v-if="HasProperty.city == false" class="option">
@@ -111,7 +111,7 @@
           />
         </div>
         <div v-else class="addedProperty">
-          <p>{{ newContact.city }}</p>
+          <p @click="editAddition('city')">{{ newContact.city }}</p>
         </div>
       </div>
       <div v-if="HasProperty.state == false" class="option">
@@ -130,7 +130,7 @@
           />
         </div>
         <div v-else class="addedProperty">
-          <p>{{ newContact.state }}</p>
+          <p @click="editAddition('state')">{{ newContact.state }}</p>
         </div>
       </div>
       <div v-if="HasProperty.zip == false" class="option">
@@ -149,7 +149,7 @@
           />
         </div>
         <div v-else class="addedProperty">
-          <p>{{ newContact.zip }}</p>
+          <p @click="editAddition('zip')">{{ newContact.zip }}</p>
         </div>
       </div>
     </div>
@@ -271,6 +271,69 @@ export default {
           if (this.newContact.notes) {
             this.added.notes = true;
             this.$emit('added', this.newContact);
+          }
+
+          break;
+
+        default:
+          this.editContact = false;
+          break;
+      }
+    },
+    editAddition(field) {
+      switch (field) {
+        case 'lastName':
+          if (this.newContact.lastName) {
+            this.added.lastName = false;
+            this.$nextTick(() => this.$refs.focusLastName.focus());
+          }
+          break;
+        case 'phone':
+          if (this.newContact.phone) {
+            this.added.phone = false;
+            this.$nextTick(() => this.$refs.focusPhone.focus());
+          }
+
+          break;
+        case 'email':
+          if (this.newContact.email) {
+            this.added.email = false;
+            this.$nextTick(() => this.$refs.focusEmail.focus());
+          }
+
+          break;
+        case 'address':
+          if (this.newContact.address) {
+            this.added.address = false;
+            this.$nextTick(() => this.$refs.focusAddress.focus());
+          }
+
+          break;
+        case 'city':
+          if (this.newContact.city) {
+            this.added.city = false;
+            this.$nextTick(() => this.$refs.focusCity.focus());
+          }
+
+          break;
+        case 'state':
+          if (this.newContact.state) {
+            this.added.state = false;
+            this.$nextTick(() => this.$refs.focusState.focus());
+          }
+
+          break;
+        case 'zip':
+          if (this.newContact.zip) {
+            this.added.zip = false;
+            this.$nextTick(() => this.$refs.focusZip.focus());
+          }
+
+          break;
+        case 'notes':
+          if (this.newContact.notes) {
+            this.added.notes = false;
+            this.$nextTick(() => this.$refs.focusNotes.focus());
           }
 
           break;
