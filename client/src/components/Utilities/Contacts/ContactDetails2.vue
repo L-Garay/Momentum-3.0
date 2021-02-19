@@ -162,7 +162,9 @@
               </div>
               <div
                 class="confirmed email"
-                v-else-if="newContact.phone && hasConfirmed == true"
+                v-else-if="
+                  newContact.phone && newContact.email && hasConfirmed == true
+                "
               >
                 <div class="labelGroup">
                   <p class="label">
