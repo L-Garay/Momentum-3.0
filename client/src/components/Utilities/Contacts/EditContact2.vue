@@ -37,8 +37,8 @@
                     v-on:keyup.enter="finishEditing('firstName')"
                     v-on:blur="cancelEditing('firstName')"
                     v-autowidth="{
-                      maxWidth: '140px',
-                      minWidth: '80px',
+                      maxWidth: '150px',
+                      minWidth: '50px',
                       comfortZone: 5,
                     }"
                   />
@@ -62,7 +62,10 @@
                       hasEdited.lastName == false
                   "
                 >
-                  <p @click="switchEdit('lastName')">
+                  <p
+                    :class="{ deleted: hasDeleted.lastName }"
+                    @click="switchEdit('lastName')"
+                  >
                     {{ contactData.lastName }}
                   </p>
                 </div>
@@ -78,8 +81,8 @@
                     v-on:keyup.enter="finishEditing('lastName')"
                     v-on:blur="cancelEditing('lastName')"
                     v-autowidth="{
-                      maxWidth: '140px',
-                      minWidth: '80px',
+                      maxWidth: '150px',
+                      minWidth: '50px',
                       comfortZone: 5,
                     }"
                   />
@@ -90,7 +93,13 @@
                     hasEdited.lastName == true && edit.lastName == false
                   "
                 >
-                  <p class="editedLastName" @click="switchEdit('lastName')">
+                  <p
+                    :class="{
+                      edited: hasEdited.lastName,
+                      deleted: hasDeleted.lastName,
+                    }"
+                    @click="switchEdit('lastName')"
+                  >
                     {{ newContact.lastName }}
                   </p>
                 </div>
@@ -121,7 +130,10 @@
                 </p>
               </div>
               <div class="flexWrapper">
-                <p @click="switchEdit('birthdate')">
+                <p
+                  :class="{ deleted: hasDeleted.birthdate }"
+                  @click="switchEdit('birthdate')"
+                >
                   {{ contactData.birthdate }}
                 </p>
               </div>
@@ -176,7 +188,13 @@
                   >
                 </p>
               </div>
-              <p class="editedBirthdate" @click="switchEdit('birthdate')">
+              <p
+                :class="{
+                  edited: hasEdited.birthdate,
+                  deleted: hasDeleted.birthdate,
+                }"
+                @click="switchEdit('birthdate')"
+              >
                 {{ newContact.birthdate }}
               </p>
             </div>
@@ -207,7 +225,12 @@
                     >
                   </p>
                 </div>
-                <p @click="switchEdit('phone')">{{ contactData.phone }}</p>
+                <p
+                  :class="{ deleted: hasDeleted.phone }"
+                  @click="switchEdit('phone')"
+                >
+                  {{ contactData.phone }}
+                </p>
               </div>
               <div
                 v-else-if="contactData.phone && edit.phone == true"
@@ -259,7 +282,13 @@
                     >
                   </p>
                 </div>
-                <p class="editedPhone" @click="switchEdit('phone')">
+                <p
+                  :class="{
+                    edited: hasEdited.phone,
+                    deleted: hasDeleted.phone,
+                  }"
+                  @click="switchEdit('phone')"
+                >
                   {{ newContact.phone }}
                 </p>
               </div>
@@ -313,7 +342,12 @@
                     >
                   </p>
                 </div>
-                <p @click="switchEdit('email')">{{ contactData.email }}</p>
+                <p
+                  :class="{ deleted: hasDeleted.email }"
+                  @click="switchEdit('email')"
+                >
+                  {{ contactData.email }}
+                </p>
               </div>
               <div
                 v-else-if="contactData.email && edit.email == true"
@@ -341,7 +375,7 @@
                   v-on:keyup.enter="finishEditing('email')"
                   v-on:blur="cancelEditing('email')"
                   v-autowidth="{
-                    maxWidth: '140px',
+                    maxWidth: '170px',
                     minWidth: '80px',
                     comfortZone: 5,
                   }"
@@ -366,7 +400,13 @@
                   </p>
                 </div>
 
-                <p class="editedEmail" @click="switchEdit('email')">
+                <p
+                  :class="{
+                    edited: hasEdited.email,
+                    deleted: hasDeleted.email,
+                  }"
+                  @click="switchEdit('email')"
+                >
                   {{ newContact.email }}
                 </p>
               </div>
@@ -422,7 +462,12 @@
                   >
                 </p>
               </div>
-              <p @click="switchEdit('company')">{{ contactData.company }}</p>
+              <p
+                :class="{ deleted: hasDeleted.company }"
+                @click="switchEdit('company')"
+              >
+                {{ contactData.company }}
+              </p>
             </div>
             <div
               v-else-if="contactData.company && edit.company == true"
@@ -471,7 +516,13 @@
                   >
                 </p>
               </div>
-              <p class="editedCompany" @click="switchEdit('company')">
+              <p
+                :class="{
+                  edited: hasEdited.company,
+                  deleted: hasDeleted.company,
+                }"
+                @click="switchEdit('company')"
+              >
                 {{ newContact.company }}
               </p>
             </div>
@@ -500,7 +551,12 @@
                 >
               </p>
             </div>
-            <p @click="switchEdit('address')">{{ contactData.address }}</p>
+            <p
+              :class="{ deleted: hasDeleted.address }"
+              @click="switchEdit('address')"
+            >
+              {{ contactData.address }}
+            </p>
           </div>
           <div
             v-else-if="contactData.address && edit.address == true"
@@ -549,7 +605,13 @@
                 >
               </p>
             </div>
-            <p class="editedAddress" @click="switchEdit('address')">
+            <p
+              :class="{
+                edited: hasEdited.address,
+                deleted: hasDeleted.address,
+              }"
+              @click="switchEdit('address')"
+            >
               {{ newContact.address }}
             </p>
           </div>
@@ -580,7 +642,9 @@
                 hasEdited.notes == false
             "
           >
-            <p>{{ contactData.notes }}</p>
+            <p :class="{ deleted: hasDeleted.notes }">
+              {{ contactData.notes }}
+            </p>
           </div>
           <div
             v-else-if="contactData.notes && edit.notes == true"
@@ -601,7 +665,14 @@
             @click="switchEdit('notes')"
             v-else-if="hasEdited.notes == true && edit.notes == false"
           >
-            <p class="editedNotes">{{ newContact.notes }}</p>
+            <p
+              :class="{
+                edited: hasEdited.notes,
+                deleted: hasDeleted.notes,
+              }"
+            >
+              {{ newContact.notes }}
+            </p>
           </div>
         </div>
       </div>
@@ -672,6 +743,16 @@ export default {
         notes: false,
       },
       hasEdited: {
+        firstName: false,
+        lastName: false,
+        phone: false,
+        email: false,
+        address: false,
+        birthdate: false,
+        company: false,
+        notes: false,
+      },
+      hasDeleted: {
         firstName: false,
         lastName: false,
         phone: false,
@@ -866,6 +947,7 @@ export default {
           if (this.newContact.lastName) {
             this.hasEdited.lastName = true;
             this.edit.lastName = false;
+            this.hasDeleted.lastName = false;
             document.getElementById('confirmBtn').disabled = false;
             this.disabled = false;
           }
@@ -874,6 +956,7 @@ export default {
           if (this.newContact.phone) {
             this.hasEdited.phone = true;
             this.edit.phone = false;
+            this.hasDeleted.phone = false;
             document.getElementById('confirmBtn').disabled = false;
             this.disabled = false;
           }
@@ -882,6 +965,7 @@ export default {
           if (this.newContact.email) {
             this.hasEdited.email = true;
             this.edit.email = false;
+            this.hasDeleted.email = false;
             document.getElementById('confirmBtn').disabled = false;
             this.disabled = false;
           }
@@ -890,6 +974,7 @@ export default {
           if (this.newContact.address) {
             this.hasEdited.address = true;
             this.edit.address = false;
+            this.hasDeleted.address = false;
             document.getElementById('confirmBtn').disabled = false;
             this.disabled = false;
           }
@@ -898,6 +983,7 @@ export default {
           if (this.newContact.company) {
             this.hasEdited.company = true;
             this.edit.company = false;
+            this.hasDeleted.company = false;
             document.getElementById('confirmBtn').disabled = false;
             this.disabled = false;
           }
@@ -906,6 +992,7 @@ export default {
           if (this.newContact.birthdate) {
             this.hasEdited.birthdate = true;
             this.edit.birthdate = false;
+            this.hasDeleted.birthdate = false;
             document.getElementById('confirmBtn').disabled = false;
             this.disabled = false;
           }
@@ -914,10 +1001,61 @@ export default {
           if (this.newContact.notes) {
             this.hasEdited.notes = true;
             this.edit.notes = false;
+            this.hasDeleted.notes = false;
             document.getElementById('confirmBtn').disabled = false;
             this.disabled = false;
           }
           break;
+        default:
+          this.editContact = false;
+          break;
+      }
+    },
+    deleteProperty(field) {
+      switch (field) {
+        case 'lastName': {
+          this.hasDeleted.lastName = true;
+          document.getElementById('confirmBtn').disabled = false;
+          this.disabled = false;
+          break;
+        }
+        case 'phone': {
+          this.hasDeleted.phone = true;
+          document.getElementById('confirmBtn').disabled = false;
+          this.disabled = false;
+          break;
+        }
+        case 'email': {
+          this.hasDeleted.email = true;
+          document.getElementById('confirmBtn').disabled = false;
+          this.disabled = false;
+          break;
+        }
+        case 'address': {
+          this.hasDeleted.address = true;
+          document.getElementById('confirmBtn').disabled = false;
+          this.disabled = false;
+          break;
+        }
+        case 'company': {
+          this.hasDeleted.company = true;
+          document.getElementById('confirmBtn').disabled = false;
+          this.disabled = false;
+          break;
+        }
+        case 'birthdate': {
+          this.hasDeleted.birthdate = true;
+          document.getElementById('confirmBtn').disabled = false;
+          this.disabled = false;
+          break;
+        }
+        case 'notes': {
+          this.hasDeleted.notes = true;
+          document.getElementById('confirmBtn').disabled = false;
+          this.disabled = false;
+          break;
+        }
+
         default:
           this.editContact = false;
           break;
@@ -929,10 +1067,34 @@ export default {
       this.disabled = false;
     },
     updateContact() {
+      this.checkForDeletions();
       this.$store.dispatch('updateContact', this.newContact);
       this.$emit('newContact', this.newContact);
       this.$emit('hasConfirmed');
       this.$emit('stopEditing');
+    },
+    checkForDeletions() {
+      if (this.hasDeleted.lastName) {
+        delete this.newContact.lastName;
+      }
+      if (this.hasDeleted.phone) {
+        delete this.newContact.phone;
+      }
+      if (this.hasDeleted.email) {
+        delete this.newContact.email;
+      }
+      if (this.hasDeleted.birthdate) {
+        delete this.newContact.birthdate;
+      }
+      if (this.hasDeleted.company) {
+        delete this.newContact.company;
+      }
+      if (this.hasDeleted.address) {
+        delete this.newContact.address;
+      }
+      if (this.hasDeleted.notes) {
+        delete this.newContact.notes;
+      }
     },
   },
 };
@@ -986,15 +1148,11 @@ input.XlargeInput {
   font-size: 20px;
 }
 
-p.editedFirstName,
-p.editedLastName,
-p.editedPhone,
-p.editedEmail,
-p.editedCompany,
-p.editedAddress,
-p.editedNotes,
-p.editedBirthdate {
+.edited {
   color: goldenrod;
+}
+.deleted {
+  color: rgb(202, 22, 22);
 }
 
 /* Row 1 styling */
@@ -1018,16 +1176,23 @@ div.lastNameWrapper {
   max-width: 160px;
   overflow-x: auto;
 }
-div.birthdateWrapper {
-  font-size: 14px;
-  align-self: center;
-  position: absolute;
-  top: 14%;
-  right: 13%;
-}
 div.nameBirthdateWrapper {
   height: 55px;
 }
+div.birthdateWrapper {
+  width: 90px;
+  font-size: 14px;
+  position: absolute;
+  top: 14%;
+  right: 11.25%;
+}
+div.birthdateEdit {
+  display: flex;
+  flex-direction: column;
+}
+/* div.birthdateEdit input {
+  margin-left: -10px;
+} */
 
 /* Phone/Email/Company styling */
 div.phoneEmailCompanyWrapper {

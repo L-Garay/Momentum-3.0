@@ -1289,13 +1289,15 @@ export default new Vuex.Store({
       });
       commit('setFilteredContacts', letterGroup);
     },
-    async deleteContact({ dispatch, state }, id) {
-      await api.delete('contacts/' + id);
-      await dispatch('getContactsByUserId', state.user.user._id);
-      dispatch('filterContacts', state.contacts.currentLetter);
+    async deleteContact({ dispatch }, contact) {
+      await api.delete('contacts/' + contact._id);
+      dispatch('fetchContacts', contact);
     },
-    async updateContact({ dispatch, state }, contact) {
+    async updateContact({ dispatch }, contact) {
       await api.put('contacts/' + contact._id, contact);
+      dispatch('fetchContacts', contact);
+    },
+    async fetchContacts({ dispatch, state }, contact) {
       await dispatch('getContactsByUserId', contact.userId);
       dispatch('filterContacts', state.contacts.currentLetter);
     },

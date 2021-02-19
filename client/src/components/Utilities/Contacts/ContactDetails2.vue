@@ -114,7 +114,10 @@
                 </div>
                 <p>{{ contactData.phone }}</p>
               </div>
-              <div class="confirmed" v-else-if="hasConfirmed == true">
+              <div
+                class="confirmed"
+                v-else-if="hasConfirmed == true && newContact.phone"
+              >
                 <div class="labelGroup">
                   <p class="label">
                     <small
@@ -207,7 +210,9 @@
               <!-- Since someone could add a phone number when editing a contact, this needs to check that there still is no phone in the new updated contact. -->
               <div
                 class="confirmed emailNoPhone"
-                v-else-if="!newContact.phone && hasConfirmed == true"
+                v-else-if="
+                  !newContact.phone && hasConfirmed == true && newContact.email
+                "
               >
                 <div class="labelGroup">
                   <p class="label">
@@ -314,7 +319,7 @@
         </div>
       </div>
       <div class="detailsRow2">
-        <div class="notesWrapper" v-if="contactData.notes">
+        <div class="notesWrapper" v-if="contactData.notes && newContact.notes">
           <div class="labelGroup">
             <p class="label">
               <small
@@ -479,15 +484,19 @@ div.lastNameWrapper {
   max-width: 160px;
   overflow-x: auto;
 }
-div.birthdateWrapper {
-  font-size: 14px;
-  align-self: center;
-  position: absolute;
-  top: 14%;
-  right: 14.5%;
-}
 div.nameBirthdateWrapper {
   height: 55px;
+}
+div.birthdateWrapper {
+  width: 90px;
+  font-size: 14px;
+  position: absolute;
+  top: 14%;
+  right: 11.25%;
+}
+div.birthdateEdit {
+  display: flex;
+  flex-direction: column;
 }
 
 /* Phone/Email/Company styling */

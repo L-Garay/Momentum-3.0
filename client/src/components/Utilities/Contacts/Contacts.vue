@@ -64,7 +64,7 @@
                   </div>
                   <div class="delete">
                     <i
-                      @click="deleteContact(contact._id)"
+                      @click="deleteContact(contact)"
                       class="fas fa-user-minus fa-xs"
                     ></i>
                   </div>
@@ -251,8 +251,8 @@ export default {
         this.$store.dispatch('filterContacts', name[0]);
       }, 100);
     },
-    deleteContact(id) {
-      this.$store.dispatch('deleteContact', id);
+    deleteContact(contact) {
+      this.$store.dispatch('deleteContact', contact);
     },
   },
 };
