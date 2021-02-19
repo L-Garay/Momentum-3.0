@@ -4,95 +4,96 @@
       <div class="detailsRow1">
         <div class="nameBirthdateWrapper">
           <div class="namesWrapper">
-            <div class="firstNameWrapper">
-              <div
-                class="firstName"
-                v-if="edit.firstName == false && hasEdited.firstName == false"
-              >
-                <p class="label"><small>Name:</small></p>
-                <p @click="switchEdit('firstName')">
-                  {{ contactData.firstName }}
-                </p>
-              </div>
-              <div class="firstNameEdit" v-else-if="edit.firstName == true">
-                <input
-                  type="text"
-                  ref="focusFirstName"
-                  v-model="newContact.firstName"
-                  v-on:keyup.enter="finishEditing('firstName')"
-                  v-autowidth="{
-                    maxWidth: '140px',
-                    minWidth: '80px',
-                    comfortZone: 5,
-                  }"
-                />
-                <i
-                  @click="cancelEditing('firstName')"
-                  class="far fa-times-circle"
-                ></i>
-              </div>
-              <div
-                v-else-if="
-                  hasEdited.firstName == true && edit.firstName == false
-                "
-                class="editedFirstName"
-              >
-                <p>{{ newContact.firstName }}</p>
-                <i
-                  @click="switchEdit('firstName')"
-                  class="fas fa-edit fa-xs"
-                ></i>
-              </div>
-              <div v-else class="confirmed">
-                <p class="label"><small>Name:</small></p>
-                <p>{{ newContact.firstName }}</p>
-              </div>
+            <div class="labelGroup">
+              <p class="label nameLabel">
+                <small
+                  >Name:
+                  <p
+                    class="deleteLabel"
+                    v-show="showDelete"
+                    @click="deleteProperty('lastName')"
+                  >
+                    <small> Delete</small>
+                  </p>
+                </small>
+              </p>
             </div>
-            <div class="lastNameWrapper">
-              <div
-                class="lastName"
-                v-if="
-                  contactData.lastName &&
-                    edit.lastName == false &&
-                    hasEdited.lastName == false
-                "
-              >
-                <p @click="switchEdit('lastName')">
-                  {{ contactData.lastName }}
-                </p>
-                <i
-                  @click="deleteProperty('lastName')"
-                  class="delete deleteLastName fas fa-trash-alt"
-                ></i>
+            <div class="namesGroup">
+              <div class="firstNameWrapper">
+                <div
+                  class="firstName"
+                  v-if="edit.firstName == false && hasEdited.firstName == false"
+                >
+                  <p @click="switchEdit('firstName')">
+                    {{ contactData.firstName }}
+                  </p>
+                </div>
+                <div class="firstNameEdit" v-else-if="edit.firstName == true">
+                  <input
+                    class="XlargeInput"
+                    type="text"
+                    ref="focusFirstName"
+                    v-model="newContact.firstName"
+                    v-on:keyup.enter="finishEditing('firstName')"
+                    v-on:blur="cancelEditing('firstName')"
+                    v-autowidth="{
+                      maxWidth: '140px',
+                      minWidth: '80px',
+                      comfortZone: 5,
+                    }"
+                  />
+                </div>
+                <div
+                  v-else-if="
+                    hasEdited.firstName == true && edit.firstName == false
+                  "
+                >
+                  <p class="editedFirstName" @click="switchEdit('firstName')">
+                    {{ newContact.firstName }}
+                  </p>
+                </div>
               </div>
-              <div
-                v-else-if="contactData.lastName && edit.lastName == true"
-                class="lastNameEdit"
-              >
-                <input
-                  type="text"
-                  ref="focusLastName"
-                  v-model="newContact.lastName"
-                  v-on:keyup.enter="finishEditing('lastName')"
-                  v-autowidth="{
-                    maxWidth: '140px',
-                    minWidth: '80px',
-                    comfortZone: 5,
-                  }"
-                /><i
-                  @click="cancelEditing('lastName')"
-                  class="far fa-times-circle"
-                ></i>
-              </div>
-              <div
-                class="editedLastName lastName"
-                v-else-if="hasEdited.lastName == true && edit.lastName == false"
-              >
-                <p @click="switchEdit('lastName')">{{ newContact.lastName }}</p>
-                <i
-                  @click="deleteProperty('lastName')"
-                  class="delete deleteLastName fas fa-trash-alt"
-                ></i>
+              <div class="lastNameWrapper">
+                <div
+                  class="lastName"
+                  v-if="
+                    contactData.lastName &&
+                      edit.lastName == false &&
+                      hasEdited.lastName == false
+                  "
+                >
+                  <p @click="switchEdit('lastName')">
+                    {{ contactData.lastName }}
+                  </p>
+                </div>
+                <div
+                  v-else-if="contactData.lastName && edit.lastName == true"
+                  class="lastNameEdit"
+                >
+                  <input
+                    class="XlargeInput"
+                    type="text"
+                    ref="focusLastName"
+                    v-model="newContact.lastName"
+                    v-on:keyup.enter="finishEditing('lastName')"
+                    v-on:blur="cancelEditing('lastName')"
+                    v-autowidth="{
+                      maxWidth: '140px',
+                      minWidth: '80px',
+                      comfortZone: 5,
+                    }"
+                  />
+                </div>
+                <div
+                  class="lastName"
+                  v-else-if="
+                    hasEdited.lastName == true && edit.lastName == false
+                  "
+                >
+                  <p class="editedLastName" @click="switchEdit('lastName')">
+                    {{ newContact.lastName }}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -105,46 +106,79 @@
                   hasEdited.birthdate == false
               "
             >
-              <p class="label"><small>Birthdate:</small></p>
+              <div class="labelGroup">
+                <p class="label">
+                  <small
+                    >Birthdate:
+                    <p
+                      class="deleteLabel"
+                      v-show="showDelete"
+                      @click="deleteProperty('birthdate')"
+                    >
+                      <small> Delete</small>
+                    </p></small
+                  >
+                </p>
+              </div>
               <div class="flexWrapper">
                 <p @click="switchEdit('birthdate')">
                   {{ contactData.birthdate }}
                 </p>
-                <i
-                  @click="deleteProperty('birthdate')"
-                  class="delete deleteBirthdate fas fa-trash-alt"
-                ></i>
               </div>
             </div>
             <div
               v-else-if="contactData.birthdate && edit.birthdate == true"
               class="birthdateEdit"
             >
+              <div class="labelGroup">
+                <p class="label">
+                  <small
+                    >Birthdate:
+                    <p
+                      class="deleteLabel"
+                      v-show="showDelete"
+                      @click="deleteProperty('birthdate')"
+                    >
+                      <small> Delete</small>
+                    </p></small
+                  >
+                </p>
+              </div>
               <input
+                class="smallInput"
                 type="text"
                 ref="focusBirthdate"
                 v-model="newContact.birthdate"
                 v-on:keyup.enter="finishEditing('birthdate')"
+                v-on:blur="cancelEditing('birthdate')"
                 v-autowidth="{
                   maxWidth: '140px',
                   minWidth: '80px',
                   comfortZone: 5,
                 }"
-              /><i
-                @click="cancelEditing('birthdate')"
-                class="far fa-times-circle"
-              ></i>
+              />
             </div>
             <div
-              class="birthdate"
+              class="birthdate "
               v-else-if="hasEdited.birthdate == true && edit.birthdate == false"
             >
-              <p class="label"><small>Birthdate:</small></p>
-              <p @click="switchEdit('birthdate')">{{ newContact.birthdate }}</p>
-              <i
-                @click="deleteProperty('birthdate')"
-                class="delete deleteBirthdate fas fa-trash-alt"
-              ></i>
+              <div class="labelGroup">
+                <p class="label">
+                  <small
+                    >Birthdate:
+                    <p
+                      class="deleteLabel"
+                      v-show="showDelete"
+                      @click="deleteProperty('birthdate')"
+                    >
+                      <small> Delete</small>
+                    </p></small
+                  >
+                </p>
+              </div>
+              <p class="editedBirthdate" @click="switchEdit('birthdate')">
+                {{ newContact.birthdate }}
+              </p>
             </div>
           </div>
         </div>
@@ -159,42 +193,75 @@
                     hasEdited.phone == false
                 "
               >
-                <p class="label"><small>Phone:</small></p>
+                <div class="labelGroup">
+                  <p class="label">
+                    <small
+                      >Phone:
+                      <p
+                        class="deleteLabel"
+                        v-show="showDelete"
+                        @click="deleteProperty('phone')"
+                      >
+                        <small> Delete</small>
+                      </p></small
+                    >
+                  </p>
+                </div>
                 <p @click="switchEdit('phone')">{{ contactData.phone }}</p>
-                <i
-                  @click="deleteProperty('phone')"
-                  class="delete deleteRow2 fas fa-trash-alt"
-                ></i>
               </div>
               <div
                 v-else-if="contactData.phone && edit.phone == true"
                 class="phoneEdit"
               >
+                <div class="labelGroup">
+                  <p class="label">
+                    <small
+                      >Phone:
+                      <p
+                        class="deleteLabel"
+                        v-show="showDelete"
+                        @click="deleteProperty('phone')"
+                      >
+                        <small> Delete</small>
+                      </p></small
+                    >
+                  </p>
+                </div>
                 <input
+                  class="mediumInput"
                   type="text"
                   ref="focusPhone"
                   v-model="newContact.phone"
                   v-on:keyup.enter="finishEditing('phone')"
+                  v-on:blur="cancelEditing('phone')"
                   v-autowidth="{
                     maxWidth: '140px',
                     minWidth: '80px',
                     comfortZone: 5,
                   }"
-                /><i
-                  @click="cancelEditing('phone')"
-                  class="far fa-times-circle"
-                ></i>
+                />
               </div>
               <div
-                class="phone editedPhone"
+                class="phone "
                 v-else-if="hasEdited.phone == true && edit.phone == false"
               >
-                <p class="label"><small>Phone:</small></p>
-                <p @click="switchEdit('phone')">{{ newContact.phone }}</p>
-                <i
-                  @click="deleteProperty('phone')"
-                  class="delete deleteRow2 fas fa-trash-alt"
-                ></i>
+                <div class="labelGroup">
+                  <p class="label">
+                    <small
+                      >Phone:
+                      <p
+                        class="deleteLabel"
+                        v-show="showDelete"
+                        @click="deleteProperty('phone')"
+                      >
+                        <small> Delete</small>
+                      </p></small
+                    >
+                  </p>
+                </div>
+                <p class="editedPhone" @click="switchEdit('phone')">
+                  {{ newContact.phone }}
+                </p>
               </div>
             </div>
             <div class="emailWrapper">
@@ -207,12 +274,21 @@
                     hasEdited.email == false
                 "
               >
-                <p class="label"><small>Email:</small></p>
+                <div class="labelGroup">
+                  <p class="label">
+                    <small
+                      >Email:
+                      <p
+                        class="deleteLabel"
+                        v-show="showDelete"
+                        @click="deleteProperty('email')"
+                      >
+                        <small> Delete</small>
+                      </p></small
+                    >
+                  </p>
+                </div>
                 <p @click="switchEdit('email')">{{ contactData.email }}</p>
-                <i
-                  @click="deleteProperty('email')"
-                  class="delete deleteRow2 fas fa-trash-alt"
-                ></i>
               </div>
               <div
                 class="emailNoPhone"
@@ -223,42 +299,76 @@
                     hasEdited.email == false
                 "
               >
-                <p class="label"><small>Email:</small></p>
+                <div class="labelGroup">
+                  <p class="label">
+                    <small
+                      >Email:
+                      <p
+                        class="deleteLabel"
+                        v-show="showDelete"
+                        @click="deleteProperty('email')"
+                      >
+                        <small> Delete</small>
+                      </p></small
+                    >
+                  </p>
+                </div>
                 <p @click="switchEdit('email')">{{ contactData.email }}</p>
-                <i
-                  @click="deleteProperty('email')"
-                  class="delete deleteRow2 fas fa-trash-alt"
-                ></i>
               </div>
               <div
                 v-else-if="contactData.email && edit.email == true"
                 class="emailEdit"
               >
+                <div class="labelGroup">
+                  <p class="label">
+                    <small
+                      >Email:
+                      <p
+                        class="deleteLabel"
+                        v-show="showDelete"
+                        @click="deleteProperty('email')"
+                      >
+                        <small> Delete</small>
+                      </p></small
+                    >
+                  </p>
+                </div>
                 <input
+                  class="mediumInput"
                   type="text"
                   ref="focusEmail"
                   v-model="newContact.email"
                   v-on:keyup.enter="finishEditing('email')"
+                  v-on:blur="cancelEditing('email')"
                   v-autowidth="{
                     maxWidth: '140px',
                     minWidth: '80px',
                     comfortZone: 5,
                   }"
-                /><i
-                  @click="cancelEditing('email')"
-                  class="far fa-times-circle"
-                ></i>
+                />
               </div>
               <div
-                class="email editedEmail"
+                class="email "
                 v-else-if="hasEdited.email == true && edit.email == false"
               >
-                <p class="label"><small>Email:</small></p>
-                <p>{{ newContact.email }}</p>
-                <i
-                  @click="deleteProperty('email')"
-                  class="delete deleteRow2 fas fa-trash-alt"
-                ></i>
+                <div class="labelGroup">
+                  <p class="label">
+                    <small
+                      >Email:
+                      <p
+                        class="deleteLabel"
+                        v-show="showDelete"
+                        @click="deleteProperty('email')"
+                      >
+                        <small> Delete</small>
+                      </p></small
+                    >
+                  </p>
+                </div>
+
+                <p class="editedEmail" @click="switchEdit('email')">
+                  {{ newContact.email }}
+                </p>
               </div>
             </div>
             <!-- If there is an email, but no phone, we need to push the email all the way to the left.  -->
@@ -298,42 +408,72 @@
                   hasEdited.company == false
               "
             >
-              <p class="label"><small>Company:</small></p>
+              <div class="labelGroup">
+                <p class="label">
+                  <small
+                    >Company:
+                    <p
+                      class="deleteLabel"
+                      v-show="showDelete"
+                      @click="deleteProperty('company')"
+                    >
+                      <small> Delete</small>
+                    </p></small
+                  >
+                </p>
+              </div>
               <p @click="switchEdit('company')">{{ contactData.company }}</p>
-              <i
-                @click="deleteProperty('company')"
-                class="delete deleteRow2 fas fa-trash-alt"
-              ></i>
             </div>
             <div
               v-else-if="contactData.company && edit.company == true"
               class="companyEdit"
             >
+              <div class="labelGroup">
+                <p class="label">
+                  <small
+                    >Company:
+                    <p
+                      class="deleteLabel"
+                      v-show="showDelete"
+                      @click="deleteProperty('company')"
+                    >
+                      <small> Delete</small>
+                    </p></small
+                  >
+                </p>
+              </div>
               <input
+                class="mediumInput"
                 type="text"
                 ref="focusCompany"
                 v-model="newContact.company"
                 v-on:keyup.enter="finishEditing('company')"
+                v-on:blur="cancelEditing('company')"
                 v-autowidth="{
                   maxWidth: '140px',
                   minWidth: '80px',
                   comfortZone: 5,
                 }"
-              /><i
-                @click="cancelEditing('company')"
-                class="far fa-times-circle"
-              ></i>
+              />
             </div>
-            <div
-              class="confirmed"
-              v-else-if="hasEdited.phone == true && edit.phone == false"
-            >
-              <p class="label"><small>Company:</small></p>
-              <p @click="switchEdit('phone')">{{ newContact.phone }}</p>
-              <i
-                @click="deleteProperty('phone')"
-                class="delete deleteRow2 fas fa-trash-alt"
-              ></i>
+            <div v-else-if="hasEdited.company == true && edit.company == false">
+              <div class="labelGroup">
+                <p class="label">
+                  <small
+                    >Company:
+                    <p
+                      class="deleteLabel"
+                      v-show="showDelete"
+                      @click="deleteProperty('company')"
+                    >
+                      <small> Delete</small>
+                    </p></small
+                  >
+                </p>
+              </div>
+              <p class="editedCompany" @click="switchEdit('company')">
+                {{ newContact.company }}
+              </p>
             </div>
           </div>
         </div>
@@ -346,60 +486,101 @@
                 hasEdited.address == false
             "
           >
-            <p class="label"><small>Address:</small></p>
-            <p @click="switchEdit('address')">{{ contactData.address }},</p>
-            <i
-              @click="deleteProperty('address')"
-              class="delete deleteRow3 fas fa-trash-alt"
-            ></i>
+            <div class="labelGroup">
+              <p class="label">
+                <small
+                  >Address:
+                  <p
+                    class="deleteLabel"
+                    v-show="showDelete"
+                    @click="deleteProperty('address')"
+                  >
+                    <small> Delete</small>
+                  </p></small
+                >
+              </p>
+            </div>
+            <p @click="switchEdit('address')">{{ contactData.address }}</p>
           </div>
           <div
             v-else-if="contactData.address && edit.address == true"
-            class="phoneEdit"
+            class="addressEdit"
           >
+            <div class="labelGroup">
+              <p class="label">
+                <small
+                  >Address:
+                  <p
+                    class="deleteLabel"
+                    v-show="showDelete"
+                    @click="deleteProperty('address')"
+                  >
+                    <small> Delete</small>
+                  </p></small
+                >
+              </p>
+            </div>
             <input
+              class="largeInput"
               type="text"
               ref="focusAddress"
               v-model="newContact.address"
               v-on:keyup.enter="finishEditing('address')"
+              v-on:blur="cancelEditing('address')"
               v-autowidth="{
-                maxWidth: '140px',
-                minWidth: '80px',
+                maxWidth: '350px',
+                minWidth: '150px',
                 comfortZone: 5,
               }"
-            /><i
-              @click="cancelEditing('address')"
-              class="far fa-times-circle"
-            ></i>
+            />
           </div>
-          <div
-            class="confirmed"
-            v-else-if="hasEdited.address == true && edit.address == false"
-          >
-            <p class="label"><small>Address:</small></p>
-            <p @click="switchEdit('address')">{{ newContact.address }},</p>
-            <i
-              @click="deleteProperty('address')"
-              class="delete deleteRow3 fas fa-trash-alt"
-            ></i>
+          <div v-else-if="hasEdited.address == true && edit.address == false">
+            <div class="labelGroup">
+              <p class="label">
+                <small
+                  >Address:
+                  <p
+                    class="deleteLabel"
+                    v-show="showDelete"
+                    @click="deleteProperty('address')"
+                  >
+                    <small> Delete</small>
+                  </p></small
+                >
+              </p>
+            </div>
+            <p class="editedAddress" @click="switchEdit('address')">
+              {{ newContact.address }}
+            </p>
           </div>
         </div>
       </div>
       <div class="detailsRow2">
-        <div class="notesWrapper">
+        <div class="notesWrapper" v-if="contactData.notes">
+          <div class="labelGroup">
+            <p class="label">
+              <small
+                >Notes:
+                <p
+                  class="deleteLabel"
+                  v-show="showDelete"
+                  @click="deleteProperty('notes')"
+                >
+                  <small> Delete</small>
+                </p></small
+              >
+            </p>
+          </div>
           <div
             class="notes"
+            @click="switchEdit('notes')"
             v-if="
               contactData.notes &&
                 edit.notes == false &&
                 hasEdited.notes == false
             "
           >
-            <p @click="switchEdit('notes')">{{ contactData.notes }}</p>
-            <i
-              @click="deleteProperty('notes')"
-              class="delete deleteRow4 fas fa-trash-alt"
-            ></i>
+            <p>{{ contactData.notes }}</p>
           </div>
           <div
             v-else-if="contactData.notes && edit.notes == true"
@@ -407,22 +588,20 @@
           >
             <textarea
               id="NotesTextArea"
-              cols="55"
-              rows="7"
+              ref="focusNotes"
+              cols="75"
+              rows="5"
               v-model="newContact.notes"
               v-on:keyup.enter="finishEditing('notes')"
-            ></textarea
-            ><i @click="cancelEditing('notes')" class="far fa-times-circle"></i>
+              v-on:blur="cancelEditing('notes')"
+            ></textarea>
           </div>
           <div
-            class="confirmed notes"
+            class=" notes"
+            @click="switchEdit('notes')"
             v-else-if="hasEdited.notes == true && edit.notes == false"
           >
-            <p @click="switchEdit('notes')">{{ newContact.notes }}</p>
-            <i
-              @click="deleteProperty('notes')"
-              class="delete deleteRow4 fas fa-trash-alt"
-            ></i>
+            <p class="editedNotes">{{ newContact.notes }}</p>
           </div>
         </div>
       </div>
@@ -466,7 +645,7 @@ Vue.use(VueInputAutoWidth);
 // import AddToContact from '@/components/Utilities/Contacts/AddToContact.vue';
 export default {
   name: 'EditContactComponent',
-  props: ['contactData'],
+  props: ['contactData', 'showDeleteData'],
   components: {
     // AddToContact,
   },
@@ -509,7 +688,11 @@ export default {
     document.getElementById('confirmBtn').disabled = true;
     this.checkForProperties();
   },
-  computed: {},
+  computed: {
+    showDelete() {
+      return this.showDeleteData;
+    },
+  },
   methods: {
     checkForProperties() {
       if (this.contactData.lastName) {
@@ -763,21 +946,14 @@ p {
 div.flexWrapper {
   display: flex;
 }
-i.delete {
-  color: rgba(189, 65, 65, 0.685);
-}
-i.delete:hover {
-  cursor: pointer;
-  color: red;
-}
 div.detailsWrapper {
   height: 355px;
 }
 div.detailsBody {
-  height: 300px;
+  height: 290px;
 }
 div.detailsRow1 {
-  height: 200px;
+  height: 165px;
 }
 div.notes {
   height: 100px;
@@ -797,65 +973,117 @@ div.buttons {
   display: flex;
 }
 
+input.smallInput {
+  font-size: 13px;
+}
+input.mediumInput {
+  font-size: 14px;
+}
+input.largeInput {
+  font-size: 15px;
+}
+input.XlargeInput {
+  font-size: 20px;
+}
+
+p.editedFirstName,
+p.editedLastName,
+p.editedPhone,
+p.editedEmail,
+p.editedCompany,
+p.editedAddress,
+p.editedNotes,
+p.editedBirthdate {
+  color: goldenrod;
+}
+
 /* Row 1 styling */
 /* Name/Birthdate styling */
 div.namesWrapper {
-  font-size: 36px;
+  font-size: 23px;
+  width: 320px;
+  flex-direction: column;
 }
-div.lastNameWrapper {
-  margin: 11px 0 0 15px;
-}
-div.birthdateWrapper {
-  font-size: 15px;
-  margin-left: 45px;
-  align-self: center;
-  color: rgb(231, 231, 231);
-}
-div.firstNameEdit input {
-  margin-top: 10px;
-}
-div.firstNameEdit i,
-div.lastNameEdit i {
-  font-size: 17px;
-  position: absolute;
-  top: 12%;
-}
-div.lastName {
+div.namesGroup {
   display: flex;
 }
-div.lastName i.deleteLastName {
+div.firstNameWrapper {
+  min-width: 40px;
+  max-width: 160px;
+  overflow-x: auto;
+}
+
+div.lastNameWrapper {
+  margin: 0px 0 0 10px;
+  max-width: 160px;
+  overflow-x: auto;
+}
+div.birthdateWrapper {
   font-size: 14px;
   align-self: center;
-  padding: 10px 0 0 5px;
-}
-div.birthdateEdit i {
-  font-size: 13px;
   position: absolute;
-  top: 15%;
+  top: 14%;
+  right: 13%;
 }
-div.birthdate i.deleteBirthdate {
-  font-size: 11px;
-  align-self: center;
-  padding: 1px 0 0 6px;
+div.nameBirthdateWrapper {
+  height: 55px;
 }
 
 /* Phone/Email/Company styling */
 div.phoneEmailCompanyWrapper {
-  font-size: 18px;
+  font-size: 15px;
+  height: 50px;
 }
-div.emailWrapper,
+div.phoneWrapper {
+  width: 110px;
+}
+
+div.emailWrapper {
+  width: 180px;
+  overflow-x: auto;
+  margin-left: 10px;
+}
+div.emailWrapper::-webkit-scrollbar,
+div.firstNameWrapper::-webkit-scrollbar,
+div.lastNameWrapper::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background-color: rgb(90, 90, 90);
+}
+div.emailWrapper::-webkit-scrollbar-thumb,
+div.firstNameWrapper::-webkit-scrollbar-thumb,
+div.lastNameWrapper::-webkit-scrollbar-thumb {
+  background: goldenrod;
+}
 div.companyWrapper {
-  margin-left: 20px;
+  width: 110px;
+  font-size: 14px;
+  position: absolute;
+  top: 25%;
+  right: 7%;
+}
+div.companyEdit input {
+  margin-left: -15px;
 }
 
 /* Address styling */
 div.addressWrapper {
-  font-size: 22px;
+  font-size: 15px;
+  height: 50px;
+}
+div.addressEdit,
+div.phoneEdit,
+div.emailEdit,
+div.companyEdit {
+  text-align: start;
 }
 
 /* Row 2 styling */
 div.notesWrapper {
   font-size: 13px;
+}
+div.notes p {
+  padding: 0 5px;
 }
 
 /* Button styling */
@@ -865,17 +1093,30 @@ div.buttons {
 div.buttons .btn {
   margin: 0 5px;
 }
+div.reminder p {
+  text-align: center;
+}
 
 /* Label styling */
-p.label {
-  margin-bottom: 0;
+div.labelGroup {
+  display: flex;
+}
+div.labelGroup p {
   font-size: 13px;
+}
+p.deleteLabel {
+  padding-left: 5px;
+  color: rgba(189, 65, 65, 0.685);
+}
+p.deleteLabel:hover {
+  cursor: pointer;
+  color: red;
+}
+p.label {
   color: goldenrod;
+  margin-bottom: 3px;
 }
-div.birthdateWrapper p.label {
-  margin-bottom: 0;
-}
-div.namesWrapper p.label {
-  margin-bottom: -8px;
+p.label small {
+  display: flex;
 }
 </style>
