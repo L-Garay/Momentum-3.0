@@ -70,7 +70,10 @@
                   </p>
                 </div>
                 <div
-                  v-else-if="contactData.lastName && edit.lastName == true"
+                  v-else-if="
+                    (contactData.lastName && edit.lastName == true) ||
+                      (newContact.lastName && edit.lastName == true)
+                  "
                   class="lastNameEdit"
                 >
                   <input
@@ -90,13 +93,15 @@
                 <div
                   class="lastName"
                   v-else-if="
-                    hasEdited.lastName == true && edit.lastName == false
+                    (hasEdited.lastName == true && edit.lastName == false) ||
+                      (hasAdded.lastName == true && edit.lastName == false)
                   "
                 >
                   <p
                     :class="{
                       edited: hasEdited.lastName,
                       deleted: hasDeleted.lastName,
+                      added: hasAdded.lastName,
                     }"
                     @click="switchEdit('lastName')"
                   >
@@ -139,7 +144,10 @@
               </div>
             </div>
             <div
-              v-else-if="contactData.birthdate && edit.birthdate == true"
+              v-else-if="
+                (contactData.birthdate && edit.birthdate == true) ||
+                  (newContact.birthdate && edit.birthdate == true)
+              "
               class="birthdateEdit"
             >
               <div class="labelGroup">
@@ -172,7 +180,10 @@
             </div>
             <div
               class="birthdate "
-              v-else-if="hasEdited.birthdate == true && edit.birthdate == false"
+              v-else-if="
+                (hasEdited.birthdate == true && edit.birthdate == false) ||
+                  (hasAdded.birthdate == true && edit.birthdate == false)
+              "
             >
               <div class="labelGroup">
                 <p class="label">
@@ -192,6 +203,7 @@
                 :class="{
                   edited: hasEdited.birthdate,
                   deleted: hasDeleted.birthdate,
+                  added: hasAdded.birthdate,
                 }"
                 @click="switchEdit('birthdate')"
               >
@@ -233,7 +245,10 @@
                 </p>
               </div>
               <div
-                v-else-if="contactData.phone && edit.phone == true"
+                v-else-if="
+                  (contactData.phone && edit.phone == true) ||
+                    (newContact.phone && edit.phone == true)
+                "
                 class="phoneEdit"
               >
                 <div class="labelGroup">
@@ -266,7 +281,10 @@
               </div>
               <div
                 class="phone "
-                v-else-if="hasEdited.phone == true && edit.phone == false"
+                v-else-if="
+                  (hasEdited.phone == true && edit.phone == false) ||
+                    (hasAdded.phone == true && edit.phone == false)
+                "
               >
                 <div class="labelGroup">
                   <p class="label">
@@ -286,6 +304,7 @@
                   :class="{
                     edited: hasEdited.phone,
                     deleted: hasDeleted.phone,
+                    added: hasAdded.phone,
                   }"
                   @click="switchEdit('phone')"
                 >
@@ -350,7 +369,10 @@
                 </p>
               </div>
               <div
-                v-else-if="contactData.email && edit.email == true"
+                v-else-if="
+                  (contactData.email && edit.email == true) ||
+                    (newContact.email && edit.email == true)
+                "
                 class="emailEdit"
               >
                 <div class="labelGroup">
@@ -383,7 +405,10 @@
               </div>
               <div
                 class="email "
-                v-else-if="hasEdited.email == true && edit.email == false"
+                v-else-if="
+                  (hasEdited.email == true && edit.email == false) ||
+                    (hasAdded.email == true && edit.email == false)
+                "
               >
                 <div class="labelGroup">
                   <p class="label">
@@ -404,6 +429,7 @@
                   :class="{
                     edited: hasEdited.email,
                     deleted: hasDeleted.email,
+                    added: hasAdded.email,
                   }"
                   @click="switchEdit('email')"
                 >
@@ -411,33 +437,6 @@
                 </p>
               </div>
             </div>
-            <!-- If there is an email, but no phone, we need to push the email all the way to the left.  -->
-            <!-- <div class="emailNoPhoneWrapper">
-              <div
-                class="emailNoPhone"
-                v-if="
-                  contactData.email &&
-                    !contactData.phone &&
-                    edit.email == false &&
-                    hasEdited.email == false
-                "
-              >
-                <p class="label"><small>Email:</small></p>
-                <p @click="switchEdit('email')">{{ contactData.email }}</p>
-                <i
-                  @click="deleteProperty('email')"
-                  class="delete deleteRow2 fas fa-trash-alt"
-                ></i>
-              </div> -->
-            <!-- Since someone could add a phone number when editing a contact, this needs to check that there still is no phone in the new updated contact. -->
-            <!-- <div
-                class="confirmed emailNoPhone"
-                v-else-if="!newContact.phone && hasConfirmed == true"
-              >
-                <p class="label"><small>Email:</small></p>
-                <p>{{ newContact.email }}</p>
-              </div>
-            </div> -->
           </div>
           <div class="companyWrapper">
             <div
@@ -470,7 +469,10 @@
               </p>
             </div>
             <div
-              v-else-if="contactData.company && edit.company == true"
+              v-else-if="
+                (contactData.company && edit.company == true) ||
+                  (newContact.company && edit.company == true)
+              "
               class="companyEdit"
             >
               <div class="labelGroup">
@@ -501,7 +503,12 @@
                 }"
               />
             </div>
-            <div v-else-if="hasEdited.company == true && edit.company == false">
+            <div
+              v-else-if="
+                (hasEdited.company == true && edit.company == false) ||
+                  (hasAdded.company == true && edit.company == false)
+              "
+            >
               <div class="labelGroup">
                 <p class="label">
                   <small
@@ -520,6 +527,7 @@
                 :class="{
                   edited: hasEdited.company,
                   deleted: hasDeleted.company,
+                  added: hasAdded.company,
                 }"
                 @click="switchEdit('company')"
               >
@@ -559,7 +567,10 @@
             </p>
           </div>
           <div
-            v-else-if="contactData.address && edit.address == true"
+            v-else-if="
+              (contactData.address && edit.address == true) ||
+                (newContact.address && edit.address == true)
+            "
             class="addressEdit"
           >
             <div class="labelGroup">
@@ -590,7 +601,12 @@
               }"
             />
           </div>
-          <div v-else-if="hasEdited.address == true && edit.address == false">
+          <div
+            v-else-if="
+              (hasEdited.address == true && edit.address == false) ||
+                (hasAdded.address == true && edit.address == false)
+            "
+          >
             <div class="labelGroup">
               <p class="label">
                 <small
@@ -609,6 +625,7 @@
               :class="{
                 edited: hasEdited.address,
                 deleted: hasDeleted.address,
+                added: hasAdded.address,
               }"
               @click="switchEdit('address')"
             >
@@ -647,7 +664,10 @@
             </p>
           </div>
           <div
-            v-else-if="contactData.notes && edit.notes == true"
+            v-else-if="
+              (contactData.notes && edit.notes == true) ||
+                (newContact.notes && edit.notes == true)
+            "
             class="notesEdit"
           >
             <textarea
@@ -663,12 +683,16 @@
           <div
             class=" notes"
             @click="switchEdit('notes')"
-            v-else-if="hasEdited.notes == true && edit.notes == false"
+            v-else-if="
+              (hasEdited.notes == true && edit.notes == false) ||
+                (hasAdded.notes == true && edit.notes == false)
+            "
           >
             <p
               :class="{
                 edited: hasEdited.notes,
                 deleted: hasDeleted.notes,
+                added: hasAdded.notes,
               }"
             >
               {{ newContact.notes }}
@@ -685,7 +709,11 @@
           </button>
         </div>
         <div class="addButton">
-          <button class="btn btn-primary" type="button">
+          <button
+            class="btn btn-primary"
+            type="button"
+            @click="showAddToContact = true"
+          >
             Add Fields
           </button>
         </div>
@@ -706,6 +734,15 @@
         </p>
       </div>
     </div>
+    <div class="addToContactComponent">
+      <add-to-contact-2
+        v-if="showAddToContact"
+        :propertyData="hasProperty"
+        :contactData="newContact"
+        @cancelAdd="cancelAdd"
+        @confirmAdditions="checkAddedProperties"
+      />
+    </div>
   </div>
 </template>
 
@@ -713,12 +750,12 @@
 import VueInputAutoWidth from 'vue-input-autowidth';
 import Vue from 'vue';
 Vue.use(VueInputAutoWidth);
-// import AddToContact from '@/components/Utilities/Contacts/AddToContact.vue';
+import AddToContact2 from '@/components/Utilities/Contacts/AddToContact2.vue';
 export default {
   name: 'EditContactComponent',
   props: ['contactData', 'showDeleteData'],
   components: {
-    // AddToContact,
+    AddToContact2,
   },
   data() {
     return {
@@ -753,7 +790,15 @@ export default {
         notes: false,
       },
       hasDeleted: {
-        firstName: false,
+        lastName: false,
+        phone: false,
+        email: false,
+        address: false,
+        birthdate: false,
+        company: false,
+        notes: false,
+      },
+      hasAdded: {
         lastName: false,
         phone: false,
         email: false,
@@ -763,6 +808,7 @@ export default {
         notes: false,
       },
       disabled: true,
+      showAddToContact: false,
     };
   },
   mounted() {
@@ -1061,11 +1107,6 @@ export default {
           break;
       }
     },
-    addedProperty(newContact) {
-      this.newContact = newContact;
-      document.getElementById('confirmBtn').disabled = false;
-      this.disabled = false;
-    },
     updateContact() {
       this.checkForDeletions();
       this.$store.dispatch('updateContact', this.newContact);
@@ -1095,6 +1136,16 @@ export default {
       if (this.hasDeleted.notes) {
         delete this.newContact.notes;
       }
+    },
+    cancelAdd() {
+      this.showAddToContact = false;
+    },
+    checkAddedProperties(contactInfo) {
+      this.newContact = contactInfo.newContact;
+      this.hasAdded = contactInfo.hasConfirmed;
+      document.getElementById('confirmBtn').disabled = false;
+      this.disabled = false;
+      this.cancelAdd();
     },
   },
 };
@@ -1153,6 +1204,9 @@ input.XlargeInput {
 }
 .deleted {
   color: rgb(202, 22, 22);
+}
+.added {
+  color: rgb(5, 185, 5);
 }
 
 /* Row 1 styling */
