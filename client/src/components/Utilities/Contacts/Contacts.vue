@@ -84,27 +84,17 @@
           @back="cancel"
         />
       </div>
-      <!-- <div v-if="show.details" class="contactDetailsSection">
-        <contact-detail
-          :contactData="contact"
-          :toEdit="straightToEdit"
-          @back="cancel"
-        />
-      </div> -->
     </div>
   </div>
 </template>
 
 <script>
 import ContactsForm from '@/components/Utilities/Contacts/ContactsForm.vue';
-// import ContactDetail from '@/components/Utilities/Contacts/ContactDetail.vue';
-// import ContactDetails from '@/components/Utilities/Contacts/ContactDetails.vue';
 import ContactDetails2 from '@/components/Utilities/Contacts/ContactDetails2.vue';
 export default {
   name: 'ContactsComponent',
   components: {
     ContactsForm,
-    // ContactDetail,
     ContactDetails2,
   },
   props: [],

@@ -376,7 +376,6 @@
 <script>
 import VueInputAutoWidth from 'vue-input-autowidth';
 import Vue from 'vue';
-// import EditContact from '@/components/Utilities/Contacts/EditContact.vue';
 import EditContact2 from '@/components/Utilities/Contacts/EditContact2.vue';
 Vue.use(VueInputAutoWidth);
 export default {
