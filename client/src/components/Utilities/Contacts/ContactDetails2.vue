@@ -93,11 +93,11 @@
         </div>
         <div class="phoneEmailCompanyWrapper">
           <div class="phoneEmailWrapper">
-            <div class="phoneWrapper">
-              <div
-                class="phone"
-                v-if="contactData.phone && hasConfirmed == false"
-              >
+            <div
+              class="phoneWrapper"
+              v-if="contactData.phone || newContact.phone"
+            >
+              <div class="phone" v-if="hasConfirmed == false">
                 <div class="labelGroup">
                   <p class="label">
                     <small
@@ -135,15 +135,15 @@
                 <p>{{ newContact.phone }}</p>
               </div>
             </div>
-            <div class="emailWrapper">
-              <div
-                class="email"
-                v-if="
-                  contactData.email &&
-                    contactData.phone &&
-                    hasConfirmed == false
-                "
-              >
+            <div
+              class="emailWrapper"
+              v-if="
+                (contactData.email && contactData.phone) ||
+                  (newContact.email && newContact.phone)
+              "
+            >
+              <!-- If there is an email AND a phone -->
+              <div class="email" v-if="hasConfirmed == false">
                 <div class="labelGroup">
                   <p class="label">
                     <small
@@ -184,15 +184,11 @@
               </div>
             </div>
             <!-- If there is an email, but no phone, we need to push the email all the way to the left.  -->
-            <div class="emailNoPhoneWrapper">
-              <div
-                class="emailNoPhone"
-                v-if="
-                  contactData.email &&
-                    !contactData.phone &&
-                    hasConfirmed == false
-                "
-              >
+            <div
+              class="emailNoPhoneWrapper"
+              v-if="contactData.email && !contactData.phone"
+            >
+              <div class="emailNoPhone" v-if="hasConfirmed == false">
                 <div class="labelGroup">
                   <p class="label">
                     <small
@@ -321,7 +317,7 @@
         </div>
       </div>
       <div class="detailsRow2">
-        <div class="notesWrapper" v-if="contactData.notes && newContact.notes">
+        <div class="notesWrapper" v-if="contactData.notes || newContact.notes">
           <div class="labelGroup">
             <p class="label">
               <small

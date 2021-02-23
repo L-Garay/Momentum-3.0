@@ -197,7 +197,7 @@ p {
 div.addToContactWrapper {
   height: 250px;
   width: 300px;
-  background-color: rgba(236, 236, 236, 0.897);
+  background-color: rgb(236, 236, 236);
   color: black;
   position: absolute;
   bottom: 20%;
