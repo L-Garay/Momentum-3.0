@@ -214,13 +214,16 @@
         </div>
         <div class="phoneEmailCompanyWrapper">
           <div class="phoneEmailWrapper">
-            <div class="phoneWrapper">
+            <div
+              class="phoneWrapper"
+              v-if="contactData.phone || newContact.phone"
+            >
               <div
                 class="phone"
                 v-if="
-                  contactData.phone &&
-                    edit.phone == false &&
-                    hasEdited.phone == false
+                  edit.phone == false &&
+                    hasEdited.phone == false &&
+                    hasAdded.phone == false
                 "
               >
                 <div class="labelGroup">
@@ -635,7 +638,7 @@
         </div>
       </div>
       <div class="detailsRow2">
-        <div class="notesWrapper" v-if="contactData.notes">
+        <div class="notesWrapper" v-if="contactData.notes || newContact.notes">
           <div class="labelGroup">
             <p class="label">
               <small
@@ -654,9 +657,9 @@
             class="notes"
             @click="switchEdit('notes')"
             v-if="
-              contactData.notes &&
-                edit.notes == false &&
-                hasEdited.notes == false
+              edit.notes == false &&
+                hasEdited.notes == false &&
+                hasAdded.notes == false
             "
           >
             <p :class="{ deleted: hasDeleted.notes }">
@@ -1255,12 +1258,12 @@ div.phoneEmailCompanyWrapper {
 }
 div.phoneWrapper {
   width: 110px;
+  margin-right: 10px;
 }
 
 div.emailWrapper {
   width: 180px;
   overflow-x: auto;
-  margin-left: 10px;
 }
 div.emailWrapper::-webkit-scrollbar,
 div.firstNameWrapper::-webkit-scrollbar,
