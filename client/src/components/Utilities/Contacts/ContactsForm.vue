@@ -13,11 +13,11 @@
             v-autowidth="{
               maxWidth: '115px',
               minWidth: '80px',
-              comfortZone: 10,
+              comfortZone: 5,
             }"
           />
         </div>
-        <div class="col-md-3 mb-3 mr-3">
+        <div class="col-md-5 mb-3 ">
           <label class="left" for="validationDefault02">Last name</label>
           <input
             type="text"
@@ -27,7 +27,7 @@
             v-autowidth="{
               maxWidth: '115px',
               minWidth: '80px',
-              comfortZone: 10,
+              comfortZone: 5,
             }"
           />
         </div>
@@ -41,26 +41,12 @@
             v-autowidth="{
               maxWidth: '115px',
               minWidth: '80px',
-              comfortZone: 10,
+              comfortZone: 5,
             }"
           />
         </div>
       </div>
       <div class="form-row">
-        <div class="col-md-3 mb-2 mr-3">
-          <label class="left" for="validationDefault04">Company</label>
-          <input
-            type="text"
-            id="validationDefault04"
-            placeholder="Big Tech LLC"
-            v-model="contact.company"
-            v-autowidth="{
-              maxWidth: '115px',
-              minWidth: '80px',
-              comfortZone: 10,
-            }"
-          />
-        </div>
         <div class="col-md-3 mb-3 mr-3">
           <label class="left" for="validationDefaultUsername">Phone #</label>
           <input
@@ -69,9 +55,9 @@
             placeholder="(208) 123-4567"
             v-model="contact.phone"
             v-autowidth="{
-              maxWidth: '140px',
+              maxWidth: '120px',
               minWidth: '90px',
-              comfortZone: 10,
+              comfortZone: 5,
             }"
           />
         </div>
@@ -83,9 +69,23 @@
             placeholder="work@mail.com"
             v-model="contact.email"
             v-autowidth="{
-              maxWidth: '175px',
+              maxWidth: '180px',
               minWidth: '90px',
-              comfortZone: 10,
+              comfortZone: 5,
+            }"
+          />
+        </div>
+        <div class="col-md-3 mb-2 mr-3">
+          <label class="left" for="validationDefault04">Company</label>
+          <input
+            type="text"
+            id="validationDefault04"
+            placeholder="Big Tech LLC"
+            v-model="contact.company"
+            v-autowidth="{
+              maxWidth: '125px',
+              minWidth: '80px',
+              comfortZone: 5,
             }"
           />
         </div>
@@ -105,49 +105,8 @@
             }"
           />
         </div>
-
-        <!-- <div class="col-md-3 mb-2 mr-4">
-          <label class="left" for="validationDefault04">City</label>
-          <input
-            type="text"
-            id="validationDefault04"
-            placeholder="Springfield"
-            v-model="contact.city"
-            v-autowidth="{
-              maxWidth: '115px',
-              minWidth: '80px',
-              comfortZone: 10,
-            }"
-          />
-        </div>
-        <div class="col-md-3 mb-2 mr-4">
-          <label class="left" for="validationDefault04">State</label>
-          <input
-            type="text"
-            id="validationDefault04"
-            placeholder="Idaho"
-            v-model="contact.state"
-            v-autowidth="{
-              maxWidth: '115px',
-              minWidth: '80px',
-              comfortZone: 10,
-            }"
-          />
-        </div>
-        <div class="col-md-2 mb-2">
-          <label class="left" for="validationDefault05">Zip</label>
-          <input
-            type="text"
-            id="validationDefault05"
-            placeholder="12345"
-            v-model="contact.zip"
-            v-autowidth="{
-              maxWidth: '100px',
-              minWidth: '70px',
-              comfortZone: 10,
-            }"
-          />
-        </div> -->
+      </div>
+      <div class="form-row notes-row">
         <div id="notes" class="col-md-9 mb-3 mt-1">
           <label for="NotesTextArea">Notes</label>
           <textarea
@@ -162,7 +121,12 @@
         <button class="Btn cancelBtn" type="button" @click="cancel">
           Cancel
         </button>
-        <button class="Btn submitBtn" type="button" @click="createContact">
+        <button
+          id="submitButton"
+          class="Btn submitBtn"
+          type="button"
+          @click="createContact"
+        >
           Submit form
         </button>
       </div>
@@ -178,7 +142,9 @@ export default {
       contact: {},
     };
   },
-  mounted() {},
+  mounted() {
+    document.getElementById('submitButton').disabled = true;
+  },
   computed: {},
   methods: {
     createContact() {
@@ -202,6 +168,13 @@ export default {
 </script>
 
 <style scoped>
+.form-row {
+  height: 70px;
+}
+.form-row.notes-row {
+  height: 110px;
+  align-content: center;
+}
 .col-md-3,
 .col-md-5,
 .col-md-7,
@@ -243,12 +216,19 @@ textarea {
 textarea::placeholder {
   color: lightgray;
 }
+textarea:focus {
+  border: 1pt solid goldenrod;
+}
+div.btnGroup {
+  height: 35px;
+}
 button.Btn {
   background-color: transparent;
   border-radius: 5px 5px 5px 5px;
   border: 1pt solid white;
   color: white;
   margin: 0 5px;
+  margin-top: 4px;
 }
 button.Btn:hover {
   background-color: lightgray;
@@ -278,6 +258,11 @@ button.Btn:focus {
   background-color: rgba(128, 128, 128, 0.39);
   border: 1pt solid white;
   color: white;
-  box-shadow: 1pt 0pt 10pt rgba(0, 0, 0, 0.692) !important;
+}
+button.cancelBtn:focus {
+  box-shadow: 1pt 0pt 10pt red !important;
+}
+button.submitBtn:focus {
+  box-shadow: 1pt 0pt 10pt goldenrod !important;
 }
 </style>

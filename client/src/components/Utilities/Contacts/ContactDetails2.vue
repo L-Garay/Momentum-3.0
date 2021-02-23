@@ -389,9 +389,11 @@ export default {
       showDelete: false,
     };
   },
+  mounted() {
+    this.checkStraightToEdit();
+  },
   computed: {
     ToEdit() {
-      this.checkStraightToEdit();
       return this.toEdit;
     },
   },
@@ -400,9 +402,11 @@ export default {
       if (this.toEdit == true) {
         this.editContact = true;
         this.straightToEdit = true;
+        this.showDelete = true;
       } else if (this.toEdit == false) {
         this.editContact = false;
         this.straightToEdit = false;
+        this.showDelete = false;
       }
     },
     back() {
