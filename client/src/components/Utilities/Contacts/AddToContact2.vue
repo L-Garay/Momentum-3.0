@@ -113,7 +113,14 @@
           <button @click="cancelAdd">Cancel</button>
         </div>
         <div class="confirmBtn">
-          <button @click="confirmAdditions">Confirm</button>
+          <button
+            id="confirm"
+            type="button"
+            class="btn"
+            @click="confirmAdditions"
+          >
+            Confirm
+          </button>
         </div>
       </div>
     </div>
@@ -142,9 +149,12 @@ export default {
           notes: false,
         },
       },
+      disabled: true,
     };
   },
-  mounted() {},
+  mounted() {
+    document.getElementById('confirm').disabled = true;
+  },
   computed: {
     HasProperty() {
       return this.propertyData;
@@ -158,24 +168,31 @@ export default {
       switch (field) {
         case 'lastName':
           this.contactInfo.hasConfirmed.lastName = true;
+          document.getElementById('confirm').disabled = false;
           break;
         case 'phone':
           this.contactInfo.hasConfirmed.phone = true;
+          document.getElementById('confirm').disabled = false;
           break;
         case 'email':
           this.contactInfo.hasConfirmed.email = true;
+          document.getElementById('confirm').disabled = false;
           break;
         case 'address':
           this.contactInfo.hasConfirmed.address = true;
+          document.getElementById('confirm').disabled = false;
           break;
         case 'company':
           this.contactInfo.hasConfirmed.company = true;
+          document.getElementById('confirm').disabled = false;
           break;
         case 'birthdate':
           this.contactInfo.hasConfirmed.birthdate = true;
+          document.getElementById('confirm').disabled = false;
           break;
         case 'notes':
           this.contactInfo.hasConfirmed.notes = true;
+          document.getElementById('confirm').disabled = false;
           break;
 
         default:
@@ -240,7 +257,62 @@ div.buttons {
   padding-top: 5px;
   font-size: 12px;
 }
-div.buttons button {
+div.buttons button,
+div.buttons button.btn {
   margin: 0 3px;
+  border-radius: 5px 5px 5px 5px;
+  background-color: transparent;
+  border: 1pt solid black;
+  color: black;
+}
+div.buttons button.btn {
+  font-size: 12px;
+  padding: 1px 6px;
+}
+
+div.buttons button:hover {
+  background-color: black;
+  border: 1pt solid white;
+  box-shadow: 0pt 0pt 6pt black, 0pt 0pt 6pt black;
+  text-shadow: 1px 1px 2px white;
+}
+.cancelBtn button:hover {
+  color: red;
+  text-shadow: 1px 1px 2px red;
+}
+.confirmBtn button.btn:hover {
+  color: goldenrod;
+  text-shadow: 1px 1px 2px goldenrod;
+}
+.confirmBtn button.btn:disabled {
+  box-shadow: none;
+  text-shadow: none;
+  border: 1pt solid black;
+  background-color: transparent;
+  color: black;
+}
+div.buttons button:active {
+  color: white;
+  outline: none;
+  border: 1pt solid black;
+}
+.cancelBtn button:active {
+  background-color: red !important;
+  box-shadow: none !important;
+}
+.confirmBtn button.btn:active {
+  background-color: goldenrod !important;
+  box-shadow: none !important;
+  color: white !important;
+}
+div.buttons button:focus {
+  background-color: lightgray;
+  outline: none;
+}
+.cancelBtn button:focus {
+  box-shadow: 1pt 0pt 10pt red !important;
+}
+.confirmBtn button:focus {
+  box-shadow: 1pt 0pt 10pt goldenrod !important;
 }
 </style>
