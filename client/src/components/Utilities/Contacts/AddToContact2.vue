@@ -219,6 +219,7 @@ div.addToContactWrapper {
   position: absolute;
   bottom: 20%;
   left: 20%;
+  border-radius: 5px 5px 5px 5px;
 }
 div.addToContactBody {
   height: 217px;
@@ -246,6 +247,24 @@ input {
   background-color: transparent;
   border: none;
   border-bottom: 1pt solid black;
+}
+div.addToContactBody div.addedData {
+  margin-bottom: 0;
+  padding-left: 5px;
+  height: 25px;
+  max-width: 230px;
+  overflow-x: auto;
+}
+div.addedData::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background-color: rgb(90, 90, 90);
+}
+div.addedData::-webkit-scrollbar-thumb {
+  background: goldenrod;
+}
+div.addedData p {
+  font-size: 14px;
 }
 div.addToContactFooter {
   height: 33px;

@@ -707,23 +707,19 @@
     <div class="detailsFooter">
       <div class="buttons">
         <div class="cancelButton">
-          <button class="btn btn-secondary" type="button" @click="stopEditing">
+          <button class="btn" type="button" @click="stopEditing">
             Cancel
           </button>
         </div>
         <div class="addButton">
-          <button
-            class="btn btn-primary"
-            type="button"
-            @click="showAddToContact = true"
-          >
+          <button class="btn" type="button" @click="showAddToContact = true">
             Add Fields
           </button>
         </div>
         <div class="confirmButton">
           <button
             id="confirmBtn"
-            class="btn btn-primary"
+            class="btn"
             type="button"
             @click="updateContact"
           >
@@ -1113,6 +1109,7 @@ export default {
     updateContact() {
       this.checkForDeletions();
       this.$store.dispatch('updateContact', this.newContact);
+      this.$root.$emit('setUpdatedContact', this.newContact);
       this.$emit('newContact', this.newContact);
       this.$emit('hasConfirmed');
       this.$emit('stopEditing');
@@ -1311,6 +1308,68 @@ div.notes p {
 /* Button styling */
 div.buttons {
   justify-content: center;
+}
+div.buttons button {
+  background-color: transparent;
+  border-radius: 5px 5px 5px 5px;
+  border: 1pt solid white;
+  color: white;
+  padding: 1px 6px;
+}
+div.buttons button:hover {
+  background-color: lightgray;
+  border: 1pt solid black;
+  box-shadow: 0pt 0pt 6pt white, 0pt 0pt 6pt white;
+  text-shadow: 1px 1px 1px black;
+}
+div.buttons div.cancelButton button:hover {
+  color: red;
+}
+div.buttons div.addButton button:hover {
+  color: rgb(5, 185, 5);
+}
+div.buttons div.confirmButton button:hover {
+  color: goldenrod;
+}
+div.buttons button:disabled {
+  color: white !important;
+  background-color: transparent;
+  text-shadow: none;
+  box-shadow: none;
+  border: 1pt solid white;
+}
+div.buttons button:active {
+  color: white !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border: 1pt solid white !important;
+  text-shadow: 1px 1px 1px black;
+}
+div.buttons div.cancelButton button:active {
+  background-color: red;
+}
+div.buttons div.addButton button:active {
+  background-color: rgb(5, 185, 5);
+}
+div.buttons div.confirmButton button:active {
+  background-color: goldenrod;
+}
+div.buttons button:focus {
+  background-color: lightgray;
+  outline: none;
+  text-shadow: 1px 1px 1px black;
+}
+div.buttons div.cancelButton button:focus {
+  box-shadow: 0pt 0pt 12pt red;
+  color: red;
+}
+div.buttons div.addButton button:focus {
+  box-shadow: 0pt 0pt 12pt rgb(5, 185, 5);
+  color: rgb(5, 185, 5);
+}
+div.buttons div.confirmButton button:focus {
+  box-shadow: 0pt 0pt 12pt goldenrod;
+  color: goldenrod;
 }
 div.buttons .btn {
   margin: 0 5px;

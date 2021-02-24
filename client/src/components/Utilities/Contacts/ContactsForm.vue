@@ -143,6 +143,7 @@ export default {
     };
   },
   mounted() {
+    // TODO Finish configuring the submit button to be disabled until a 'First Name' is entered. Also need to work on form validation in general, specifically for the email field.
     document.getElementById('submitButton').disabled = true;
   },
   computed: {},
@@ -235,7 +236,7 @@ button.Btn:hover {
   color: black;
   border: 1pt solid black;
   box-shadow: 0pt 0pt 6pt white, 0pt 0pt 6pt white;
-  text-shadow: 1px 1px 2px black;
+  text-shadow: 1px 1px 1px black;
 }
 button.cancelBtn:hover {
   color: red;

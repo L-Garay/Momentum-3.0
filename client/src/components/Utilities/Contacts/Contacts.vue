@@ -118,6 +118,9 @@ export default {
       this.showMain();
       this.checkLetter(name);
     });
+    this.$root.$on('setUpdatedContact', (contact) => {
+      this.contact = contact;
+    });
     this.checkHighlightAndRepopulate();
   },
   beforeDestroy() {
@@ -151,6 +154,7 @@ export default {
       this.show.details = true;
       this.show.main = false;
       this.straightToEdit = false;
+      this.$store.state.contacts.contact = contact;
     },
     toEdit(contact) {
       this.contact = contact;
