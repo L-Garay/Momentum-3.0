@@ -8,6 +8,7 @@
             type="text"
             id="firstName"
             placeholder="Bob"
+            name="firstName"
             required
             v-model="contact.firstName"
             v-autowidth="{
@@ -131,6 +132,20 @@
         </button>
       </div>
     </form>
+    <div class="errorModalWrapper" v-if="showErrorModal">
+      <div class="errorModal">
+        <div class="errors">
+          <div class="error" v-for="error in this.errors.errors" :key="error">
+            <p>{{ error }}</p>
+          </div>
+        </div>
+        <div class="confirmationButton">
+          <div class="button">
+            <button type="button" @click="closeErrorModal">I understand</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -140,26 +155,76 @@ export default {
   data() {
     return {
       contact: {},
+      errors: {
+        hasErrors: false,
+        errors: [],
+      },
+      showErrorModal: true,
     };
   },
-  mounted() {
-    // TODO Finish configuring the submit button to be disabled until a 'First Name' is entered. Also need to work on form validation in general, specifically for the email field.
-    document.getElementById('submitButton').disabled = true;
-  },
+  mounted() {},
   computed: {},
   methods: {
     createContact() {
-      this.contact.userId = this.$store.state.user.user._id;
-      this.$store.dispatch('createContact', this.contact);
-      if (this.contact.lastName) {
-        let name = this.contact.lastName;
-        this.$root.$emit('submittedForm', name);
+      this.validateForm(this.contact);
+      if (this.errors.hasErrors == false) {
+        this.contact.userId = this.$store.state.user.user._id;
+        this.$store.dispatch('createContact', this.contact);
+        if (this.contact.lastName) {
+          let name = this.contact.lastName;
+          this.$root.$emit('submittedForm', name);
+        } else {
+          let name = this.contact.firstName;
+          this.$root.$emit('submittedForm', name);
+        }
+        this.contact = {};
       } else {
-        let name = this.contact.firstName;
-        this.$root.$emit('submittedForm', name);
+        console.log(this.errors);
+        // // Display the errors in the template
+        this.displayErrorModal();
       }
-
-      this.contact = {};
+    },
+    validateForm() {
+      // first name
+      if (!this.contact.firstName) {
+        let error = `Please provide a first name that is at least 2 characters long.`;
+        this.errors.errors.push(error);
+        this.errors.hasErrors = true;
+      } else if (this.contact.firstName.length < 2) {
+        let error = `"${this.contact.firstName}" is too short. Please make sure it is atleast 2 characters long.`;
+        this.errors.errors.push(error);
+        this.errors.hasErrors = true;
+      }
+      // email
+      if (this.contact.email) {
+        let regex = new RegExp(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+        if (regex.test(this.contact.email) == false) {
+          let error = `The address "${this.contact.email}" is not valid. Please provide a valid email address.`;
+          this.errors.errors.push(error);
+          this.errors.hasErrors = true;
+        }
+      }
+      // phone
+      if (this.contact.phone) {
+        let regex = new RegExp(
+          /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
+        );
+        if (regex.test(this.contact.phone) == false) {
+          let error = `The phone number "${this.contact.phone}" is not valid. Please provide a valid phone number.`;
+          this.errors.errors.push(error);
+          this.errors.hasErrors = true;
+        }
+      }
+    },
+    displayErrorModal() {
+      this.showErrorModal = true;
+    },
+    closeErrorModal() {
+      this.showErrorModal = false;
+      this.errors.errors = [];
+      this.errors.hasErrors = false;
     },
     cancel() {
       this.$emit('cancel');
@@ -169,6 +234,30 @@ export default {
 </script>
 
 <style scoped>
+div.errorModalWrapper {
+  height: 200px;
+  width: 200px;
+  background-color: white;
+  color: red;
+  position: absolute;
+  bottom: 15%;
+  left: 30%;
+  border-radius: 5px 5px 5px 5px;
+}
+div.errors {
+  height: 165px;
+  padding: 5px 5px;
+}
+div.error {
+  margin-bottom: 7px;
+}
+div.error p {
+  font-size: 11px;
+  margin-bottom: 0;
+}
+div.confirmationButton {
+  height: 35px;
+}
 .form-row {
   height: 70px;
 }

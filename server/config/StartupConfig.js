@@ -5,7 +5,6 @@ import mongoSanitize from 'express-mongo-sanitize';
 import xss from 'xss-clean';
 import hpp from 'hpp';
 import { RegisterControllers, Paths } from '../../Setup';
-import errorHandler from '../middleware/Error';
 import ErrorResponse from '../utils/ErrorResponse';
 
 export default class Startup {

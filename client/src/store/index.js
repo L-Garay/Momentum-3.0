@@ -1258,7 +1258,11 @@ export default new Vuex.Store({
 
     //#region --Contacts Methods--
     async createContact({ dispatch }, contact) {
-      await api.post('contacts', contact);
+      try {
+        await api.post('contacts', contact);
+      } catch (error) {
+        console.log('ERROR', error);
+      }
       dispatch('getContactsByUserId', contact.userId);
     },
     async getContactsByUserId({ commit }, id) {
