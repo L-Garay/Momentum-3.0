@@ -178,7 +178,6 @@ export default {
       this.repopulate();
     },
     checkForHighlight() {
-      console.log('hit checkfor');
       if (this.$store.state.contacts.currentLetter === 'F') {
         document.getElementById('f').classList.add('activeLetter');
       } else {
