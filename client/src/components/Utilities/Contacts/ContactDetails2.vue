@@ -396,6 +396,9 @@ export default {
     ToEdit() {
       return this.toEdit;
     },
+    UpdatedContact() {
+      return this.$store.state.contacts.contact;
+    },
   },
   methods: {
     checkStraightToEdit() {
@@ -426,7 +429,6 @@ export default {
       this.hasConfirmed = true;
     },
     setNewContact(newContact) {
-      console.log('newContact', newContact);
       this.newContact = newContact;
     },
   },
@@ -555,7 +557,51 @@ div.buttons {
 div.buttons .btn {
   margin: 0 5px;
 }
-
+div.buttons button {
+  background-color: transparent;
+  border-radius: 5px 5px 5px 5px;
+  border: 1pt solid white;
+  color: white;
+  padding: 1px 6px;
+}
+div.buttons button:hover {
+  background-color: lightgray;
+  border: 1pt solid black;
+  box-shadow: 0pt 0pt 6pt white, 0pt 0pt 6pt white;
+  text-shadow: 1px 1px 1px black;
+}
+div.buttons div.backButton button:hover {
+  color: red;
+}
+div.buttons div.editButton button:hover {
+  color: goldenrod;
+}
+div.buttons button:active {
+  color: white !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border: 1pt solid white !important;
+  text-shadow: 1px 1px 1px black;
+}
+div.buttons div.backButton button:active {
+  background-color: red;
+}
+div.buttons div.editButton button:active {
+  background-color: goldenrod;
+}
+div.buttons button:focus {
+  background-color: lightgray;
+  outline: none;
+  text-shadow: 1px 1px 1px black;
+}
+div.buttons div.backButton button:focus {
+  box-shadow: 0pt 0pt 12pt red;
+  color: red;
+}
+div.buttons div.editButton button:focus {
+  box-shadow: 0pt 0pt 12pt goldenrod;
+  color: goldenrod;
+}
 /* Label styling */
 div.labelGroup {
   display: flex;
