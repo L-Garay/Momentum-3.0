@@ -31,6 +31,10 @@
           v-else-if="forecastData.condition == 'Mist'"
           class="fas fa-smog icon"
         ></i>
+        <i
+          v-else-if="forecastData.condition == 'Haze'"
+          class="fas fa-smog icon"
+        ></i>
         <i v-else class="fas fa-question icon"></i>
       </div>
       <div v-if="Metric" class="forecastTemp">
