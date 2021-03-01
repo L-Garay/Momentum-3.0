@@ -14,6 +14,7 @@
             >
               {{ todoListSelected }}
             </button>
+            <!-- NOTE TodoList Dropdown Menu -->
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <div class="customLists">
                 <p class="dropdown-item" @click="todoListSelected = 'Todos'">
@@ -55,6 +56,7 @@
               </div>
             </div>
           </div>
+          <!-- NOTE TodoList Input -->
           <div class="listInput">
             <input
               class="listInputBox"
@@ -73,6 +75,7 @@
             />
           </div>
         </div>
+        <!-- NOTE Where Todos are displayed -->
         <div class="todoItems">
           <div class="todos" v-if="todoListSelected == 'Todos'">
             <div
@@ -107,6 +110,7 @@
               <i class="fas fa-trash-alt fa-sm" @click="deleteTodo(todo)"></i>
             </div>
           </div>
+          <!-- NOTE Completed Todos go here -->
           <div
             class="completedTodos"
             v-else-if="todoListSelected == 'Completed'"
@@ -143,6 +147,7 @@
               <i class="fas fa-trash-alt fa-sm" @click="deleteTodo(todo)"></i>
             </div>
           </div>
+          <!-- NOTE Any custom Todos go here -->
           <div class="customListTodos" v-else>
             <div
               class="noTodos"
@@ -177,6 +182,7 @@
           </div>
         </div>
       </div>
+      <!-- NOTE Button and Input for new Todos here -->
       <div class="input">
         <button
           class="createBtn"
@@ -242,9 +248,11 @@ export default {
     CompletedTodos() {
       return this.$store.state.todo.completedTodos;
     },
+    // Custom Lists
     TodoLists() {
       return this.$store.state.todo.usersTodoLists;
     },
+    // Custom Todos
     CustomListTodos() {
       return this.$store.state.todo.customListTodos;
     },
@@ -282,6 +290,7 @@ export default {
       ) {
         this.$store.dispatch('submitTodo', this.todo);
       } else {
+        // Find the custom list in the custom list array in the store and then assign its id to the todo
         let list = this.$store.state.todo.usersTodoLists.find(
           (list) => list.name == this.todoListSelected
         );

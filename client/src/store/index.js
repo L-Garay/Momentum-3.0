@@ -1270,6 +1270,7 @@ export default new Vuex.Store({
       commit('setContacts', res.data);
     },
     filterContacts({ commit, state }, letter) {
+      // NOTE Filter through all the contacts by the first letter of either the Last Name or First Name (if no Last Name)
       let letterGroup = state.contacts.all.filter((c) => {
         if (c.lastName) {
           if (

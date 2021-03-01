@@ -1,155 +1,126 @@
 <template>
-  <div class="optionsWrapper">
-    <div class="optionsColumn1">
-      <div v-if="HasProperty.lastName == false" class="option">
-        <p><small @click="toggleAdd('lastName')">Add Last Name</small></p>
-        <div v-if="added.lastName == false" class="inputWrapper">
-          <input
-            type="text"
-            ref="focusLastName"
-            v-model="newContact.lastName"
-            v-on:keyup.enter="finishAdding('lastName')"
-            v-autowidth="{
-              maxWidth: '120px',
-              minWidth: '100px',
-              comfortZone: 5,
-            }"
-          />
+  <div class="addToContactWrapper">
+    <div class="addToContactBody">
+      <div class="lastNameInput" v-show="HasProperty.lastName == false">
+        <div class="label">
+          <p>Last Name:</p>
         </div>
-        <div v-else class="addedProperty">
-          <p @click="editAddition('lastName')">{{ newContact.lastName }}</p>
+        <input
+          type="text"
+          class="input"
+          v-if="contactInfo.hasConfirmed.lastName == false"
+          v-model="contactInfo.newContact.lastName"
+          v-on:keyup.enter="finishAdding('lastName')"
+        />
+        <div class="addedData" v-else>
+          <p>{{ contactInfo.newContact.lastName }}</p>
         </div>
       </div>
-      <div v-if="HasProperty.phone == false" class="option">
-        <p><small @click="toggleAdd('phone')">Add Phone</small></p>
-        <div v-if="added.phone == false" class="inputWrapper">
-          <input
-            type="text"
-            ref="focusPhone"
-            v-model="newContact.phone"
-            v-on:keyup.enter="finishAdding('phone')"
-            v-autowidth="{
-              maxWidth: '120px',
-              minWidth: '100px',
-              comfortZone: 5,
-            }"
-          />
+      <div class="phoneInput" v-show="HasProperty.phone == false">
+        <div class="label">
+          <p>Phone:</p>
         </div>
-        <div v-else class="addedProperty">
-          <p @click="editAddition('phone')">{{ newContact.phone }}</p>
+        <input
+          type="text"
+          class="input"
+          v-if="contactInfo.hasConfirmed.phone == false"
+          v-model="contactInfo.newContact.phone"
+          v-on:keyup.enter="finishAdding('phone')"
+        />
+        <div class="addedData" v-else>
+          <p>{{ contactInfo.newContact.phone }}</p>
         </div>
       </div>
-      <div v-if="HasProperty.email == false" class="option">
-        <p><small @click="toggleAdd('email')">Add Email</small></p>
-        <div v-if="added.email == false" class="inputWrapper">
-          <input
-            type="text"
-            ref="focusEmail"
-            v-model="newContact.email"
-            v-on:keyup.enter="finishAdding('email')"
-            v-autowidth="{
-              maxWidth: '160px',
-              minWidth: '100px',
-              comfortZone: 5,
-            }"
-          />
+      <div class="emailInput" v-show="HasProperty.email == false">
+        <div class="label">
+          <p>Email:</p>
         </div>
-        <div v-else class="addedProperty">
-          <p @click="editAddition('email')">{{ newContact.email }}</p>
+        <input
+          type="text"
+          class="input"
+          v-if="contactInfo.hasConfirmed.email == false"
+          v-model="contactInfo.newContact.email"
+          v-on:keyup.enter="finishAdding('email')"
+        />
+        <div class="addedData" v-else>
+          <p>{{ contactInfo.newContact.email }}</p>
         </div>
       </div>
-      <div v-if="HasProperty.notes == false" class="option">
-        <p><small @click="toggleAdd('notes')">Add Notes</small></p>
-        <div v-if="added.notes == false" class="textAreaWrapper">
-          <textarea
-            id="addNotesTextArea"
-            ref="focusNotes"
-            cols="25"
-            rows="3"
-            v-model="newContact.notes"
-            v-on:keyup.enter="finishAdding('notes')"
-          ></textarea>
+      <div class="addressInput" v-show="HasProperty.address == false">
+        <div class="label">
+          <p>Address:</p>
         </div>
-        <div v-else-if="added.notes == true" class="addedPropertyNotes">
-          <p @click="editAddition('notes')">{{ newContact.notes }}</p>
+        <input
+          type="text"
+          class="input"
+          v-if="contactInfo.hasConfirmed.address == false"
+          v-model="contactInfo.newContact.address"
+          v-on:keyup.enter="finishAdding('address')"
+        />
+        <div class="addedData" v-else>
+          <p>{{ contactInfo.newContact.address }}</p>
+        </div>
+      </div>
+      <div class="companyInput" v-show="HasProperty.company == false">
+        <div class="label">
+          <p>Company:</p>
+        </div>
+        <input
+          type="text"
+          class="input"
+          v-if="contactInfo.hasConfirmed.company == false"
+          v-model="contactInfo.newContact.company"
+          v-on:keyup.enter="finishAdding('company')"
+        />
+        <div class="addedData" v-else>
+          <p>{{ contactInfo.newContact.company }}</p>
+        </div>
+      </div>
+      <div class="birthdateInput" v-show="HasProperty.birthdate == false">
+        <div class="label">
+          <p>Birthdate:</p>
+        </div>
+        <input
+          type="text"
+          class="input"
+          v-if="contactInfo.hasConfirmed.birthdate == false"
+          v-model="contactInfo.newContact.birthdate"
+          v-on:keyup.enter="finishAdding('birthdate')"
+        />
+        <div class="addedData" v-else>
+          <p>{{ contactInfo.newContact.birthdate }}</p>
+        </div>
+      </div>
+      <div class="notesInput" v-show="HasProperty.notes == false">
+        <div class="label">
+          <p>Notes:</p>
+        </div>
+        <input
+          type="text"
+          class="input"
+          v-if="contactInfo.hasConfirmed.notes == false"
+          v-model="contactInfo.newContact.notes"
+          v-on:keyup.enter="finishAdding('notes')"
+        />
+        <div class="addedData" v-else>
+          <p>{{ contactInfo.newContact.notes }}</p>
         </div>
       </div>
     </div>
-    <div class="optionsColumn2">
-      <div v-if="HasProperty.address == false" class="option">
-        <p><small @click="toggleAdd('address')">Add Address</small></p>
-        <div v-if="added.address == false" class="inputWrapper">
-          <input
-            type="text"
-            ref="focusAddress"
-            v-model="newContact.address"
-            v-on:keyup.enter="finishAdding('address')"
-            v-autowidth="{
-              maxWidth: '120px',
-              minWidth: '100px',
-              comfortZone: 5,
-            }"
-          />
+    <div class="addToContactFooter">
+      <div class="buttons">
+        <div class="cancelBtn">
+          <button @click="cancelAdd">Cancel</button>
         </div>
-        <div v-else class="addedProperty">
-          <p @click="editAddition('address')">{{ newContact.address }}</p>
-        </div>
-      </div>
-      <div v-if="HasProperty.city == false" class="option">
-        <p><small @click="toggleAdd('city')">Add City</small></p>
-        <div v-if="added.city == false" class="inputWrapper">
-          <input
-            type="text"
-            ref="focusCity"
-            v-model="newContact.city"
-            v-on:keyup.enter="finishAdding('city')"
-            v-autowidth="{
-              maxWidth: '120px',
-              minWidth: '100px',
-              comfortZone: 5,
-            }"
-          />
-        </div>
-        <div v-else class="addedProperty">
-          <p @click="editAddition('city')">{{ newContact.city }}</p>
-        </div>
-      </div>
-      <div v-if="HasProperty.state == false" class="option">
-        <p><small @click="toggleAdd('state')">Add State</small></p>
-        <div v-if="added.state == false" class="inputWrapper">
-          <input
-            type="text"
-            ref="focusState"
-            v-model="newContact.state"
-            v-on:keyup.enter="finishAdding('state')"
-            v-autowidth="{
-              maxWidth: '120px',
-              minWidth: '100px',
-              comfortZone: 5,
-            }"
-          />
-        </div>
-        <div v-else class="addedProperty">
-          <p @click="editAddition('state')">{{ newContact.state }}</p>
-        </div>
-      </div>
-      <div v-if="HasProperty.zip == false" class="option">
-        <p><small @click="toggleAdd('zip')">Add Zip</small></p>
-        <div v-if="added.zip == false" class="inputWrapper">
-          <input
-            type="text"
-            ref="focusZip"
-            v-model="newContact.zip"
-            v-on:keyup.enter="finishAdding('zip')"
-            v-autowidth="{
-              maxWidth: '120px',
-              minWidth: '100px',
-              comfortZone: 5,
-            }"
-          />
-        </div>
-        <div v-else class="addedProperty">
-          <p @click="editAddition('zip')">{{ newContact.zip }}</p>
+        <div class="confirmBtn">
+          <button
+            id="confirm"
+            type="button"
+            class="btn"
+            @click="confirmAdditions"
+          >
+            Confirm
+          </button>
         </div>
       </div>
     </div>
@@ -161,118 +132,67 @@ import VueInputAutoWidth from 'vue-input-autowidth';
 import Vue from 'vue';
 Vue.use(VueInputAutoWidth);
 export default {
-  name: 'AddToContactComponent',
-  props: ['contactData', 'property'],
+  name: 'AddToContact2',
+  props: ['propertyData', 'contactData'],
+  components: {},
   data() {
     return {
-      newContact: { ...this.contactData },
-      added: {
-        lastName: false,
-        phone: false,
-        email: false,
-        address: false,
-        city: false,
-        state: false,
-        zip: false,
-        notes: false,
+      contactInfo: {
+        newContact: { ...this.contactData },
+        hasConfirmed: {
+          lastName: false,
+          phone: false,
+          email: false,
+          address: false,
+          birthdate: false,
+          company: false,
+          notes: false,
+        },
       },
+      disabled: true,
     };
   },
-  mounted() {},
+  mounted() {
+    document.getElementById('confirm').disabled = true;
+  },
   computed: {
     HasProperty() {
-      return this.property;
+      return this.propertyData;
     },
   },
   methods: {
-    toggleAdd(field) {
-      switch (field) {
-        case 'lastName':
-          this.$nextTick(() => this.$refs.focusLastName.focus());
-          break;
-        case 'phone':
-          this.$nextTick(() => this.$refs.focusPhone.focus());
-          break;
-        case 'email':
-          this.$nextTick(() => this.$refs.focusEmail.focus());
-          break;
-        case 'address':
-          this.$nextTick(() => this.$refs.focusAddress.focus());
-          break;
-        case 'city':
-          this.$nextTick(() => this.$refs.focusCity.focus());
-          break;
-        case 'state':
-          this.$nextTick(() => this.$refs.focusState.focus());
-          break;
-        case 'zip':
-          this.$nextTick(() => this.$refs.focusZip.focus());
-          break;
-        case 'notes':
-          this.$nextTick(() => this.$refs.focusNotes.focus());
-          break;
-
-        default:
-          this.editContact = false;
-          break;
-      }
+    cancelAdd() {
+      this.$emit('cancelAdd');
     },
     finishAdding(field) {
       switch (field) {
         case 'lastName':
-          if (this.newContact.lastName) {
-            this.added.lastName = true;
-            this.$emit('added', this.newContact);
-          }
+          this.contactInfo.hasConfirmed.lastName = true;
+          document.getElementById('confirm').disabled = false;
           break;
         case 'phone':
-          if (this.newContact.phone) {
-            this.added.phone = true;
-            this.$emit('added', this.newContact);
-          }
-
+          this.contactInfo.hasConfirmed.phone = true;
+          document.getElementById('confirm').disabled = false;
           break;
         case 'email':
-          if (this.newContact.email) {
-            this.added.email = true;
-            this.$emit('added', this.newContact);
-          }
-
+          this.contactInfo.hasConfirmed.email = true;
+          document.getElementById('confirm').disabled = false;
           break;
         case 'address':
-          if (this.newContact.address) {
-            this.added.address = true;
-            this.$emit('added', this.newContact);
-          }
-
+          this.contactInfo.hasConfirmed.address = true;
+          document.getElementById('confirm').disabled = false;
           break;
-        case 'city':
-          if (this.newContact.city) {
-            this.added.city = true;
-            this.$emit('added', this.newContact);
-          }
-
+        case 'company':
+          this.contactInfo.hasConfirmed.company = true;
+          document.getElementById('confirm').disabled = false;
           break;
-        case 'state':
-          if (this.newContact.state) {
-            this.added.state = true;
-            this.$emit('added', this.newContact);
-          }
-
-          break;
-        case 'zip':
-          if (this.newContact.zip) {
-            this.added.zip = true;
-            this.$emit('added', this.newContact);
-          }
-
+        case 'birthdate':
+          this.contactInfo.hasConfirmed.birthdate = true;
+          document.getElementById('confirm').disabled = false;
           break;
         case 'notes':
-          if (this.newContact.notes) {
-            this.added.notes = true;
-            this.$emit('added', this.newContact);
-          }
-
+          this.contactInfo.hasConfirmed.notes = true;
+          document.getElementById('confirm').disabled = false;
           break;
 
         default:
@@ -280,116 +200,138 @@ export default {
           break;
       }
     },
-    editAddition(field) {
-      switch (field) {
-        case 'lastName':
-          if (this.newContact.lastName) {
-            this.added.lastName = false;
-            this.$nextTick(() => this.$refs.focusLastName.focus());
-          }
-          break;
-        case 'phone':
-          if (this.newContact.phone) {
-            this.added.phone = false;
-            this.$nextTick(() => this.$refs.focusPhone.focus());
-          }
-
-          break;
-        case 'email':
-          if (this.newContact.email) {
-            this.added.email = false;
-            this.$nextTick(() => this.$refs.focusEmail.focus());
-          }
-
-          break;
-        case 'address':
-          if (this.newContact.address) {
-            this.added.address = false;
-            this.$nextTick(() => this.$refs.focusAddress.focus());
-          }
-
-          break;
-        case 'city':
-          if (this.newContact.city) {
-            this.added.city = false;
-            this.$nextTick(() => this.$refs.focusCity.focus());
-          }
-
-          break;
-        case 'state':
-          if (this.newContact.state) {
-            this.added.state = false;
-            this.$nextTick(() => this.$refs.focusState.focus());
-          }
-
-          break;
-        case 'zip':
-          if (this.newContact.zip) {
-            this.added.zip = false;
-            this.$nextTick(() => this.$refs.focusZip.focus());
-          }
-
-          break;
-        case 'notes':
-          if (this.newContact.notes) {
-            this.added.notes = false;
-            this.$nextTick(() => this.$refs.focusNotes.focus());
-          }
-
-          break;
-
-        default:
-          this.editContact = false;
-          break;
-      }
+    confirmAdditions() {
+      this.$emit('confirmAdditions', this.contactInfo);
     },
   },
 };
 </script>
 
 <style scoped>
-div.optionsWrapper {
-  display: flex;
-}
-div.optionsColumn2 {
-  margin-left: 20px;
-}
-div.option {
-  display: flex;
-}
-div.option p {
+p {
   margin-bottom: 0;
-  width: 80px;
-  text-align: start;
 }
-div.addedProperty p {
-  width: 110px;
-  color: goldenrod;
+div.addToContactWrapper {
+  height: 250px;
+  width: 300px;
+  background-color: rgb(236, 236, 236);
+  color: black;
+  position: absolute;
+  bottom: 20%;
+  left: 20%;
+  border-radius: 5px 5px 5px 5px;
 }
-div.inputWrapper {
-  height: 35px;
-  width: 110px;
+div.addToContactBody {
+  height: 217px;
+  padding-top: 5px;
 }
-div.textAreaWrapper {
-  height: 80px;
-  width: 170px;
+div.addToContactBody div {
+  display: flex;
+  margin-bottom: 5px;
 }
-textarea {
+
+div.addToContactBody div.label {
+  width: 65px;
+  margin-bottom: 0;
+  align-items: center;
+}
+div.label p {
   font-size: 12px;
-  margin-left: -5px;
+  padding-left: 5px;
 }
-div.addedPropertyNotes {
-  max-height: 150px;
-  overflow-y: auto;
-  width: 170px;
-  background-color: rgba(116, 116, 116, 0.534);
-  border: 1pt solid grey;
-  text-align: start;
-  font-size: 13px;
+input {
+  margin-left: 7px;
+  height: 25px;
+  width: 200px;
+  font-size: 14px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1pt solid black;
 }
-div.addedPropertyNotes p {
-  width: 165px;
-  padding-left: 3px;
+div.addToContactBody div.addedData {
+  margin-bottom: 0;
+  padding-left: 5px;
+  height: 25px;
+  max-width: 230px;
+  overflow-x: auto;
+}
+div.addedData::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background-color: rgb(90, 90, 90);
+}
+div.addedData::-webkit-scrollbar-thumb {
+  background: goldenrod;
+}
+div.addedData p {
+  font-size: 14px;
+}
+div.addToContactFooter {
+  height: 33px;
+}
+div.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 5px;
+  font-size: 12px;
+}
+div.buttons button,
+div.buttons button.btn {
+  margin: 0 3px;
+  border-radius: 5px 5px 5px 5px;
+  background-color: transparent;
+  border: 1pt solid black;
+  color: black;
+}
+div.buttons button.btn {
+  font-size: 12px;
+  padding: 1px 6px;
+}
+
+div.buttons button:hover {
+  background-color: black;
+  border: 1pt solid white;
+  box-shadow: 0pt 0pt 6pt black, 0pt 0pt 6pt black;
+  text-shadow: 1px 1px 2px white;
+}
+.cancelBtn button:hover {
+  color: red;
+  text-shadow: 1px 1px 2px red;
+}
+.confirmBtn button.btn:hover {
   color: goldenrod;
+  text-shadow: 1px 1px 2px goldenrod;
+}
+.confirmBtn button.btn:disabled {
+  box-shadow: none;
+  text-shadow: none;
+  border: 1pt solid black;
+  background-color: transparent;
+  color: black;
+}
+div.buttons button:active {
+  color: white;
+  outline: none;
+  border: 1pt solid black;
+}
+.cancelBtn button:active {
+  background-color: red !important;
+  box-shadow: none !important;
+}
+.confirmBtn button.btn:active {
+  background-color: goldenrod !important;
+  box-shadow: none !important;
+  color: white !important;
+}
+div.buttons button:focus {
+  background-color: lightgray;
+  outline: none;
+}
+.cancelBtn button:focus {
+  box-shadow: 1pt 0pt 10pt red !important;
+}
+.confirmBtn button:focus {
+  box-shadow: 1pt 0pt 10pt goldenrod !important;
 }
 </style>

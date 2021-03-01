@@ -1,82 +1,10 @@
 <template>
-  <!-- <div
-    v-if="showWeatherColor"
-    class="main ml-auto"
-    id="changeColor"
-    :style="{ 'background-color': backgroundColor, color: textColor }"
-  >
-    <div class="background">
-      <div class="content">
-        <div class="TimeLocation">
-          <h1 class="Time">{{ month }} {{ day }}</h1>
-          <p>/</p>
-          <div>
-            <input
-              v-on:blur="onClickOutside"
-              ref="focus"
-              type="text"
-              v-model="city.name"
-              v-on:keyup.enter="submitNewCity"
-              v-autowidth="{
-                maxWidth: '100px',
-                minWidth: '20px',
-                comfortZone: 10,
-              }"
-              v-if="city.changeCity"
-              class="locationInput"
-            />
-            <h1 class="Location" v-else @click="getNewCity">
-              {{ Weather.name }}
-            </h1>
-          </div>
-        </div>
-        <h1 class="Temp" v-if="gotWeather">
-          {{ Math.round(Weather.main.temp) }}
-          <p id="F"><small>&#176;</small></p>
-        </h1>
-        <h1 class="Condition">
-          <div v-if="sunny">
-            <i class="fas fa-sun icon" :style="{ color: iconColor }"></i>
-            <p>{{ Weather.weather[0].main }}</p>
-          </div>
-          <div v-else-if="rain">
-            <p>{{ Weather.weather[0].main }}</p>
-            <i class="fas fa-cloud-showers-heavy icon"></i>
-            :style="{ color: iconColor }"
-          </div>
-          <div v-else-if="cloudy">
-            <i class="fas fa-cloud icon" :style="{ color: iconColor }"></i>
-            <p>{{ Weather.weather[0].main }}</p>
-          </div>
-          <div v-else-if="snow">
-            <i class="far fa-snowflake icon" :style="{ color: iconColor }"></i>
-            <p>{{ Weather.weather[0].main }}</p>
-          </div>
-          <div v-else-if="fog">
-            <i class="fas fa-smog icon" :style="{ color: iconColor }"></i>
-            <p>{{ Weather.weather[0].main }}</p>
-          </div>
-          <div v-else-if="mist">
-            <i class="fas fa-smog icon" :style="{ color: iconColor }"></i>
-            <p>{{ Weather.weather[0].main }}</p>
-          </div>
-          <div v-else>
-            <i class="fas fa-question icon" :style="{ color: iconColor }"></i>
-            <p>Unkown Weather Condition</p>
-          </div>
-        </h1>
-      </div>
-    </div>
-  </div> -->
   <div class="weatherWrapper">
     <div @click="toggle5DayForecast" class="main ml-auto" id="changeColor">
       <div class="background">
         <div class="content">
-          <div class="TimeLocation">
-            <h1 class="Time">
-              {{ weather.date.month }} {{ weather.date.day }} /
-              {{ Weather.name }}
-            </h1>
+          <div class="locationWrapper">
+            <h1 class="location">{{ Weather.name }}</h1>
           </div>
           <h1 class="Temp" v-if="gotWeather">
             {{ Math.round(Weather.main.temp) }}
@@ -101,6 +29,9 @@
             <div v-else-if="weather.condition.mist">
               <i class="fas fa-smog icon"></i>
             </div>
+            <div v-else-if="weather.condition.haze">
+              <i class="fas fa-smog icon"></i>
+            </div>
             <div v-else>
               <i class="fas fa-question icon"></i>
             </div>
@@ -112,15 +43,13 @@
       v-if="showForecast"
       @closeForecast="toggle5DayForecast"
       @useCoordinates="getLocation"
+      @checkCondition="checkCondition"
       :weatherData="weather"
     />
   </div>
 </template>
 
 <script>
-import VueInputAutoWidth from 'vue-input-autowidth';
-import Vue from 'vue';
-Vue.use(VueInputAutoWidth);
 import Forecast from '@/components/Weather/5DayForecast.vue';
 export default {
   name: 'Weather',
@@ -148,6 +77,7 @@ export default {
           cloudy: false,
           fog: false,
           mist: false,
+          haze: false,
           unkownCondition: false,
         },
         styling: {
@@ -182,29 +112,18 @@ export default {
     async success(position) {
       this.coord.lat = position.coords.latitude.toString();
       this.coord.lon = position.coords.longitude.toString();
-      let coords = { ...this.coord };
-      this.$store.dispatch('getWeatherForecast', coords);
-      await this.$store.dispatch('getWeather', coords);
+      this.$store.dispatch('getWeatherForecast', this.coord); //This will get the 5 day forecast
+      await this.$store.dispatch('getWeather', this.coord); //This will get the current day's weather
       this.checkCondition();
       this.gotWeather = true;
     },
     error(err) {
       console.warn(`Error code: ${err.code}, ${err.message}.`);
     },
-    // Will take the input city name string and attempt ot get new weather data
-    getNewCity() {
-      this.city.changeCity = true;
-      this.$nextTick(() => this.$refs.focus.focus());
-    },
-    async submitNewCity() {
-      await this.$store.dispatch('getNewWeather', this.city);
-      this.city.changeCity = false;
-      this.checkCondition();
-    },
     // Get current date
     getDate() {
       let date = new Date();
-      this.weather.date.day = date.getDate();
+      this.weather.date.day = date.getDate(); //Get current day
       let month = [
         'January',
         'February',
@@ -219,19 +138,11 @@ export default {
         'November',
         'December',
       ];
-      this.weather.date.month = month[date.getMonth()];
+      this.weather.date.month = month[date.getMonth()]; //Since this returns the number of the month, if we create an array of the names of the month and then use the number returned by the data object as the index, we can get the correct name
     },
-    // Weather control
-    toggle5DayForecast() {
-      if (this.showForecast == true) {
-        this.showForecast = false;
-      } else if (this.showForecast == false) {
-        this.showForecast = true;
-      }
-    },
-
-    // Check the weather condition to then style the widget accordingly
+    // Check the weather condition to determine the appropriate icon and style the widget accordingly
     checkCondition() {
+      console.log('hit checkCondition');
       switch (this.$store.state.weather.weather.weather[0].main) {
         case 'Clear':
           this.weather.condition.sunny = true;
@@ -240,6 +151,7 @@ export default {
           this.weather.condition.snow = false;
           this.weather.condition.fog = false;
           this.weather.condition.mist = false;
+          this.weather.condition.haze = false;
           this.weather.styling.textColor = 'black';
           break;
         case 'Clouds':
@@ -249,6 +161,7 @@ export default {
           this.weather.condition.snow = false;
           this.weather.condition.fog = false;
           this.weather.condition.mist = false;
+          this.weather.condition.haze = false;
           this.weather.styling.textColor = 'white';
           break;
         case 'Rain':
@@ -258,6 +171,7 @@ export default {
           this.weather.condition.snow = false;
           this.weather.condition.fog = false;
           this.weather.condition.mist = false;
+          this.weather.condition.haze = false;
           this.weather.styling.textColor = 'white';
           break;
         case 'Snow':
@@ -267,6 +181,7 @@ export default {
           this.weather.condition.rain = false;
           this.weather.condition.fog = false;
           this.weather.condition.mist = false;
+          this.weather.condition.haze = false;
           this.weather.styling.textColor = 'black';
           break;
         case 'Fog':
@@ -276,6 +191,7 @@ export default {
           this.weather.condition.snow = false;
           this.weather.condition.rain = false;
           this.weather.condition.mist = false;
+          this.weather.condition.haze = false;
           this.weather.styling.textColor = 'white';
           break;
         case 'Mist':
@@ -285,15 +201,27 @@ export default {
           this.weather.condition.snow = false;
           this.weather.condition.rain = false;
           this.weather.condition.mist = true;
+          this.weather.condition.haze = false;
+          this.weather.styling.textColor = 'white';
+          break;
+        case 'Haze':
+          this.weather.condition.fog = false;
+          this.weather.condition.cloudy = false;
+          this.weather.condition.sunny = false;
+          this.weather.condition.snow = false;
+          this.weather.condition.rain = false;
+          this.weather.condition.mist = false;
+          this.weather.condition.haze = true;
           this.weather.styling.textColor = 'white';
           break;
         default:
           this.weather.condition.unkownCondition = true;
       }
-      this.setBackgroundColor();
+      // this.setBackgroundColor();
     },
-    setBackgroundColor() {
-      // NOTE Since the component itself doesn't get re-rendered when a new city is found, had to use getElementById to sort of force change the necessary elements
+    // NOTE This method was originally from when i was filling in this component's elements with color, I have since transitioned into a new design but the idea of having at least some color (like for the weather icon) still apeals to me; you could even allow the user to toggle if they want color or not. However, that is an extra feature that doesn't require immediate attention. I know leaving in giant blocks of unused code is bad practice, but I will come back to this.
+    /* setBackgroundColor() {
+      // Since the component itself doesn't get re-rendered when a new city is found, had to use getElementById to sort of force change the necessary elements
 
       // Sunny
       if (
@@ -383,6 +311,7 @@ export default {
         this.weather.styling.iconColor = ' rgb(172, 172, 172)';
         this.weather.styling.locationIconColor = ' rgb(172, 172, 172)';
       }
+      //TODO Add Haze if needed
       // Unknown
       if (this.weather.condition.unkownCondition) {
         // let change = document.getElementById('changeColor');
@@ -390,6 +319,14 @@ export default {
         this.weather.styling.backgroundColor = 'white';
         this.weather.styling.iconColor = 'black';
         this.weather.styling.locationIconColor = 'black';
+      }
+    }, */
+    // Toggles weather or not to open the forecast modal
+    toggle5DayForecast() {
+      if (this.showForecast == true) {
+        this.showForecast = false;
+      } else if (this.showForecast == false) {
+        this.showForecast = true;
       }
     },
     onClickOutside() {
@@ -404,11 +341,10 @@ export default {
   overflow: hidden;
   z-index: 10;
   position: relative;
-  margin-top: 15px;
+  margin-top: 12px;
   height: 90px;
   width: 170px;
   border-radius: 10px;
-  /* box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.2); */
   background-color: transparent;
   color: white;
   text-shadow: 1pt 1pt 3pt black;
@@ -418,14 +354,16 @@ export default {
 }
 
 /* Widget styling */
+
+/* For the weather condition icon */
 .Condition {
   z-index: 1000;
   position: absolute;
   font-family: 'Roboto', sans-serif;
   font-weight: 100;
   font-size: 14px;
-  right: 20px;
-  top: 22px;
+  right: 5%;
+  top: 30%;
   text-align: center;
 }
 .icon {
@@ -433,14 +371,15 @@ export default {
   font-size: 35px !important;
 }
 
+/* For the temperature and farenhiet symbol */
 .Temp {
   z-index: 1000;
   position: absolute;
   font-family: 'Roboto', sans-serif;
   font-size: 45px;
   font-weight: 400;
-  right: 70px;
-  bottom: 10px;
+  right: 30%;
+  top: 20%;
   display: flex;
 }
 #F {
@@ -450,19 +389,30 @@ export default {
   font-size: 36px;
 }
 
-.TimeLocation {
+/* For the location */
+.locationWrapper {
   z-index: 1000;
   position: absolute;
-  right: 20px;
-  top: 0px;
-  display: flex;
+  right: 5%;
+  top: 0;
+  max-width: 150px;
 }
-.TimeLocation h1 {
-  font-size: 12px;
+.locationWrapper h1.location {
+  font-size: 17px;
   font-weight: 200;
   font-family: 'Noto Sans', sans-serif;
   margin-bottom: 0;
   text-shadow: 1pt 1pt 2pt black !important;
+  max-width: 150px;
+  overflow-x: auto;
+}
+h1.location::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background-color: rgb(90, 90, 90);
+}
+h1.location::-webkit-scrollbar-thumb {
+  background: goldenrod;
 }
 
 @media (max-width: 1024px) {

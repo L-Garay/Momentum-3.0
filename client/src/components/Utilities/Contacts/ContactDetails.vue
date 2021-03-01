@@ -6,6 +6,7 @@
     <div class="detailsBody">
       <div class="detailsRow1">
         <div class="nameBirthdateWrapper">
+          <!-- NOTE Names -->
           <div class="namesWrapper">
             <div class="labelGroup">
               <p class="label nameLabel">
@@ -24,11 +25,9 @@
             <div class="namesGroup">
               <div class="firstNameWrapper">
                 <div class="firstName" v-if="hasConfirmed == false">
-                  <!-- <p class="label"><small>Name:</small></p> -->
                   <p>{{ contactData.firstName }}</p>
                 </div>
                 <div v-else class="confirmed">
-                  <!-- <p class="label"><small>Name:</small></p> -->
                   <p>{{ newContact.firstName }}</p>
                 </div>
               </div>
@@ -48,6 +47,7 @@
               </div>
             </div>
           </div>
+          <!-- NOTE Birthdate -->
           <div class="birthdateWrapper">
             <div
               class="birthdate"
@@ -92,6 +92,7 @@
           </div>
         </div>
         <div class="phoneEmailCompanyWrapper">
+          <!-- NOTE Phone -->
           <div class="phoneEmailWrapper">
             <div
               class="phoneWrapper"
@@ -135,6 +136,7 @@
                 <p>{{ newContact.phone }}</p>
               </div>
             </div>
+            <!-- NOTE Email -->
             <div
               class="emailWrapper"
               v-if="
@@ -183,7 +185,7 @@
                 <p>{{ newContact.email }}</p>
               </div>
             </div>
-            <!-- If there is an email, but no phone, we need to push the email all the way to the left.  -->
+            <!-- NOTE If there is an Email BUT no Phone, we need to push the Email all the way to the left.  -->
             <div
               class="emailNoPhoneWrapper"
               v-if="contactData.email && !contactData.phone"
@@ -230,6 +232,7 @@
               </div>
             </div>
           </div>
+          <!-- NOTE Company -->
           <div class="companyWrapper">
             <div
               class="company"
@@ -273,6 +276,7 @@
             </div>
           </div>
         </div>
+        <!-- NOTE Address -->
         <div class="addressWrapper">
           <div
             class="address"
@@ -317,6 +321,7 @@
         </div>
       </div>
       <div class="detailsRow2">
+        <!-- NOTE Notes -->
         <div class="notesWrapper" v-if="contactData.notes || newContact.notes">
           <div class="labelGroup">
             <p class="label">
@@ -345,6 +350,7 @@
       </div>
     </div>
     <div class="detailsFooter">
+      <!-- NOTE Back and Edit buttons -->
       <div class="buttons">
         <div class="backButton">
           <button class="btn btn-secondary" type="button" @click="back">
@@ -359,7 +365,8 @@
       </div>
     </div>
   </div>
-  <edit-contact-2
+  <!-- NOTE Edit Contact component -->
+  <edit-contact
     v-else-if="editContact == true || straightToEdit == true"
     :contactData="newContact"
     :showDeleteData="showDelete"
@@ -372,13 +379,13 @@
 <script>
 import VueInputAutoWidth from 'vue-input-autowidth';
 import Vue from 'vue';
-import EditContact2 from '@/components/Utilities/Contacts/EditContact2.vue';
 Vue.use(VueInputAutoWidth);
+import EditContact from '@/components/Utilities/Contacts/EditContact.vue';
 export default {
   name: 'ContactDetailsComponent2',
   props: ['contactData', 'toEdit'],
   components: {
-    EditContact2,
+    EditContact,
   },
   data() {
     return {
@@ -389,29 +396,9 @@ export default {
       showDelete: false,
     };
   },
-  mounted() {
-    this.checkStraightToEdit();
-  },
-  computed: {
-    ToEdit() {
-      return this.toEdit;
-    },
-    UpdatedContact() {
-      return this.$store.state.contacts.contact;
-    },
-  },
+  mounted() {},
+  computed: {},
   methods: {
-    checkStraightToEdit() {
-      if (this.toEdit == true) {
-        this.editContact = true;
-        this.straightToEdit = true;
-        this.showDelete = true;
-      } else if (this.toEdit == false) {
-        this.editContact = false;
-        this.straightToEdit = false;
-        this.showDelete = false;
-      }
-    },
     back() {
       this.$emit('back');
     },
@@ -423,7 +410,6 @@ export default {
       this.editContact = false;
       this.straightToEdit = false;
       this.showDelete = false;
-      // this.$emit('stopEditing');
     },
     confirmed() {
       this.hasConfirmed = true;
@@ -446,36 +432,30 @@ div.detailsWrapper {
 div.detailsBody {
   height: 290px;
 }
-div.detailsRow1 {
-  height: 165px;
-}
-div.notes {
-  height: 100px;
-  overflow-y: auto;
-  background-color: rgb(71, 71, 71);
-  border-radius: 4px 4px 4px 4px;
-}
-div.detailsFooter {
-  height: 55px;
-  padding-top: 10px;
-}
 div.nameBirthdateWrapper,
 div.namesWrapper,
 div.phoneEmailCompanyWrapper,
 div.phoneEmailWrapper,
-div.buttons {
+div.buttons,
+div.namesGroup,
+div.birthdateEdit,
+div.labelGroup,
+p.label small {
   display: flex;
 }
 
-/* Row 1 styling */
-/* Name/Birthdate styling */
+/* Row 1 */
+/* (Name and Birthdate) */
+div.detailsRow1 {
+  height: 165px;
+}
+div.nameBirthdateWrapper {
+  height: 55px;
+}
 div.namesWrapper {
   font-size: 23px;
   width: 320px;
   flex-direction: column;
-}
-div.namesGroup {
-  display: flex;
 }
 div.firstNameWrapper {
   min-width: 40px;
@@ -487,9 +467,6 @@ div.lastNameWrapper {
   max-width: 160px;
   overflow-x: auto;
 }
-div.nameBirthdateWrapper {
-  height: 55px;
-}
 div.birthdateWrapper {
   width: 90px;
   font-size: 14px;
@@ -498,11 +475,10 @@ div.birthdateWrapper {
   right: 11.25%;
 }
 div.birthdateEdit {
-  display: flex;
   flex-direction: column;
 }
 
-/* Phone/Email/Company styling */
+/* (Phone/Email/Company) */
 div.phoneEmailCompanyWrapper {
   font-size: 15px;
   height: 50px;
@@ -510,11 +486,17 @@ div.phoneEmailCompanyWrapper {
 div.phoneWrapper {
   width: 110px;
 }
-
 div.emailWrapper {
   width: 180px;
   overflow-x: auto;
   margin-left: 10px;
+}
+div.companyWrapper {
+  width: 110px;
+  font-size: 14px;
+  position: absolute;
+  top: 25%;
+  right: 7%;
 }
 div.emailWrapper::-webkit-scrollbar,
 div.firstNameWrapper::-webkit-scrollbar,
@@ -528,29 +510,33 @@ div.firstNameWrapper::-webkit-scrollbar-thumb,
 div.lastNameWrapper::-webkit-scrollbar-thumb {
   background: goldenrod;
 }
-div.companyWrapper {
-  width: 110px;
-  font-size: 14px;
-  position: absolute;
-  top: 25%;
-  right: 7%;
-}
 
-/* Address styling */
+/* (Address) */
 div.addressWrapper {
   font-size: 15px;
   height: 50px;
 }
 
 /* Row 2 styling */
+/* (Notes) */
 div.notesWrapper {
   font-size: 13px;
+}
+div.notes {
+  height: 100px;
+  overflow-y: auto;
+  background-color: rgb(71, 71, 71);
+  border-radius: 4px 4px 4px 4px;
 }
 div.notes p {
   padding: 0 5px;
 }
 
 /* Button styling */
+div.detailsFooter {
+  height: 55px;
+  padding-top: 10px;
+}
 div.buttons {
   justify-content: center;
 }
@@ -602,10 +588,8 @@ div.buttons div.editButton button:focus {
   box-shadow: 0pt 0pt 12pt goldenrod;
   color: goldenrod;
 }
+
 /* Label styling */
-div.labelGroup {
-  display: flex;
-}
 div.labelGroup p {
   font-size: 13px;
 }
@@ -620,8 +604,5 @@ p.deleteLabel:hover {
 p.label {
   color: goldenrod;
   margin-bottom: 3px;
-}
-p.label small {
-  display: flex;
 }
 </style>

@@ -3,6 +3,7 @@
     <div class="detailsBody">
       <div class="detailsRow1">
         <div class="nameBirthdateWrapper">
+          <!-- NOTE Names -->
           <div class="namesWrapper">
             <div class="labelGroup">
               <p class="label nameLabel">
@@ -19,6 +20,7 @@
               </p>
             </div>
             <div class="namesGroup">
+              <!-- NOTE First Name -->
               <div class="firstNameWrapper">
                 <div
                   class="firstName"
@@ -53,6 +55,7 @@
                   </p>
                 </div>
               </div>
+              <!-- NOTE Last Name -->
               <div class="lastNameWrapper">
                 <div
                   class="lastName"
@@ -111,6 +114,7 @@
               </div>
             </div>
           </div>
+          <!-- NOTE Birthdate -->
           <div class="birthdateWrapper">
             <div
               class="birthdate"
@@ -212,8 +216,10 @@
             </div>
           </div>
         </div>
+        <!-- NOTE Phone/Email/Company -->
         <div class="phoneEmailCompanyWrapper">
           <div class="phoneEmailWrapper">
+            <!-- NOTE Phone -->
             <div
               class="phoneWrapper"
               v-if="contactData.phone || newContact.phone"
@@ -315,6 +321,7 @@
                 </p>
               </div>
             </div>
+            <!-- NOTE Email -->
             <div class="emailWrapper">
               <div
                 class="email"
@@ -441,6 +448,7 @@
               </div>
             </div>
           </div>
+          <!-- NOTE Company -->
           <div class="companyWrapper">
             <div
               class="company"
@@ -539,6 +547,7 @@
             </div>
           </div>
         </div>
+        <!-- NOTE Address -->
         <div class="addressWrapper">
           <div
             class="address"
@@ -638,6 +647,7 @@
         </div>
       </div>
       <div class="detailsRow2">
+        <!-- NOTE Notes -->
         <div class="notesWrapper" v-if="contactData.notes || newContact.notes">
           <div class="labelGroup">
             <p class="label">
@@ -705,6 +715,7 @@
       </div>
     </div>
     <div class="detailsFooter">
+      <!-- NOTE Buttons -->
       <div class="buttons">
         <div class="cancelButton">
           <button class="btn" type="button" @click="stopEditing">
@@ -733,8 +744,9 @@
         </p>
       </div>
     </div>
+    <!-- NOTE Add To Contact component -->
     <div class="addToContactComponent">
-      <add-to-contact-2
+      <add-to-contact
         v-if="showAddToContact"
         :propertyData="hasProperty"
         :contactData="newContact"
@@ -749,12 +761,12 @@
 import VueInputAutoWidth from 'vue-input-autowidth';
 import Vue from 'vue';
 Vue.use(VueInputAutoWidth);
-import AddToContact2 from '@/components/Utilities/Contacts/AddToContact2.vue';
+import AddToContact from '@/components/Utilities/Contacts/AddToContact.vue';
 export default {
   name: 'EditContactComponent',
   props: ['contactData', 'showDeleteData'],
   components: {
-    AddToContact2,
+    AddToContact,
   },
   data() {
     return {
@@ -820,6 +832,7 @@ export default {
     },
   },
   methods: {
+    // NOTE Checkt to see if the contact data being passed down has any of the optional properties
     checkForProperties() {
       if (this.contactData.lastName) {
         this.hasProperty.lastName = true;
@@ -846,9 +859,8 @@ export default {
     stopEditing() {
       this.$emit('stopEditing');
       this.newContact = { ...this.contactData };
-      document.getElementById('confirmBtn').disabled = false;
-      this.disabled = false;
     },
+    // NOTE The argument is determined by which property the user clicks on, and then this will determine which input to show (based on v-if)
     switchEdit(field) {
       switch (field) {
         case 'firstName':
@@ -946,6 +958,7 @@ export default {
           break;
       }
     },
+    // NOTE Determines which input to close
     cancelEditing(field) {
       switch (field) {
         case 'firstName':
@@ -978,6 +991,7 @@ export default {
           break;
       }
     },
+    // NOTE This is when the user hits the 'enter' key and essentially soft-confirms their changes; this will record what property was changed and then enable the actual submission of the contact
     finishEditing(field) {
       switch (field) {
         case 'firstName':
@@ -1056,6 +1070,7 @@ export default {
           break;
       }
     },
+    // NOTE All this does is record what property the user wants to delete, and then enable them to confirm their decision
     deleteProperty(field) {
       switch (field) {
         case 'lastName': {
@@ -1106,6 +1121,8 @@ export default {
           break;
       }
     },
+    // TODO ************* Don't forget to add in form validation here also *****************
+    // NOTE This will check for any properties that were designated to be deleted, then ***CHECK FORM VALIDATION*** and then send off the contact to be updated and notify parent components of update.
     updateContact() {
       this.checkForDeletions();
       this.$store.dispatch('updateContact', this.newContact);
@@ -1114,6 +1131,7 @@ export default {
       this.$emit('hasConfirmed');
       this.$emit('stopEditing');
     },
+    // NOTE This checks the different boolean values and then appropriatlly deletes the designated properties; the reason I wait until the end is because the user may initally want to delete a property but then change their mind, so all they would have to do is hit 'cancel' and nothing would have actually occured (versus actually deleting the property right when they click on 'delete' and then when they change their mind having to reassign it from an older/original version stored somewhere).
     checkForDeletions() {
       if (this.hasDeleted.lastName) {
         delete this.newContact.lastName;
@@ -1140,6 +1158,7 @@ export default {
     cancelAdd() {
       this.showAddToContact = false;
     },
+    // NOTE This will check contact data that was passed up from the child Add To Contact component, and then switch some booleans accordingly which will then influence how the tempalte is rendered (to include the newly added properties).
     checkAddedProperties(contactInfo) {
       this.newContact = contactInfo.newContact;
       this.hasAdded = contactInfo.hasConfirmed;
@@ -1165,27 +1184,25 @@ div.detailsWrapper {
 div.detailsBody {
   height: 290px;
 }
-div.detailsRow1 {
-  height: 165px;
-}
-div.notes {
-  height: 100px;
-  overflow-y: auto;
-  background-color: rgb(71, 71, 71);
-  border-radius: 4px 4px 4px 4px;
-}
-div.detailsFooter {
-  height: 55px;
-  padding-top: 10px;
-}
 div.nameBirthdateWrapper,
 div.namesWrapper,
 div.phoneEmailCompanyWrapper,
 div.phoneEmailWrapper,
-div.buttons {
+div.buttons,
+div.namesGroup,
+div.birthdateEdit,
+div.labelGroup,
+p.label small {
   display: flex;
 }
+div.addressEdit,
+div.phoneEdit,
+div.emailEdit,
+div.companyEdit {
+  text-align: start;
+}
 
+/* Input */
 input.smallInput {
   font-size: 13px;
 }
@@ -1198,7 +1215,7 @@ input.largeInput {
 input.XlargeInput {
   font-size: 20px;
 }
-
+/* Confirmations */
 .edited {
   color: goldenrod;
 }
@@ -1209,22 +1226,21 @@ input.XlargeInput {
   color: rgb(5, 185, 5);
 }
 
-/* Row 1 styling */
-/* Name/Birthdate styling */
+/* Row 1 */
+/* (Name and Birthdate) */
+div.detailsRow1 {
+  height: 165px;
+}
 div.namesWrapper {
   font-size: 23px;
   width: 320px;
   flex-direction: column;
-}
-div.namesGroup {
-  display: flex;
 }
 div.firstNameWrapper {
   min-width: 40px;
   max-width: 160px;
   overflow-x: auto;
 }
-
 div.lastNameWrapper {
   margin: 0px 0 0 10px;
   max-width: 160px;
@@ -1241,14 +1257,10 @@ div.birthdateWrapper {
   right: 11.25%;
 }
 div.birthdateEdit {
-  display: flex;
   flex-direction: column;
 }
-/* div.birthdateEdit input {
-  margin-left: -10px;
-} */
 
-/* Phone/Email/Company styling */
+/* (Phone/Email/Company)  */
 div.phoneEmailCompanyWrapper {
   font-size: 15px;
   height: 50px;
@@ -1257,10 +1269,19 @@ div.phoneWrapper {
   width: 110px;
   margin-right: 10px;
 }
-
 div.emailWrapper {
   width: 180px;
   overflow-x: auto;
+}
+div.companyWrapper {
+  width: 110px;
+  font-size: 14px;
+  position: absolute;
+  top: 25%;
+  right: 7%;
+}
+div.companyEdit input {
+  margin-left: -15px;
 }
 div.emailWrapper::-webkit-scrollbar,
 div.firstNameWrapper::-webkit-scrollbar,
@@ -1274,27 +1295,11 @@ div.firstNameWrapper::-webkit-scrollbar-thumb,
 div.lastNameWrapper::-webkit-scrollbar-thumb {
   background: goldenrod;
 }
-div.companyWrapper {
-  width: 110px;
-  font-size: 14px;
-  position: absolute;
-  top: 25%;
-  right: 7%;
-}
-div.companyEdit input {
-  margin-left: -15px;
-}
 
-/* Address styling */
+/* (Address)  */
 div.addressWrapper {
   font-size: 15px;
   height: 50px;
-}
-div.addressEdit,
-div.phoneEdit,
-div.emailEdit,
-div.companyEdit {
-  text-align: start;
 }
 
 /* Row 2 styling */
@@ -1304,8 +1309,18 @@ div.notesWrapper {
 div.notes p {
   padding: 0 5px;
 }
+div.notes {
+  height: 100px;
+  overflow-y: auto;
+  background-color: rgb(71, 71, 71);
+  border-radius: 4px 4px 4px 4px;
+}
 
 /* Button styling */
+div.detailsFooter {
+  height: 55px;
+  padding-top: 10px;
+}
 div.buttons {
   justify-content: center;
 }
