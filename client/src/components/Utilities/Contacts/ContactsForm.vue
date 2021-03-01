@@ -143,6 +143,7 @@
           ></textarea>
         </div>
       </div>
+      <!-- NOTE Buttons -->
       <div class="btnGroup">
         <button class="Btn cancelBtn" type="button" @click="cancel">
           Cancel
@@ -157,6 +158,7 @@
         </button>
       </div>
     </form>
+    <!-- NOTE Error Modal -->
     <div class="errorModalWrapper" v-if="showErrorModal">
       <div class="errorModal">
         <div class="errors">
@@ -170,6 +172,7 @@
             v-on:mousedown.left="startProgress"
             v-on:mouseup.left="stopProgress"
           >
+            <!-- Progress Bar -->
             <div class="progress" style="height: 25px">
               <div
                 class="progress-bar progress-bar-striped progress-bar-animated bg-danger"
@@ -220,7 +223,7 @@ export default {
   computed: {},
   methods: {
     startProgress() {
-      //This will start when the user clicks the progress bar and holds down the mousebutton
+      // NOTE This will start when the user clicks the progress bar and holds down the mousebutton
       let interval = setInterval(this.increaseProgress, 250);
       this.progressBar.interval = interval; // To clear the interval, it needs a 'name' just like eventListeners (I believe), so we are assigning it to the 'progressBar.interval' so that when I go to clear it, I can use that name to clear the interval.
     },
@@ -236,19 +239,19 @@ export default {
         }, 300);
       }
     },
-    resetProgress() {
-      this.progressBar.width = 0;
-      this.progressBar.value = 0;
-    },
     stopProgress() {
       this.resetProgress();
       clearInterval(this.progressBar.interval);
     },
+    resetProgress() {
+      this.progressBar.width = 0;
+      this.progressBar.value = 0;
+    },
     createContact() {
+      // NOTE Validate all the necessary fields first
       this.validateForm(this.contact);
-      // Validate all the necessary fields first
+      // Check to make sure there were no errors
       if (this.errors.hasErrors == false) {
-        // Check to make sure there were no errors
         this.contact.userId = this.$store.state.user.user._id;
         this.$store.dispatch('createContact', this.contact);
         if (this.contact.lastName) {
@@ -261,14 +264,15 @@ export default {
         }
         this.contact = {};
       } else {
-        this.displayErrorModal(); //If there were errors, display the error modal
+        this.displayErrorModal(); // If there were errors, display the error modal
       }
     },
+    // NOTE This is my custom client-side validation checks
     validateForm() {
-      // first name
+      // First Name
       let nameRegex = new RegExp(
-        /^[a-zA-Z]+$/
-      ); /* NOTE this will check for any lower or uppercase letter ONLY */
+        /^[a-zA-Z]+$/ /* this will check to ensure that we get only lower or uppercase letters */
+      );
       if (!this.contact.firstName) {
         /* If there is no first name */
         let error = `Please provide a first name that is at least 2 characters long.`;
@@ -290,7 +294,7 @@ export default {
         this.errors.hasErrors = true;
         this.errors.fields.firstName = true;
       }
-      // last name
+      // Last Name
       if (this.contact.lastName) {
         if (this.contact.lastName.length < 2) {
           /* If the last name is less than 2 characters long */
@@ -307,7 +311,7 @@ export default {
           this.errors.fields.lastName = true;
         }
       }
-      // birthdate
+      // Birthdate
       if (this.contact.birthdate) {
         let date = new Date();
         let array = [];
@@ -396,8 +400,8 @@ export default {
       this.errors.errors = [];
       this.errors.hasErrors = false;
     },
+    // NOTE Called when a user changes the input of a field with an error and then unfocuses that input box; does not ensure that they fixed the error, only changed it.
     removeError(field) {
-      //Called when a user changes the input of a field with an error and then unfocuses that input box
       switch (field) {
         case 'firstName':
           this.errors.fields.firstName = false;
@@ -432,64 +436,8 @@ export default {
 </script>
 
 <style scoped>
-div.errorModalWrapper {
-  height: 200px;
-  width: 200px;
-  background-color: white;
-  color: red;
-  position: absolute;
-  bottom: 15%;
-  left: 30%;
-  border-radius: 5px 5px 5px 5px;
-}
-div.errors {
-  height: 165px;
-  overflow-y: auto;
-  padding: 5px 5px;
-  text-align: left;
-}
-div.errors::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-  background-color: grey;
-}
-div.errors::-webkit-scrollbar-thumb {
-  background: red;
-}
-div.error {
-  margin-bottom: 7px;
-}
-div.error p {
-  font-size: 11px;
-  margin-bottom: 0;
-}
-div.confirmationButton {
-  height: 35px;
-}
-div.progressBar {
-  width: 125px;
-  padding-top: 5px;
-}
-div.progressBar:hover {
-  cursor: pointer;
-}
-div.progress {
-  background-color: rgb(156, 156, 156);
-}
-p.progressLabel {
-  margin-bottom: 0;
-  position: absolute;
-  bottom: 4%;
-  left: 26.5%;
-  color: white;
-  text-shadow: 1pt 1pt 2pt black;
-}
 .form-row {
   height: 70px;
-}
-.form-row.notes-row {
-  height: 110px;
-  align-content: center;
 }
 .col-md-3,
 .col-md-5,
@@ -498,6 +446,8 @@ p.progressLabel {
   display: flex;
   flex-direction: column;
 }
+
+/* Labels */
 label {
   margin-bottom: 0;
 }
@@ -507,6 +457,8 @@ label.left {
 label span {
   color: red;
 }
+
+/* Inputs */
 input {
   background-color: transparent;
   border: none;
@@ -523,6 +475,11 @@ input::placeholder {
   color: rgb(170, 170, 170);
 }
 
+/* Notes */
+.form-row.notes-row {
+  height: 110px;
+  align-content: center;
+}
 div#notes {
   margin: auto;
 }
@@ -538,6 +495,8 @@ textarea::placeholder {
 textarea:focus {
   border: 1pt solid goldenrod;
 }
+
+/* Buttons */
 div.btnGroup {
   height: 35px;
 }
@@ -583,5 +542,61 @@ button.cancelBtn:focus {
 }
 button.submitBtn:focus {
   box-shadow: 1pt 0pt 10pt goldenrod !important;
+}
+
+/* Error Modal */
+div.errorModalWrapper {
+  height: 200px;
+  width: 200px;
+  background-color: white;
+  color: red;
+  position: absolute;
+  bottom: 15%;
+  left: 30%;
+  border-radius: 5px 5px 5px 5px;
+}
+div.errors {
+  height: 165px;
+  overflow-y: auto;
+  padding: 5px 5px;
+  text-align: left;
+}
+div.errors::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background-color: grey;
+}
+div.errors::-webkit-scrollbar-thumb {
+  background: red;
+}
+div.error {
+  margin-bottom: 7px;
+}
+div.error p {
+  font-size: 11px;
+  margin-bottom: 0;
+}
+div.confirmationButton {
+  height: 35px;
+}
+
+/* Progress Bar */
+div.progressBar {
+  width: 125px;
+  padding-top: 5px;
+}
+div.progressBar:hover {
+  cursor: pointer;
+}
+div.progress {
+  background-color: rgb(156, 156, 156);
+}
+p.progressLabel {
+  margin-bottom: 0;
+  position: absolute;
+  bottom: 4%;
+  left: 26.5%;
+  color: white;
+  text-shadow: 1pt 1pt 2pt black;
 }
 </style>

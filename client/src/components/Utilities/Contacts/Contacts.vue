@@ -47,6 +47,7 @@
             <div class="contactListHeader">
               <p>{{ CurrentLetter }}</p>
             </div>
+            <!-- NOTE Where the Contacts will be dispalyed -->
             <div class="contactListSection">
               <div
                 class="contact"
@@ -74,11 +75,13 @@
           </div>
         </div>
       </div>
+      <!-- NOTE The component to create a Contact -->
       <div v-if="show.form" class="formSection">
         <contacts-form @cancel="cancel" />
       </div>
+      <!-- NOTE The Contact details component (also where the Edit Contact component is located) -->
       <div v-if="show.details" class="contactDetailsSection">
-        <contact-details-2
+        <contact-details
           :contactData="contact"
           :toEdit="straightToEdit"
           @back="cancel"
@@ -90,12 +93,12 @@
 
 <script>
 import ContactsForm from '@/components/Utilities/Contacts/ContactsForm.vue';
-import ContactDetails2 from '@/components/Utilities/Contacts/ContactDetails2.vue';
+import ContactDetails from '@/components/Utilities/Contacts/ContactDetails.vue';
 export default {
   name: 'ContactsComponent',
   components: {
     ContactsForm,
-    ContactDetails2,
+    ContactDetails,
   },
   props: [],
   data() {
@@ -114,10 +117,12 @@ export default {
     };
   },
   mounted() {
+    // NOTE This is called when a new Contact is created, it is used to determine which letter to display (based on new Contact's name)
     this.$root.$on('submittedForm', (name) => {
       this.showMain();
-      this.checkLetter(name);
+      this.checkLetter(name[0]);
     });
+    // NOTE This is called when a Contact has been updated, it is used to just 'update' the Contact object here in the parent component without having to make any extra calls.
     this.$root.$on('setUpdatedContact', (contact) => {
       this.contact = contact;
     });
@@ -128,11 +133,13 @@ export default {
     this.$store.state.contacts.specificLetter = [];
   },
   computed: {
-    SpecificLetter() {
-      return this.$store.state.contacts.specificLetter;
-    },
+    // NOTE The current letter stored in the store
     CurrentLetter() {
       return this.$store.state.contacts.currentLetter;
+    },
+    // NOTE The array of Contacts for the current letter
+    SpecificLetter() {
+      return this.$store.state.contacts.specificLetter;
     },
   },
   methods: {
@@ -156,6 +163,7 @@ export default {
       this.straightToEdit = false;
       this.$store.state.contacts.contact = contact;
     },
+    // Go straight to the edit screen, pass along the Contact
     toEdit(contact) {
       this.contact = contact;
       this.show.form = false;
@@ -164,19 +172,17 @@ export default {
       this.straightToEdit = true;
     },
     cancel() {
-      this.show.form = false;
-      this.show.details = false;
-      this.show.main = true;
-      this.straightToEdit = false;
+      this.showMain();
       setTimeout(() => {
         this.checkForHighlight();
       }, 50);
     },
-    // NOTE these two methods are called when the component gets mounted; i.e when a user opens the contacts tab for the first time or goes from contacts->calendar->contacts
+    // NOTE This is called everytime the component gets mounted
     checkHighlightAndRepopulate() {
       this.checkForHighlight();
       this.repopulate();
     },
+    // Adds the css to highlight the letter in the index based on the letter stored in the store, have to add special check for 'F'
     checkForHighlight() {
       if (this.$store.state.contacts.currentLetter === 'F') {
         document.getElementById('f').classList.add('activeLetter');
@@ -186,23 +192,23 @@ export default {
           .classList.add('activeLetter');
       }
     },
+    // This is used to filter through the Contacts in the DB based on the current letter stored
     repopulate() {
       this.$store.dispatch(
         'filterContacts',
         this.$store.state.contacts.currentLetter
       );
     },
-    // NOTE this method is only called when a user selects a letter from the index
+    // NOTE this method is only called when a user selects a letter from the index. Since the getElementById wont capture an uppercase 'F', we have to manually check to see if the capital 'F' is passed in, and if it is tell the getElementById to grab the proper element (use a lowercase 'f' for the id); both for adding and removing the activeLetter class
     selectLetter(letter) {
-      // NOTE Since the getElementById wont capture an uppercase 'F', we have to manually check to see if the capital 'F' is passed in, and if it is tell the getElementById to grab the proper element (use a lowercase 'f' for the id); both for adding and removing the activeLetter class.
       if (letter === 'F') {
+        // This is for if 'F' is the letter the user selected
         document
           .getElementById(this.$store.state.contacts.currentLetter)
           .classList.remove('activeLetter');
         document.getElementById('f').classList.add('activeLetter');
-        this.$store.state.contacts.currentLetter = letter;
-        this.$store.dispatch('filterContacts', letter);
       } else if (letter !== 'F') {
+        // This is for when the letter the user selected is not 'F'
         if (this.$store.state.contacts.currentLetter === 'F') {
           document.getElementById('f').classList.remove('activeLetter');
         } else if (this.$store.state.contacts.currentLetter !== 'F') {
@@ -211,13 +217,12 @@ export default {
             .classList.remove('activeLetter');
         }
         document.getElementById(letter).classList.add('activeLetter');
-        this.$store.state.contacts.currentLetter = letter;
-        this.$store.dispatch('filterContacts', letter);
       }
+      this.$store.state.contacts.currentLetter = letter;
+      this.$store.dispatch('filterContacts', letter);
     },
-    // NOTE this method is only called when a user creates a new contact
+    // NOTE this method is only called when a user creates a new contact and so we have to determine what Contacts to show based on the new Contact's name. We do this by checking the first index of the name that is passed in, having to manually check for 'F'; then we set the new letter and filter the contacts based on that letter.
     checkLetter(name) {
-      console.log(name[0]);
       setTimeout(async () => {
         if (name[0].toUpperCase() === 'F') {
           document
@@ -262,6 +267,7 @@ export default {
   width: 475px;
   height: 355px;
 }
+/* Header styling */
 .newContactBtn p {
   display: inline-block;
 }
@@ -269,6 +275,7 @@ export default {
   cursor: pointer;
   text-shadow: 10px 0px 20px white, 10px 0px 20px white;
 }
+/* Index styling */
 .letterIndex {
   display: flex;
   justify-content: center;
@@ -290,11 +297,11 @@ export default {
 div.buffer.activeLetter p {
   font-size: 15px;
   text-shadow: 1px 0pt 8pt white, 1px 0pt 8pt white, 1px 0pt 8pt white;
-  /* text-shadow: 10px 0 50px red; */
 }
 div.contactListHeader p {
   margin-bottom: 0;
 }
+/* Contact list area styling */
 div.contactListSection {
   max-height: 260px;
   overflow-y: auto;
@@ -330,6 +337,7 @@ div.contactListSection {
   margin: 0 5px;
   cursor: pointer;
 }
+/* Contact option button styling */
 .contactOptions .edit:hover {
   color: rgb(10, 199, 10);
 }
