@@ -49,7 +49,16 @@
   <!-- NOTE Below is template for when there is a user 'logged in' -->
   <div class="greeting " v-else>
     <h1>Good {{ timeOfDay }}, {{ User.user.name }}.</h1>
-    <div class="dropdown">
+    <div class="btn" @click="showMenu">
+      <i class="fas fa-ellipsis-h"></i>
+    </div>
+    <greeting-menu
+      class="greetingMenu"
+      v-if="show.menu"
+      @showMenu="showMenu"
+      @createNewUser="createNewUser"
+    />
+    <!-- <div class="dropdown">
       <div id="dLabel" role="button" data-toggle="dropdown" class="btn">
         <i class="fas fa-ellipsis-h"></i>
       </div>
@@ -84,7 +93,7 @@
           </ul>
         </li>
       </ul>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -93,12 +102,18 @@ import VueInputAutoWidth from 'vue-input-autowidth';
 import Swal from 'sweetalert2';
 import Vue from 'vue';
 Vue.use(VueInputAutoWidth);
-
+import GreetingMenu from '@/components/Greeting/GreetingMenu.vue';
 export default {
   name: 'Greeting',
+  components: {
+    GreetingMenu,
+  },
   data() {
     return {
       timeOfDay: 'evening',
+      show: {
+        menu: false,
+      },
       user: {
         name: '',
         militaryTimeSelected: false,
@@ -129,6 +144,9 @@ export default {
     },
   },
   methods: {
+    showMenu() {
+      this.show.menu = !this.show.menu;
+    },
     getTimeOfDay() {
       let hour = new Date().getHours();
       if (hour < 12) {
@@ -198,15 +216,20 @@ export default {
 
 <style scoped>
 .greeting {
-  font-size: 4rem;
   color: white;
   justify-content: center;
   align-items: center;
   display: flex;
+  position: absolute;
+  left: 10%;
+  top: 90%;
+}
+.greetingMenu {
+  position: absolute;
 }
 h1 {
   text-shadow: 3px 3px 5px black;
-  font-size: 64px;
+  font-size: 3.75rem;
 }
 input {
   border: none;
