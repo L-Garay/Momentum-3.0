@@ -6,12 +6,12 @@
       height: dimensions.height + 'px',
     }"
   >
-    <div class="topMenu" v-if="show.top">
+    <div class="topMenu" v-show="show.top">
       <p class="create" @click="createNewUser">Create User</p>
       <p class="change" @click="toggleMenu('change')">Change User</p>
       <p class="delete" @click="toggleMenu('delete')">Delete User</p>
     </div>
-    <div class="changeMenu" v-if="show.change">
+    <div class="changeMenu" v-show="show.change">
       <i class="fas fa-arrow-left back" @click="back"></i>
       <p
         v-for="user in ChangeUsers"
@@ -21,7 +21,7 @@
         {{ user.name }}
       </p>
     </div>
-    <div class="deleteMenu" v-if="show.delete">
+    <div class="deleteMenu" v-show="show.delete">
       <i class="fas fa-arrow-left back" @click="back"></i>
       <p
         v-for="user in Users"
@@ -53,6 +53,7 @@ export default {
   mounted() {
     setTimeout(() => {
       document.addEventListener('click', this.greetingEventListener, false);
+      console.log('set up');
     }, 1000);
   },
   computed: {
@@ -69,6 +70,8 @@ export default {
   methods: {
     greetingEventListener(event) {
       if (!this.$el.contains(event.target)) {
+        console.log(event.target, 'target');
+        console.log(this.$el, 'element');
         this.$emit('showMenu');
         document.removeEventListener(
           'click',

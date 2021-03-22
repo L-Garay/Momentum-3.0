@@ -345,6 +345,7 @@ export default {
     // This will add the event listener 1 second after the component is mounted
     setTimeout(() => {
       document.addEventListener('click', this.setupEventListener, false);
+      console.log('set up');
     }, 1000);
   },
   computed: {
@@ -374,6 +375,8 @@ export default {
     // This is the actual event listener, it has to be named in order to properly remove the event listener. It is checking to see if whatever you clicked on is contained within 'this.$el' (which I believe in the context of Vue refers to the current component, in this case the 5DayForecast component), and if it is not within it then close the modal/component and remove the event listener.
     setupEventListener(event) {
       if (!this.$el.contains(event.target)) {
+        console.log(event.target, 'target');
+        console.log(this.$el, 'element');
         this.$emit('closeForecast');
         this.show.today = true;
         document.removeEventListener('click', this.setupEventListener, false);
