@@ -315,6 +315,7 @@ export default {
 .middle .row {
   flex-direction: column;
   align-items: center;
+  padding-top: 3em;
 }
 .middle .row .greeting {
   max-width: 1200px;

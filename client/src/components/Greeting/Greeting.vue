@@ -37,7 +37,6 @@
 
 <script>
 import VueInputAutoWidth from 'vue-input-autowidth';
-import Swal from 'sweetalert2';
 import Vue from 'vue';
 Vue.use(VueInputAutoWidth);
 import GreetingMenu from '@/components/Greeting/GreetingMenu.vue';
@@ -119,31 +118,6 @@ export default {
       this.$root.$emit('submitNewUser', user);
       this.user.name = '';
     },
-
-    async getUserById(id) {
-      await this.$store.dispatch('getUserById', id);
-      // Let the Clock component know that the user has changed, and pass in the new user and their time prefernce
-      let newUser = this.$store.state.user.user;
-      this.$root.$emit('changedUser', newUser);
-    },
-    // Third party package called SweetAlerts2
-    deleteUserById(id) {
-      Swal.fire({
-        title: 'Are you sure?',
-        text:
-          "You won't be able to revert this and all saved photos and quotes will also be deleted!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!',
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          await this.$store.dispatch('deleteUserById', id);
-          Swal.fire('Deleted!', 'The user has been deleted.', 'success');
-        }
-      });
-    },
     onClickOutside() {
       this.user.name = '';
       this.$store.state.user.noUser = false;
@@ -160,6 +134,8 @@ export default {
   display: flex;
   position: relative;
   height: 200px;
+  max-width: 1200px;
+  margin-top: -5em;
 }
 .greetingMenu {
   position: absolute;
