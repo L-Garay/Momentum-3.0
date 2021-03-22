@@ -81,7 +81,7 @@ export default {
 
 <style scoped>
 .clock {
-  font-size: 11rem;
+  font-size: 9rem;
   color: white;
   text-align: center;
   text-shadow: 3px 3px 5px black;
