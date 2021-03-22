@@ -35,8 +35,10 @@
     </div>
     <div class="container-fluid middle">
       <div class="row">
-        <div class="col-6 offset-3 mt-4">
+        <div class="clock">
           <clock />
+        </div>
+        <div class="greeting">
           <greeting />
         </div>
         <photo-modal
@@ -309,6 +311,13 @@ export default {
 }
 .middle {
   height: 63vh;
+}
+.middle .row {
+  flex-direction: column;
+  align-items: center;
+}
+.middle .row .greeting {
+  max-width: 1200px;
 }
 .bottom {
   height: 14vh;

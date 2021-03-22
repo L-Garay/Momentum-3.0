@@ -10,41 +10,15 @@
       v-on:keyup.enter="submitNewUser"
       v-autowidth="{ maxWidth: '550px', minWidth: '100px', comfortZone: 30 }"
     />
-    <div class="dropdown" v-if="User.userCount > 0">
-      <div id="dLabel" role="button" data-toggle="dropdown" class="btn">
-        <i class="fas fa-ellipsis-h"></i>
-      </div>
-      <ul
-        class="dropdown-menu multi-level"
-        role="menu"
-        aria-labelledby="dropdownMenu"
-      >
-        <li class="dropdown-submenu" v-if="User.userShowChange">
-          <a tabindex="-1">Change user</a>
-          <ul class="dropdown-menu">
-            <li
-              v-for="user in ChangeUsers"
-              :key="user._id"
-              @click="getUserById(user._id)"
-            >
-              {{ user.name }}
-            </li>
-          </ul>
-        </li>
-        <li class="dropdown-submenu">
-          <a tabindex="-1">Delete user</a>
-          <ul class="dropdown-menu">
-            <li v-for="user in Users" :key="user._id">
-              {{ user.name }}
-              <i
-                class="fas fa-user-times user"
-                @click="deleteUserById(user.id)"
-              ></i>
-            </li>
-          </ul>
-        </li>
-      </ul>
+    <div class="btn" @click="showMenu">
+      <i class="fas fa-ellipsis-h"></i>
     </div>
+    <greeting-menu
+      class="greetingMenu"
+      v-if="show.menu"
+      @showMenu="showMenu"
+      @createNewUser="createNewUser"
+    />
   </div>
   <!-- NOTE Below is template for when there is a user 'logged in' -->
   <div class="greeting " v-else>
@@ -58,42 +32,6 @@
       @showMenu="showMenu"
       @createNewUser="createNewUser"
     />
-    <!-- <div class="dropdown">
-      <div id="dLabel" role="button" data-toggle="dropdown" class="btn">
-        <i class="fas fa-ellipsis-h"></i>
-      </div>
-      <ul
-        class="dropdown-menu multi-level"
-        role="menu"
-        aria-labelledby="dropdownMenu"
-      >
-        <li @click="createNewUser">Create new user</li>
-        <li class="dropdown-submenu" v-if="User.userShowChange">
-          <a tabindex="-1">Change user</a>
-          <ul class="dropdown-menu">
-            <li
-              v-for="user in ChangeUsers"
-              :key="user._id"
-              @click="getUserById(user._id)"
-            >
-              {{ user.name }}
-            </li>
-          </ul>
-        </li>
-        <li class="dropdown-submenu">
-          <a tabindex="-1">Delete user</a>
-          <ul class="dropdown-menu">
-            <li v-for="user in Users" :key="user._id">
-              {{ user.name }}
-              <i
-                class="fas fa-user-times user"
-                @click="deleteUserById(user.id)"
-              ></i>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div> -->
   </div>
 </template>
 
@@ -220,14 +158,16 @@ export default {
   justify-content: center;
   align-items: center;
   display: flex;
-  position: absolute;
-  left: 10%;
-  top: 90%;
+  position: relative;
+  height: 200px;
 }
 .greetingMenu {
   position: absolute;
+  right: -5em;
+  bottom: -0.5em;
 }
 h1 {
+  margin-left: 1em;
   text-shadow: 3px 3px 5px black;
   font-size: 3.75rem;
 }
@@ -261,72 +201,5 @@ i:hover {
   cursor: pointer;
   color: white;
   opacity: 1;
-}
-i.user {
-  float: right;
-  color: rgba(255, 0, 0, 0.507);
-  padding-right: 5px;
-}
-i.user:hover {
-  color: red;
-}
-li {
-  padding: 3px 0 3px 5px;
-}
-li:hover {
-  cursor: pointer;
-  background-color: rgb(128, 128, 128, 0.2);
-}
-
-/* NOTE Dropdown settings */
-.dropdown {
-  padding-left: 12px;
-}
-.dropdown-submenu {
-  position: relative;
-}
-
-.dropdown-submenu > .dropdown-menu {
-  top: 0;
-  left: 100%;
-  margin-top: -6px;
-  margin-left: -1px;
-  -webkit-border-radius: 0 6px 6px 6px;
-  -moz-border-radius: 0 6px 6px;
-  border-radius: 0 6px 6px 6px;
-}
-
-.dropdown-submenu:hover > .dropdown-menu {
-  display: block;
-}
-
-.dropdown-submenu > a:after {
-  display: block;
-  content: ' ';
-  float: right;
-  width: 0;
-  height: 0;
-  border-color: transparent;
-  border-style: solid;
-  border-width: 5px 0 5px 5px;
-  border-left-color: #ccc;
-  margin-top: 5px;
-  margin-right: -10px;
-}
-
-.dropdown-submenu:hover > a:after {
-  border-left-color: #fff;
-}
-
-.dropdown-submenu.pull-left {
-  float: none;
-}
-
-.dropdown-submenu.pull-left > .dropdown-menu {
-  left: -100%;
-  margin-left: 10px;
-  -webkit-border-radius: 6px 0 6px 6px;
-  -moz-border-radius: 6px 0 6px 6px;
-  border-radius: 6px 0 6px 6px;
 }
 </style>
