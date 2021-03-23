@@ -346,7 +346,7 @@ export default {
     setTimeout(() => {
       document.addEventListener('click', this.setupEventListener, false);
       console.log('set up');
-    }, 1000);
+    }, 500);
   },
   computed: {
     Today() {

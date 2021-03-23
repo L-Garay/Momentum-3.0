@@ -91,32 +91,32 @@
     </div>
     <div class="container-fluid ">
       <div class="row justify-content-center bottom ">
-        <div class="col-1">
-          <settings
+        <div class="col-1 test">
+          <!-- <settings
             @openPhotosModal="openPhotosModal"
             @openQuotesModal="openQuotesModal"
             @toggleCalculator="toggleCalculator"
             @toggleNews="toggleNews"
             @toggleGames="toggleGames"
-          />
+          /> -->
+          <p class="toggleMenu" @click="toggleSettings">Settings</p>
+          <transition name="fade">
+            <div v-if="show.settings">
+              <settings-2 @toggleSettings="toggleSettings" /></div
+          ></transition>
         </div>
         <div class="col-6 offset-2">
           <quote />
         </div>
-        <div class="col-1 offset-2">
-          <p class="utilities" @click="toggleUtilities">Utilities</p>
+        <div class="col-1 offset-2 test">
+          <p class="toggleMenu text-right" @click="toggleUtilities">
+            Utilities
+          </p>
           <transition name="fade">
             <div v-if="showUtilities">
               <utilities /></div
           ></transition>
         </div>
-        <!-- <div class="col-1 offset-2 todoList">
-          <p class="toggle" @click="toggleTodos">Todos</p>
-          <transition name="fade">
-            <div v-if="showTodosModal">
-              <todo /></div
-          ></transition>
-        </div> -->
       </div>
     </div>
   </div>
@@ -126,7 +126,8 @@
 import Weather from '@/components/Weather/Weather.vue';
 // import Forecast from '@/components/Weather/5DayForecast.vue';
 import Quote from '@/components/Quote.vue';
-import Settings from '@/components/Settings.vue';
+// import Settings from '@/components/Settings.vue';
+import Settings2 from '@/components/SettingsMenu/Settings2.vue';
 import Clock from '@/components/Greeting/Clock.vue';
 import Greeting from '@/components/Greeting/Greeting.vue';
 import PhotoModal from '@/components/Modals/PhotoModal.vue';
@@ -141,7 +142,8 @@ export default {
   components: {
     Weather,
     Quote,
-    Settings,
+    // Settings,
+    Settings2,
     Clock,
     Greeting,
     PhotoModal,
@@ -166,6 +168,9 @@ export default {
       showUtilities: false,
       show5DayForecast: false,
       gotPhoto: false,
+      show: {
+        settings: false,
+      },
     };
   },
   mounted() {
@@ -292,6 +297,14 @@ export default {
         this.showUtilities = false;
       }
     },
+    // Settings
+    toggleSettings() {
+      if (this.show.settings == false) {
+        this.show.settings = true;
+      } else if (this.show.settings == true) {
+        this.show.settings = false;
+      }
+    },
   },
 };
 </script>
@@ -324,6 +337,9 @@ export default {
   height: 14vh;
   align-items: flex-end;
 }
+div.test {
+  height: 50px;
+}
 
 /* Calculator component styling */
 .calculator {
@@ -332,19 +348,19 @@ export default {
 }
 
 /* Todo component styling */
-.todoList {
-  text-align: center;
-}
-p.utilities {
+p.toggleMenu {
   color: white;
   font-size: 1.3rem;
   text-shadow: 3px 3px 3px black;
 }
-p.utilities:hover {
+p.toggleMenu:hover {
   cursor: pointer;
   font-size: 1.4rem;
   text-shadow: 4px 4px 3px black;
 }
+/* Toggling element styling */
+
+/* Transition styling */
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.35s;
@@ -352,7 +368,8 @@ p.utilities:hover {
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
-/* Toggle element styling */
+
+/* Toggle element styling (News, Games, Calculator squares) */
 .toggle {
   color: black;
   background-color: rgba(255, 255, 255, 0.5);
