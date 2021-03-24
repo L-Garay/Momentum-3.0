@@ -229,15 +229,19 @@ div.savedPhotosSection h5 {
   text-align: center;
   margin-top: 70px;
 }
-.image {
+div.image {
   margin-top: 7px;
   position: relative;
+  margin-bottom: 7px;
 }
 img {
   height: 100px;
   width: 145px;
   cursor: pointer;
-  padding-bottom: 10px;
+  /* padding-bottom: 10px; */
+}
+img:hover {
+  box-shadow: 0px 0px 10px white;
 }
 div.image i {
   position: absolute;
