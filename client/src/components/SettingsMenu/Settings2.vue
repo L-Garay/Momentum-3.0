@@ -24,6 +24,7 @@
         <div class="components">
           <general-menu v-if="show.general" />
           <photos-menu v-if="show.photos" />
+          <quotes-menu v-if="show.quotes" />
         </div>
       </div>
     </div>
@@ -33,17 +34,20 @@
 <script>
 import GeneralMenu from '@/components/SettingsMenu/Menus/GeneralMenu.vue';
 import PhotosMenu from '@/components/SettingsMenu/Menus/PhotosMenu.vue';
+import QuotesMenu from '@/components/SettingsMenu/Menus/QuotesMenu.vue';
 export default {
   name: 'Settings2',
   components: {
     GeneralMenu,
     PhotosMenu,
+    QuotesMenu,
   },
   data() {
     return {
       show: {
         general: true,
         photos: false,
+        quotes: false,
       },
     };
   },
@@ -69,10 +73,17 @@ export default {
         case 'general':
           this.show.general = true;
           this.show.photos = false;
+          this.show.quotes = false;
           break;
         case 'photos':
           this.show.general = false;
           this.show.photos = true;
+          this.show.quotes = false;
+          break;
+        case 'quotes':
+          this.show.general = false;
+          this.show.photos = false;
+          this.show.quotes = true;
           break;
         default:
           this.show.general = true;

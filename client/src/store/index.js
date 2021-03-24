@@ -962,9 +962,9 @@ export default new Vuex.Store({
       let res = await api.get('quotes/' + id);
       commit('setQuote', res.data);
     },
-    async saveQuote({ commit }, savedQuote) {
-      let res = await api.post('quotes', savedQuote);
-      commit('setQuote', res.data);
+    async saveQuote({ dispatch, state }, savedQuote) {
+      await api.post('quotes', savedQuote);
+      dispatch('getSavedQuotesByUserId', state.user.user.id);
     },
     async deleteQuote({ dispatch, state }, id) {
       await api.delete('quotes/' + id);
