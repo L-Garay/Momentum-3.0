@@ -7,7 +7,7 @@
     >
       <div class="quoteDiv">
         <p class="quote">
-          {{ Quote.quote || 'Loading...' }}
+          {{ Quote.quote || Quote.title || 'Loading...' }}
         </p>
       </div>
       <div class="authorDiv">
