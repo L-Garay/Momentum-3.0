@@ -44,7 +44,6 @@ export default {
 <style scoped>
 /* Component styling */
 .quoteWrapper {
-  text-align: center;
   width: 735px;
   height: 100px;
 }
@@ -54,10 +53,15 @@ p {
   text-shadow: 3px 3px 3px black;
   margin-bottom: 0;
 }
+div.quoteSection {
+  width: 735px;
+  height: 100px;
+}
 /* Quote transition styling */
 p.quote {
   /* This declares that this element has a transition, specifically a transform type, and it sets the time of the tranformation at .35 seconds and sets the style of transformation to 'ease-out' (slow end) */
   transition: transform 0.4s ease-out;
+  text-align: center;
 }
 .quoteSection:hover p.quote {
   /* This determines when transformation will occur (when the user hovers over the div.quoteSection element), what will be transforming (the p.quote element), and then it sets the transformation type to translate along the y-axis and move the quote element up 10px  */
@@ -67,8 +71,7 @@ p.quote {
 /* These are the positioning styles for the quote and author elements */
 div.quoteDiv,
 div.authorDiv {
-  left: 9.5%;
-  width: 620px;
+  width: 735px;
   position: absolute;
 }
 div.quoteDiv {
@@ -80,6 +83,7 @@ div.authorDiv {
   height: 28px;
 }
 div.authorDiv p.author {
+  text-align: center;
   font-size: 15px;
 }
 

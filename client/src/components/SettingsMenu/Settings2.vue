@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import GeneralMenu from '@/components/SettingsMenu/Menus/GeneralMenu.vue';
+import GeneralMenu from '@/components/SettingsMenu/Menus/General/GeneralMenu.vue';
 import PhotosMenu from '@/components/SettingsMenu/Menus/PhotosMenu.vue';
 import QuotesMenu from '@/components/SettingsMenu/Menus/QuotesMenu.vue';
 export default {

@@ -21,26 +21,27 @@
         </div>
         <div class="col-3 offset-7">
           <div><weather /></div>
-          <!-- <transition name="fade">
-            <div v-if="show5DayForecast">
-              <forecast />
-            </div>
-          </transition> -->
         </div>
         <div class="col-1">
-          <!-- <calculator /> -->
           <calculator v-if="toggledCalculator" class="calculator" />
         </div>
       </div>
     </div>
     <div class="container-fluid middle">
       <div class="row">
-        <div class="clock">
+        <div class="col-6 offset-3 clock">
           <clock />
         </div>
-        <div class="greeting">
-          <greeting />
+        <div class="container-fluid">
+          <div class="row greetingRow">
+            <div class="greetingWrapper">
+              <div class=" greeting">
+                <greeting />
+              </div>
+            </div>
+          </div>
         </div>
+
         <photo-modal
           v-if="showPhotoModal"
           @close-photos-modal="closePhotosModal"
@@ -51,64 +52,21 @@
         />
         <news-modal v-if="showNewsModal" @close-news-modal="closeNewsModal" />
         <game v-if="showGames" @close-games="closeGames" />
-        <!-- NOTE Can't use bootstrap modal because for some reason I get an error saying the '$' symbol when trying to programatically open/close it using bootstrap's $('#myModal').modal(options) is 'undefined'. I have tried using a cdn directly from jquery, I have tried npm i-ing jquery directly into the project and neither work.  I have tried reordering the cdns, I have tried nmp i-ing bootstrap directly, and neither work.  I have no idea why it's not working. So the workaround is to use a modal made by the vue devs found at https://vuejs.org/v2/examples/modal.html?
-          <div
-          class="modal"
-          id="photosModal"
-          ref="photosModal"
-          tabindex="-1"
-          role="dialog"
-        >
-          <div class="modal-dialog modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalScrollableTitle">
-                  Modal title
-                </h5>
-                <button type="button" class="close" data-dismiss="modal">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                ...
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button type="button" class="btn btn-primary">
-                  Save changes
-                </button>
-              </div>
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
     <div class="container-fluid ">
       <div class="row justify-content-center bottom ">
-        <div class="col-1 test">
-          <!-- <settings
-            @openPhotosModal="openPhotosModal"
-            @openQuotesModal="openQuotesModal"
-            @toggleCalculator="toggleCalculator"
-            @toggleNews="toggleNews"
-            @toggleGames="toggleGames"
-          /> -->
+        <div class="col-1 settingsUtilitiesHeight">
           <p class="toggleMenu" @click="toggleSettings">Settings</p>
           <transition name="fade">
             <div v-if="show.settings">
               <settings-2 @toggleSettings="toggleSettings" /></div
           ></transition>
         </div>
-        <div class="col-6 offset-2">
+        <div class="col-6 offset-2 quote">
           <quote />
         </div>
-        <div class="col-1 offset-2 test">
+        <div class="col-1 offset-2 settingsUtilitiesHeight">
           <p class="toggleMenu text-right" @click="toggleUtilities">
             Utilities
           </p>
@@ -326,18 +284,23 @@ export default {
   height: 63vh;
 }
 .middle .row {
-  flex-direction: column;
-  align-items: center;
   padding-top: 3em;
 }
-.middle .row .greeting {
-  max-width: 1200px;
+div.middle div.row.greetingRow {
+  justify-content: center;
+  padding-top: 0;
 }
+/* div.middle div.row div.greetingWrapper {
+  width: 1400px;
+}
+.middle .row .greeting {
+  max-width: 1400px;
+} */
 .bottom {
   height: 14vh;
   align-items: flex-end;
 }
-div.test {
+div.settingsUtilitiesHeight {
   height: 50px;
 }
 
