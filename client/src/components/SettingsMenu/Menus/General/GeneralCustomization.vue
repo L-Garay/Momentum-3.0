@@ -38,12 +38,15 @@
     </div>
     <div class="themeControlSection">
       <div class="controls">
-        <div class="label"><b>Theme</b></div>
+        <div class="label comingSoon">
+          <b>Theme</b><small>**Coming Soon**</small>
+        </div>
         <div class="dropleft">
           <button
             class="btn dropdown-toggle"
             type="button"
             data-toggle="dropdown"
+            disabled
           >
             Select Theme
           </button>
@@ -88,6 +91,13 @@ div.controls {
 }
 div.label {
   padding-left: 20px;
+}
+div.label.comingSoon {
+  display: flex;
+  flex-direction: column;
+}
+div.label.comingSoon small {
+  font-size: 11px;
 }
 /* Font options styling */
 div.fonts {
@@ -159,6 +169,12 @@ button.btn:focus {
   text-shadow: 1px 1px 1px black;
   box-shadow: 0pt 0pt 12pt goldenrod;
   color: goldenrod;
+}
+button.btn:disabled {
+  background-color: transparent;
+  color: white;
+  border: 1pt solid white;
+  box-shadow: none;
 }
 
 /* Dropdown menu styling */

@@ -32,9 +32,16 @@
         <div class="col-6 offset-3 clock">
           <clock />
         </div>
-        <div class="col-8 offset-2 greeting">
-          <greeting />
+        <div class="container-fluid">
+          <div class="row greetingRow">
+            <div class="greetingWrapper">
+              <div class=" greeting">
+                <greeting />
+              </div>
+            </div>
+          </div>
         </div>
+
         <photo-modal
           v-if="showPhotoModal"
           @close-photos-modal="closePhotosModal"
@@ -279,9 +286,16 @@ export default {
 .middle .row {
   padding-top: 3em;
 }
-.middle .row .greeting {
-  max-width: 1200px;
+div.middle div.row.greetingRow {
+  justify-content: center;
+  padding-top: 0;
 }
+/* div.middle div.row div.greetingWrapper {
+  width: 1400px;
+}
+.middle .row .greeting {
+  max-width: 1400px;
+} */
 .bottom {
   height: 14vh;
   align-items: flex-end;
