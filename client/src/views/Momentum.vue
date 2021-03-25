@@ -32,7 +32,7 @@
         <div class="col-6 offset-3 clock">
           <clock />
         </div>
-        <div class="col-6 offset-3 greeting">
+        <div class="col-8 offset-2 greeting">
           <greeting />
         </div>
         <photo-modal
