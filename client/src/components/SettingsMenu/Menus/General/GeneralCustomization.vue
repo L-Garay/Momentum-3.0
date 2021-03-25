@@ -90,7 +90,7 @@ div.controls {
   padding-top: 18.5px;
 }
 div.label {
-  padding-left: 20px;
+  padding-left: 30px;
 }
 div.label.comingSoon {
   display: flex;

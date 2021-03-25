@@ -11,13 +11,75 @@
         <div class="customizeSection">
           <general-customization />
           <div class="toggleShowSection">
-            <div class="title"></div>
-            <div class="toggleOption">Utilities</div>
-            <div class="toggleOption">Weather</div>
-            <div class="toggleOption">Quote</div>
-            <div class="toggleOption">News</div>
-            <div class="toggleOption">Calculator</div>
-            <div class="toggleOption">Games</div>
+            <div class="title">
+              <h5>Show</h5>
+            </div>
+            <div class="toggleOption">
+              <p>Utilities</p>
+              <div class="custom-control custom-switch">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="customSwitch1"
+                />
+                <label class="custom-control-label" for="customSwitch1"></label>
+              </div>
+            </div>
+            <div class="toggleOption">
+              <p>Weather</p>
+              <div class="custom-control custom-switch">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="customSwitch2"
+                />
+                <label class="custom-control-label" for="customSwitch2"></label>
+              </div>
+            </div>
+            <div class="toggleOption">
+              <p>Quote</p>
+              <div class="custom-control custom-switch">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="customSwitch3"
+                />
+                <label class="custom-control-label" for="customSwitch3"></label>
+              </div>
+            </div>
+            <div class="toggleOption">
+              <p>News</p>
+              <div class="custom-control custom-switch">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="customSwitch4"
+                />
+                <label class="custom-control-label" for="customSwitch4"></label>
+              </div>
+            </div>
+            <div class="toggleOption">
+              <p>Calculator</p>
+              <div class="custom-control custom-switch">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="customSwitch5"
+                />
+                <label class="custom-control-label" for="customSwitch5"></label>
+              </div>
+            </div>
+            <div class="toggleOption">
+              <p>Games</p>
+              <div class="custom-control custom-switch">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="customSwitch6"
+                />
+                <label class="custom-control-label" for="customSwitch6"></label>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -56,6 +118,10 @@ div.title h3,
 div.title p {
   margin-bottom: 0;
 }
+div.title h5 {
+  margin-top: 50px;
+  padding-left: 10px;
+}
 /* Customize Section styling */
 div.customizeSectionWrapper {
   height: 308px;
@@ -73,5 +139,36 @@ div.customizeSectionWrapper::-webkit-scrollbar-thumb {
 div.customizeSection {
   height: 308px;
   width: 485px;
+}
+/* ToggleOption styling */
+div.toggleOption {
+  height: 50px;
+  border-top: 1px solid grey;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+div.toggleOption p {
+  margin-bottom: 0;
+  padding-left: 30px;
+}
+.custom-switch .custom-control-label::before {
+  background-color: white;
+  border: 2px solid white;
+}
+.custom-switch .custom-control-label::after {
+  background-color: black;
+}
+.custom-switch .custom-control-input:checked ~ .custom-control-label::after {
+  background-color: goldenrod;
+}
+.custom-switch .custom-control-input:checked ~ .custom-control-label::before {
+  background-color: black;
+  border: 2px solid goldenrod;
+}
+label.custom-control-label:hover,
+input.custom-control-input:hover {
+  cursor: pointer;
+  text-shadow: 1px 0px 12px white, 1px 0px 8px white;
 }
 </style>
