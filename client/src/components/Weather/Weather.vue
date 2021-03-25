@@ -362,7 +362,7 @@ export default {
   font-family: 'Roboto', sans-serif;
   font-weight: 100;
   font-size: 14px;
-  right: 5%;
+  right: 3%;
   top: 30%;
   text-align: center;
 }
