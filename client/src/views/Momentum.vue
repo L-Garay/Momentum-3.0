@@ -8,22 +8,30 @@
     <div class="container-fluid top">
       <div class="row">
         <div class="col-1">
-          <div v-if="toggledNews" class="toggle" @click="openNewsModal">
-            <i class="far fa-newspaper fa-2x"></i>
-            <p>News</p>
-          </div>
+          <transition name="fade">
+            <div v-if="show.news" class="toggle" @click="openNewsModal">
+              <i class="far fa-newspaper fa-2x"></i>
+              <p>News</p>
+            </div></transition
+          >
         </div>
         <div class="col-1">
-          <div v-if="toggledGames" class="toggle games" @click="openGames">
-            <i class="fas fa-gamepad fa-2x"></i>
-            <p>Games</p>
-          </div>
+          <transition name="fade">
+            <div v-if="show.games" class="toggle games" @click="openGames">
+              <i class="fas fa-gamepad fa-2x"></i>
+              <p>Games</p>
+            </div></transition
+          >
         </div>
         <div class="col-3 offset-7">
-          <div><weather /></div>
+          <transition name="fade">
+            <div v-show="show.weather"><weather /></div
+          ></transition>
         </div>
         <div class="col-1">
-          <calculator v-if="toggledCalculator" class="calculator" />
+          <transition name="fade">
+            <calculator v-if="show.calculator" class="calculator"
+          /></transition>
         </div>
       </div>
     </div>
@@ -41,17 +49,8 @@
             </div>
           </div>
         </div>
-
-        <photo-modal
-          v-if="showPhotoModal"
-          @close-photos-modal="closePhotosModal"
-        />
-        <quote-modal
-          v-if="showQuoteModal"
-          @close-quotes-modal="closeQuotesModal"
-        />
-        <news-modal v-if="showNewsModal" @close-news-modal="closeNewsModal" />
-        <game v-if="showGames" @close-games="closeGames" />
+        <news-modal v-if="toggle.news" @close-news-modal="closeNewsModal" />
+        <game v-if="toggle.games" @close-games="closeGames" />
       </div>
     </div>
     <div class="container-fluid ">
@@ -59,19 +58,28 @@
         <div class="col-1 settingsUtilitiesHeight">
           <p class="toggleMenu" @click="toggleSettings">Settings</p>
           <transition name="fade">
-            <div v-if="show.settings">
-              <settings-2 @toggleSettings="toggleSettings" /></div
+            <div v-if="toggle.settings">
+              <settings-2
+                @toggleSettings="toggleSettings"
+                :showData="show"
+              /></div
           ></transition>
         </div>
         <div class="col-6 offset-2 quote">
-          <quote />
+          <transition name="fade"> <quote v-show="show.quote"/></transition>
         </div>
         <div class="col-1 offset-2 settingsUtilitiesHeight">
-          <p class="toggleMenu text-right" @click="toggleUtilities">
-            Utilities
-          </p>
           <transition name="fade">
-            <div v-if="showUtilities">
+            <p
+              v-show="show.utilities"
+              class="toggleMenu text-right"
+              @click="toggleUtilities"
+            >
+              Utilities
+            </p></transition
+          >
+          <transition name="fade">
+            <div v-if="toggle.utilities">
               <utilities /></div
           ></transition>
         </div>
@@ -82,14 +90,10 @@
 
 <script>
 import Weather from '@/components/Weather/Weather.vue';
-// import Forecast from '@/components/Weather/5DayForecast.vue';
 import Quote from '@/components/Quote.vue';
-// import Settings from '@/components/Settings.vue';
 import Settings2 from '@/components/SettingsMenu/Settings2.vue';
 import Clock from '@/components/Greeting/Clock.vue';
 import Greeting from '@/components/Greeting/Greeting.vue';
-import PhotoModal from '@/components/Modals/PhotoModal.vue';
-import QuoteModal from '@/components/Modals/QuoteModal.vue';
 import Calculator from '@/components/Optional/Calculator/Calculator.vue';
 import NewsModal from '@/components/Modals/NewsModal.vue';
 import Utilities from '@/components/Utilities/UtilitiesComponent.vue';
@@ -100,34 +104,30 @@ export default {
   components: {
     Weather,
     Quote,
-    // Settings,
     Settings2,
     Clock,
     Greeting,
-    PhotoModal,
-    QuoteModal,
     Calculator,
     NewsModal,
     Utilities,
     Game,
-    // Forecast,
   },
   data() {
     return {
-      showPhotoModal: false,
-      showQuoteModal: false,
-      showTodosModal: false,
-      toggledCalculator: false,
-      showCalculator: false,
-      toggledNews: false,
-      showNewsModal: false,
-      toggledGames: false,
-      showGames: false,
-      showUtilities: false,
-      show5DayForecast: false,
       gotPhoto: false,
       show: {
+        utilities: true,
+        weather: true,
+        quote: true,
+        calculator: false,
+        news: false,
+        games: false,
+      },
+      toggle: {
         settings: false,
+        utilities: false,
+        news: false,
+        games: false,
       },
     };
   },
@@ -137,17 +137,29 @@ export default {
       this.checkCaclulator(result);
       this.checkNews(result);
       this.checkGames(result);
+      this.checkWeather(result);
+      this.checkQuote(result);
+      this.checkUtilities(result);
     });
     this.$root.$on('changedUser', (newUser) => {
       console.log('hit changed user in the momentum view');
       this.checkCaclulator(newUser);
       this.checkNews(newUser);
       this.checkGames(newUser);
+      this.checkWeather(newUser);
+      this.checkQuote(newUser);
+      this.checkUtilities(newUser);
     });
     this.$root.$on('submitNewUser', (user) => {
       this.checkCaclulator(user);
       this.checkNews(user);
       this.checkGames(user);
+      this.checkWeather(user);
+      this.checkQuote(user);
+      this.checkUtilities(user);
+    });
+    this.$root.$on('showComponents', (component) => {
+      this.showComponents(component);
     });
   },
   computed: {
@@ -156,111 +168,118 @@ export default {
     },
   },
   methods: {
+    showComponents(component) {
+      switch (component) {
+        case 'weather':
+          this.show.weather = !this.show.weather;
+          this.$store.state.user.user.selected.weather = this.show.weather;
+          break;
+        case 'utilities':
+          this.show.utilities = !this.show.utilities;
+          this.$store.state.user.user.selected.utilities = this.show.utilities;
+          break;
+        case 'quote':
+          this.show.quote = !this.show.quote;
+          this.$store.state.user.user.selected.quote = this.show.quote;
+          break;
+        case 'news':
+          this.show.news = !this.show.news;
+          this.$store.state.user.user.selected.news = this.show.news;
+          break;
+        case 'calc':
+          this.show.calculator = !this.show.calculator;
+          this.$store.state.user.user.selected.calculator = this.show.calculator;
+          break;
+        case 'games':
+          this.show.games = !this.show.games;
+          this.$store.state.user.user.selected.games = this.show.games;
+          break;
+
+        default:
+          this.show.weather = true;
+          this.show.quote = true;
+          this.show.utilities = true;
+          this.show.games = false;
+          this.show.news = false;
+          this.show.calculator = false;
+          break;
+      }
+    },
     async getPhotoBackground() {
       await this.$store.dispatch('getPhoto');
       this.gotPhoto = true;
     },
-    // Photo Modal control
-    openPhotosModal() {
-      this.showPhotoModal = true;
-    },
-    closePhotosModal() {
-      this.showPhotoModal = false;
-    },
-    // Quote Modal control
-    openQuotesModal() {
-      this.showQuoteModal = true;
-    },
-    closeQuotesModal() {
-      this.showQuoteModal = false;
-    },
-    // // Weather control
-    // toggle5DayForecast() {
-    //   if (this.show5DayForecast == true) {
-    //     this.show5DayForecast = false;
-    //   } else if (this.show5DayForecast == false) {
-    //     this.show5DayForecast = true;
-    //   }
-    // },
     // News Modal control
-    toggleNews() {
-      if (this.toggledNews == true) {
-        this.toggledNews = false;
-      } else if (this.toggledNews == false) {
-        this.toggledNews = true;
-      }
-    },
     openNewsModal() {
-      this.showNewsModal = true;
+      this.toggle.news = true;
     },
     closeNewsModal() {
-      this.showNewsModal = false;
+      this.toggle.news = false;
     },
     checkNews(user) {
-      if (user.newsSelected == true) {
-        this.toggledNews = true;
+      if (user.selected.news == true) {
+        this.show.news = true;
       } else {
-        this.toggledNews = false;
+        this.show.news = false;
       }
     },
-    // Todos Control
-    toggleTodos() {
-      if (this.showTodosModal == true) {
-        this.showTodosModal = false;
+    checkWeather(user) {
+      if (user.selected.weather == true) {
+        this.show.weather = true;
       } else {
-        this.showTodosModal = true;
+        this.show.weather = false;
+      }
+    },
+    checkQuote(user) {
+      if (user.selected.quote == true) {
+        this.show.quote = true;
+      } else {
+        this.show.quote = false;
+      }
+    },
+    checkUtilities(user) {
+      if (user.selected.utilities == true) {
+        this.show.utilities = true;
+      } else {
+        this.show.utilities = false;
       }
     },
     // Calculator control
-    toggleCalculator() {
-      if (this.toggledCalculator == false) {
-        this.toggledCalculator = true;
-      } else {
-        this.toggledCalculator = false;
-      }
-    },
     checkCaclulator(user) {
-      if (user.calculatorSelected == true) {
-        this.toggledCalculator = true;
+      if (user.selected.calculator == true) {
+        this.show.calculator = true;
       } else {
-        this.toggledCalculator = false;
+        this.show.calculator = false;
       }
     },
     // Games control
-    toggleGames() {
-      if (this.toggledGames == true) {
-        this.toggledGames = false;
-      } else {
-        this.toggledGames = true;
-      }
-    },
     openGames() {
-      this.showGames = true;
+      this.toggle.games = true;
     },
     closeGames() {
-      this.showGames = false;
+      this.toggle.games = false;
     },
     checkGames(user) {
-      if (user.gamesSelected == true) {
-        this.toggledGames = true;
+      if (user.selected.games == true) {
+        this.show.games = true;
       } else {
-        this.toggledGames = false;
+        this.show.games = false;
       }
     },
     // Utilities control
     toggleUtilities() {
-      if (this.showUtilities == false) {
-        this.showUtilities = true;
-      } else if (this.showUtilities == true) {
-        this.showUtilities = false;
+      if (this.toggle.utilities == false) {
+        this.toggle.utilities = true;
+      } else if (this.toggle.utilities == true) {
+        this.toggle.utilities = false;
       }
     },
     // Settings
     toggleSettings() {
-      if (this.show.settings == false) {
-        this.show.settings = true;
-      } else if (this.show.settings == true) {
-        this.show.settings = false;
+      if (this.toggle.settings == false) {
+        this.toggle.settings = true;
+      } else if (this.toggle.settings == true) {
+        this.toggle.settings = false;
       }
     },
   },
@@ -290,12 +309,6 @@ div.middle div.row.greetingRow {
   justify-content: center;
   padding-top: 0;
 }
-/* div.middle div.row div.greetingWrapper {
-  width: 1400px;
-}
-.middle .row .greeting {
-  max-width: 1400px;
-} */
 .bottom {
   height: 14vh;
   align-items: flex-end;

@@ -11,15 +11,12 @@ const _todoRepo = mongoose.model('Todo', Todo);
 const _todoListRepo = mongoose.model('List', TodoList);
 const _contactRepo = mongoose.model('Contact', Contact);
 
-const UserSchema = new mongoose.Schema(
+const UserSchema = new Schema(
   {
     name: { type: String, required: true },
-    militaryTimeSelected: { type: Boolean, required: true },
-    calculatorSelected: { type: Boolean, required: true },
-    newsSelected: { type: Boolean, required: true },
-    gamesSelected: { type: Boolean, required: true },
     createdTodoLists: { type: Array, required: true },
     contacts: { type: Array, required: true },
+    selected: { type: Object, required: true },
   },
   { timestamps: true, toJSON: { virtuals: true } }
 );

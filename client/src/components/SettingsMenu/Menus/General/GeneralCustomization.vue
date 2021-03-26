@@ -5,7 +5,7 @@
     </div>
     <div class="fontControlSection">
       <div class="controls">
-        <div class="label"><b>Font</b></div>
+        <div class="label">Font</div>
         <div class="fonts">
           <div class="topRow">
             <div class="fontOption default" @click="changeFont('default')">
@@ -38,9 +38,7 @@
     </div>
     <div class="themeControlSection">
       <div class="controls">
-        <div class="label comingSoon">
-          <b>Theme</b><small>**Coming Soon**</small>
-        </div>
+        <div class="label comingSoon">Theme<small>**Coming Soon**</small></div>
         <div class="dropleft">
           <button
             class="btn dropdown-toggle"

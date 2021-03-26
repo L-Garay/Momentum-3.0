@@ -53,12 +53,17 @@ export default {
       },
       user: {
         name: '',
-        militaryTimeSelected: false,
-        calculatorSelected: false,
-        newsSelected: false,
-        gamesSelected: false,
         createdTodoLists: [],
         contacts: [],
+        selected: {
+          militaryTime: false,
+          calculator: false,
+          news: false,
+          games: false,
+          weather: true,
+          utilities: true,
+          quote: true,
+        },
       },
     };
   },
@@ -112,8 +117,9 @@ export default {
       this.user.name = '';
       this.$nextTick(() => this.$refs.focus.focus());
     },
-    submitNewUser() {
-      this.$store.dispatch('newUser', this.user);
+    async submitNewUser() {
+      await this.$store.dispatch('updateUserById', this.$store.state.user.user);
+      await this.$store.dispatch('newUser', this.user);
       let user = this.user;
       this.$root.$emit('submitNewUser', user);
       this.user.name = '';

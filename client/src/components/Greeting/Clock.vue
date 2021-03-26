@@ -28,16 +28,16 @@ export default {
 
     // These come from the Greeting component when the user is switched, and so user preference is switched
     this.$root.$on('checkLastUser', (result) => {
-      if (result.militaryTimeSelected == true) {
+      if (result.selected.militaryTime == true) {
         this.militaryTimeSelected = true;
-      } else if (result.militaryTimeSelected == false) {
+      } else if (result.selected.militaryTime == false) {
         this.militaryTimeSelected = false;
       }
     });
     this.$root.$on('changedUser', (newUser) => {
-      if (newUser.militaryTimeSelected == true) {
+      if (newUser.selected.militaryTime == true) {
         this.militaryTimeSelected = true;
-      } else if (newUser.militaryTimeSelected == false) {
+      } else if (newUser.selected.militaryTime == false) {
         this.militaryTimeSelected = false;
       }
     });
