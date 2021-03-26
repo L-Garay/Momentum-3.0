@@ -137,17 +137,26 @@ export default {
       this.checkCaclulator(result);
       this.checkNews(result);
       this.checkGames(result);
+      this.checkWeather(result);
+      this.checkQuote(result);
+      this.checkUtilities(result);
     });
     this.$root.$on('changedUser', (newUser) => {
       console.log('hit changed user in the momentum view');
       this.checkCaclulator(newUser);
       this.checkNews(newUser);
       this.checkGames(newUser);
+      this.checkWeather(newUser);
+      this.checkQuote(newUser);
+      this.checkUtilities(newUser);
     });
     this.$root.$on('submitNewUser', (user) => {
       this.checkCaclulator(user);
       this.checkNews(user);
       this.checkGames(user);
+      this.checkWeather(user);
+      this.checkQuote(user);
+      this.checkUtilities(user);
     });
     this.$root.$on('showComponents', (component) => {
       this.showComponents(component);
@@ -163,21 +172,27 @@ export default {
       switch (component) {
         case 'weather':
           this.show.weather = !this.show.weather;
+          this.$store.state.user.user.selected.weather = this.show.weather;
           break;
         case 'utilities':
           this.show.utilities = !this.show.utilities;
+          this.$store.state.user.user.selected.utilities = this.show.utilities;
           break;
         case 'quote':
           this.show.quote = !this.show.quote;
+          this.$store.state.user.user.selected.quote = this.show.quote;
           break;
         case 'news':
           this.show.news = !this.show.news;
+          this.$store.state.user.user.selected.news = this.show.news;
           break;
         case 'calc':
           this.show.calculator = !this.show.calculator;
+          this.$store.state.user.user.selected.calculator = this.show.calculator;
           break;
         case 'games':
           this.show.games = !this.show.games;
+          this.$store.state.user.user.selected.games = this.show.games;
           break;
 
         default:
@@ -202,15 +217,36 @@ export default {
       this.toggle.news = false;
     },
     checkNews(user) {
-      if (user.newsSelected == true) {
+      if (user.selected.news == true) {
         this.show.news = true;
       } else {
         this.show.news = false;
       }
     },
+    checkWeather(user) {
+      if (user.selected.weather == true) {
+        this.show.weather = true;
+      } else {
+        this.show.weather = false;
+      }
+    },
+    checkQuote(user) {
+      if (user.selected.quote == true) {
+        this.show.quote = true;
+      } else {
+        this.show.quote = false;
+      }
+    },
+    checkUtilities(user) {
+      if (user.selected.utilities == true) {
+        this.show.utilities = true;
+      } else {
+        this.show.utilities = false;
+      }
+    },
     // Calculator control
     checkCaclulator(user) {
-      if (user.calculatorSelected == true) {
+      if (user.selected.calculator == true) {
         this.show.calculator = true;
       } else {
         this.show.calculator = false;
@@ -224,7 +260,7 @@ export default {
       this.toggle.games = false;
     },
     checkGames(user) {
-      if (user.gamesSelected == true) {
+      if (user.selected.games == true) {
         this.show.games = true;
       } else {
         this.show.games = false;

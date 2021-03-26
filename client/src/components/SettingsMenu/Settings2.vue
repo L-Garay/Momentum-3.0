@@ -22,7 +22,11 @@
       </div>
       <div class="mainSection">
         <div class="components">
-          <general-menu v-if="show.general" :componentData="showComponents" />
+          <general-menu
+            v-if="show.general"
+            :componentData="showComponents"
+            @madeChange="madeChange"
+          />
           <photos-menu v-if="show.photos" />
           <quotes-menu v-if="show.quotes" />
         </div>
@@ -51,6 +55,7 @@ export default {
         quotes: false,
       },
       showComponents: { ...this.showData },
+      changeMade: false,
     };
   },
   mounted() {
@@ -68,7 +73,14 @@ export default {
           this.settingsEventListener,
           false
         );
+        if (this.changeMade) {
+          console.log('madeChange');
+          this.$store.dispatch('updateUserById', this.$store.state.user.user);
+        }
       }
+    },
+    madeChange() {
+      this.changeMade = true;
     },
     toggleComponent(component) {
       switch (component) {

@@ -164,6 +164,7 @@ export default {
     },
     showComponents(component) {
       this.$root.$emit('showComponents', component);
+      this.$emit('madeChange');
     },
   },
 };

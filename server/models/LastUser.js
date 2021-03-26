@@ -4,11 +4,9 @@ const Schema = mongoose.Schema;
 const LastUser = new Schema(
   {
     name: { type: String, required: true },
-    militaryTimeSelected: { type: Boolean, required: true },
-    calculatorSelected: { type: Boolean, required: true },
-    newsSelected: { type: Boolean, required: true },
-    gamesSelected: { type: Boolean, required: true },
     createdTodoLists: { type: Array, required: true },
+    contacts: { type: Array, required: true },
+    selected: { type: Object, required: true },
   },
   { timestamps: true, toJSON: { virtuals: true } }
 );
