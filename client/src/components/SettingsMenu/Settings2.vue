@@ -22,7 +22,7 @@
       </div>
       <div class="mainSection">
         <div class="components">
-          <general-menu v-if="show.general" />
+          <general-menu v-if="show.general" :componentData="showComponents" />
           <photos-menu v-if="show.photos" />
           <quotes-menu v-if="show.quotes" />
         </div>
@@ -42,6 +42,7 @@ export default {
     PhotosMenu,
     QuotesMenu,
   },
+  props: ['showData'],
   data() {
     return {
       show: {
@@ -49,6 +50,7 @@ export default {
         photos: false,
         quotes: false,
       },
+      showComponents: { ...this.showData },
     };
   },
   mounted() {

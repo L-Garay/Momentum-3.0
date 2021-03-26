@@ -20,9 +20,13 @@
                 <input
                   type="checkbox"
                   class="custom-control-input"
-                  id="customSwitch1"
+                  id="utilitiesSwitch"
+                  @input="showComponents('utilities')"
                 />
-                <label class="custom-control-label" for="customSwitch1"></label>
+                <label
+                  class="custom-control-label"
+                  for="utilitiesSwitch"
+                ></label>
               </div>
             </div>
             <div class="toggleOption">
@@ -31,9 +35,10 @@
                 <input
                   type="checkbox"
                   class="custom-control-input"
-                  id="customSwitch2"
+                  id="weatherSwitch"
+                  @input="showComponents('weather')"
                 />
-                <label class="custom-control-label" for="customSwitch2"></label>
+                <label class="custom-control-label" for="weatherSwitch"></label>
               </div>
             </div>
             <div class="toggleOption">
@@ -42,9 +47,10 @@
                 <input
                   type="checkbox"
                   class="custom-control-input"
-                  id="customSwitch3"
+                  id="quoteSwitch"
+                  @input="showComponents('quote')"
                 />
-                <label class="custom-control-label" for="customSwitch3"></label>
+                <label class="custom-control-label" for="quoteSwitch"></label>
               </div>
             </div>
             <div class="toggleOption">
@@ -53,9 +59,10 @@
                 <input
                   type="checkbox"
                   class="custom-control-input"
-                  id="customSwitch4"
+                  id="newsSwitch"
+                  @input="showComponents('news')"
                 />
-                <label class="custom-control-label" for="customSwitch4"></label>
+                <label class="custom-control-label" for="newsSwitch"></label>
               </div>
             </div>
             <div class="toggleOption">
@@ -64,9 +71,10 @@
                 <input
                   type="checkbox"
                   class="custom-control-input"
-                  id="customSwitch5"
+                  id="calcSwitch"
+                  @input="showComponents('calc')"
                 />
-                <label class="custom-control-label" for="customSwitch5"></label>
+                <label class="custom-control-label" for="calcSwitch"></label>
               </div>
             </div>
             <div class="toggleOption">
@@ -75,9 +83,10 @@
                 <input
                   type="checkbox"
                   class="custom-control-input"
-                  id="customSwitch6"
+                  id="gamesSwitch"
+                  @input="showComponents('games')"
                 />
-                <label class="custom-control-label" for="customSwitch6"></label>
+                <label class="custom-control-label" for="gamesSwitch"></label>
               </div>
             </div>
           </div>
@@ -93,6 +102,69 @@ export default {
   name: 'GeneralMenuComponent',
   components: {
     GeneralCustomization,
+  },
+  props: ['componentData'],
+  data() {
+    return {
+      show: { ...this.componentData },
+    };
+  },
+  mounted() {
+    this.checkComponents();
+  },
+  computed: {
+    ComponentData() {
+      return this.componentData;
+    },
+  },
+  methods: {
+    checkComponents() {
+      if (this.ComponentData.weather == true) {
+        document
+          .getElementById('weatherSwitch')
+          .setAttribute('checked', 'checked');
+      } else if (this.ComponentData.weather == false) {
+        document.getElementById('weatherSwitch').removeAttribute('checked');
+      }
+      if (this.ComponentData.quote == true) {
+        document
+          .getElementById('quoteSwitch')
+          .setAttribute('checked', 'checked');
+      } else if (this.ComponentData.quote == false) {
+        document.getElementById('quoteSwitch').removeAttribute('checked');
+      }
+      if (this.ComponentData.utilities == true) {
+        document
+          .getElementById('utilitiesSwitch')
+          .setAttribute('checked', 'checked');
+      } else if (this.ComponentData.utilities == false) {
+        document.getElementById('utilitiesSwitch').removeAttribute('checked');
+      }
+      if (this.ComponentData.news == true) {
+        document
+          .getElementById('newsSwitch')
+          .setAttribute('checked', 'checked');
+      } else if (this.ComponentData.news == false) {
+        document.getElementById('newsSwitch').removeAttribute('checked');
+      }
+      if (this.ComponentData.games == true) {
+        document
+          .getElementById('gamesSwitch')
+          .setAttribute('checked', 'checked');
+      } else if (this.ComponentData.games == false) {
+        document.getElementById('gamesSwitch').removeAttribute('checked');
+      }
+      if (this.ComponentData.calculator == true) {
+        document
+          .getElementById('calcSwitch')
+          .setAttribute('checked', 'checked');
+      } else if (this.ComponentData.calculator == false) {
+        document.getElementById('calcSwitch').removeAttribute('checked');
+      }
+    },
+    showComponents(component) {
+      this.$root.$emit('showComponents', component);
+    },
   },
 };
 </script>
