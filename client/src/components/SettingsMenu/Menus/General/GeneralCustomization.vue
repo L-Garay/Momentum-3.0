@@ -8,28 +8,48 @@
         <div class="label">Font</div>
         <div class="fonts">
           <div class="topRow">
-            <div class="fontOption default" @click="changeFont('default')">
+            <div
+              id="default"
+              class="fontOption default selected"
+              @click="changeFont('default')"
+            >
               Default
             </div>
             <div class="fontOptionDivider">|</div>
-            <div class="fontOption mono" @click="changeFont('mono')">
+            <div id="mono" class="fontOption mono" @click="changeFont('mono')">
               Monospace
             </div>
             <div class="fontOptionDivider">|</div>
-            <div class="fontOption serif" @click="changeFont('serif')">
+            <div
+              id="serif"
+              class="fontOption serif"
+              @click="changeFont('serif')"
+            >
               Serif
             </div>
           </div>
           <div class="bottomRow">
-            <div class="fontOption pompiere" @click="changeFont('pompiere')">
+            <div
+              id="pompiere"
+              class="fontOption pompiere"
+              @click="changeFont('pompiere')"
+            >
               Pompiere
             </div>
             <div class="fontOptionDivider">|</div>
-            <div class="fontOption charm" @click="changeFont('charm')">
+            <div
+              id="charm"
+              class="fontOption charm"
+              @click="changeFont('charm')"
+            >
               Charm
             </div>
             <div class="fontOptionDivider">|</div>
-            <div class="fontOption baloo" @click="changeFont('baloo')">
+            <div
+              id="baloo"
+              class="fontOption baloo"
+              @click="changeFont('baloo')"
+            >
               Baloo Bhai
             </div>
           </div>
@@ -71,7 +91,71 @@ export default {
   },
   methods: {
     changeFont(font) {
+      this.$store.state.user.user.selected.font = font;
+      this.$emit('madeChange');
       this.$root.$emit('changeFont', font);
+      this.highlightFont(font);
+    },
+    highlightFont(font) {
+      switch (font) {
+        case 'default':
+          document.getElementById('default').classList.add('selected');
+          document.getElementById('mono').classList.remove('selected');
+          document.getElementById('serif').classList.remove('selected');
+          document.getElementById('pompiere').classList.remove('selected');
+          document.getElementById('charm').classList.remove('selected');
+          document.getElementById('baloo').classList.remove('selected');
+          break;
+        case 'mono':
+          document.getElementById('default').classList.remove('selected');
+          document.getElementById('mono').classList.add('selected');
+          document.getElementById('serif').classList.remove('selected');
+          document.getElementById('pompiere').classList.remove('selected');
+          document.getElementById('charm').classList.remove('selected');
+          document.getElementById('baloo').classList.remove('selected');
+          break;
+        case 'serif':
+          document.getElementById('default').classList.remove('selected');
+          document.getElementById('mono').classList.remove('selected');
+          document.getElementById('serif').classList.add('selected');
+          document.getElementById('pompiere').classList.remove('selected');
+          document.getElementById('charm').classList.remove('selected');
+          document.getElementById('baloo').classList.remove('selected');
+          break;
+        case 'pompiere':
+          document.getElementById('default').classList.remove('selected');
+          document.getElementById('mono').classList.remove('selected');
+          document.getElementById('serif').classList.remove('selected');
+          document.getElementById('pompiere').classList.add('selected');
+          document.getElementById('charm').classList.remove('selected');
+          document.getElementById('baloo').classList.remove('selected');
+          break;
+        case 'charm':
+          document.getElementById('default').classList.remove('selected');
+          document.getElementById('mono').classList.remove('selected');
+          document.getElementById('serif').classList.remove('selected');
+          document.getElementById('pompiere').classList.remove('selected');
+          document.getElementById('charm').classList.add('selected');
+          document.getElementById('baloo').classList.remove('selected');
+          break;
+        case 'baloo':
+          document.getElementById('default').classList.remove('selected');
+          document.getElementById('mono').classList.remove('selected');
+          document.getElementById('serif').classList.remove('selected');
+          document.getElementById('pompiere').classList.remove('selected');
+          document.getElementById('charm').classList.remove('selected');
+          document.getElementById('baloo').classList.add('selected');
+          break;
+
+        default:
+          document.getElementById('default').classList.add('selected');
+          document.getElementById('mono').classList.remove('selected');
+          document.getElementById('serif').classList.remove('selected');
+          document.getElementById('pompiere').classList.remove('selected');
+          document.getElementById('charm').classList.remove('selected');
+          document.getElementById('baloo').classList.remove('selected');
+          break;
+      }
     },
   },
 };
@@ -199,6 +283,9 @@ div.fontControlSection {
 }
 div.fontControlSection div.title {
   padding-left: 10px;
+}
+.selected {
+  color: goldenrod;
 }
 
 /* Theme Control styling */

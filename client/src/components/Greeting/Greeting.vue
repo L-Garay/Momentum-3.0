@@ -63,6 +63,7 @@ export default {
           weather: true,
           utilities: true,
           quote: true,
+          font: 'default',
         },
       },
     };
@@ -118,7 +119,6 @@ export default {
       this.$nextTick(() => this.$refs.focus.focus());
     },
     async submitNewUser() {
-      await this.$store.dispatch('updateUserById', this.$store.state.user.user);
       await this.$store.dispatch('newUser', this.user);
       let user = this.user;
       this.$root.$emit('submitNewUser', user);

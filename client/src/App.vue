@@ -36,7 +36,15 @@ export default {
     };
   },
   mounted() {
+    this.$root.$on('checkFont', (font) => {
+      this.switchFont(font);
+    });
     this.$root.$on('changeFont', (font) => {
+      this.switchFont(font);
+    });
+  },
+  methods: {
+    switchFont(font) {
       switch (font) {
         case 'default':
           this.show.default = true;
@@ -96,7 +104,7 @@ export default {
           this.show.baloo = false;
           break;
       }
-    });
+    },
   },
 };
 </script>
