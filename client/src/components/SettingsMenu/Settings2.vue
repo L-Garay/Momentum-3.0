@@ -29,6 +29,7 @@
           />
           <photos-menu v-if="show.photos" />
           <quotes-menu v-if="show.quotes" />
+          <clock-menu v-if="show.clock" />
         </div>
       </div>
     </div>
@@ -39,12 +40,14 @@
 import GeneralMenu from '@/components/SettingsMenu/Menus/General/GeneralMenu.vue';
 import PhotosMenu from '@/components/SettingsMenu/Menus/PhotosMenu.vue';
 import QuotesMenu from '@/components/SettingsMenu/Menus/QuotesMenu.vue';
+import ClockMenu from '@/components/SettingsMenu/Menus/ClockMenu.vue';
 export default {
   name: 'Settings2',
   components: {
     GeneralMenu,
     PhotosMenu,
     QuotesMenu,
+    ClockMenu,
   },
   props: ['showData'],
   data() {
@@ -53,6 +56,7 @@ export default {
         general: true,
         photos: false,
         quotes: false,
+        clock: false,
       },
       showComponents: { ...this.showData },
       changeMade: false,
@@ -88,20 +92,31 @@ export default {
           this.show.general = true;
           this.show.photos = false;
           this.show.quotes = false;
+          this.show.clock = false;
           break;
         case 'photos':
           this.show.general = false;
           this.show.photos = true;
           this.show.quotes = false;
+          this.show.clock = false;
           break;
         case 'quotes':
           this.show.general = false;
           this.show.photos = false;
           this.show.quotes = true;
+          this.show.clock = false;
+          break;
+        case 'clock':
+          this.show.general = false;
+          this.show.photos = false;
+          this.show.quotes = false;
+          this.show.clock = true;
           break;
         default:
           this.show.general = true;
           this.show.photos = false;
+          this.show.quotes = false;
+          this.show.clock = false;
           break;
       }
     },

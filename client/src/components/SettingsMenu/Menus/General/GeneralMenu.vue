@@ -9,7 +9,7 @@
       </div>
       <div class="customizeSectionWrapper">
         <div class="customizeSection">
-          <general-customization />
+          <general-customization @madeChange="emitChange" />
           <div class="toggleShowSection">
             <div class="title">
               <h5>Show</h5>
@@ -164,6 +164,9 @@ export default {
     },
     showComponents(component) {
       this.$root.$emit('showComponents', component);
+      this.emitChange();
+    },
+    emitChange() {
       this.$emit('madeChange');
     },
   },

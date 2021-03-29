@@ -140,6 +140,7 @@ export default {
       this.checkWeather(result);
       this.checkQuote(result);
       this.checkUtilities(result);
+      this.checkFont(result);
     });
     this.$root.$on('changedUser', (newUser) => {
       console.log('hit changed user in the momentum view');
@@ -149,6 +150,7 @@ export default {
       this.checkWeather(newUser);
       this.checkQuote(newUser);
       this.checkUtilities(newUser);
+      this.checkFont(newUser);
     });
     this.$root.$on('submitNewUser', (user) => {
       this.checkCaclulator(user);
@@ -157,6 +159,7 @@ export default {
       this.checkWeather(user);
       this.checkQuote(user);
       this.checkUtilities(user);
+      this.checkFont(user);
     });
     this.$root.$on('showComponents', (component) => {
       this.showComponents(component);
@@ -243,6 +246,10 @@ export default {
       } else {
         this.show.utilities = false;
       }
+    },
+    checkFont(user) {
+      let font = user.selected.font;
+      this.$root.$emit('checkFont', font);
     },
     // Calculator control
     checkCaclulator(user) {
