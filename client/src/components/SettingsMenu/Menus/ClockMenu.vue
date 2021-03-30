@@ -37,7 +37,41 @@
 <script>
 export default {
   name: 'ClockMenuComponent',
-  // NOTE Need to setup the functionality for switching the time format, save the user's choice, and have the app check their choice and format accordingly on load/refresh
+  props: ['militaryChoice'],
+  data() {
+    return {};
+  },
+  mounted() {
+    this.checkMilitaryTime();
+  },
+  computed: {
+    MilitaryTime() {
+      return this.militaryChoice;
+    },
+  },
+  methods: {
+    checkMilitaryTime() {
+      if (this.militaryChoice) {
+        document
+          .getElementById('clockSwitch')
+          .setAttribute('checked', 'checked');
+      } else if (this.militaryChoice == false) {
+        document.getElementById('clockSwitch').removeAttribute('checked');
+      }
+    },
+    enableMilitaryTime() {
+      if (this.militaryChoice == true) {
+        this.$store.state.user.user.selected.militaryTime = false;
+      } else if (this.militaryChoice == false) {
+        this.$store.state.user.user.selected.militaryTime = true;
+      }
+      this.$root.$emit('enableMilitaryTime');
+      this.emitChange();
+    },
+    emitChange() {
+      this.$emit('madeChange');
+    },
+  },
 };
 </script>
 

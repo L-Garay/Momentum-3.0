@@ -19,11 +19,12 @@ export default {
     this.getTime();
 
     // These come from the Settings component when the user manually switches the setting
-    this.$root.$on('setMilitaryTime', () => {
-      this.militaryTimeSelected = true;
-    });
-    this.$root.$on('setStandardTime', () => {
-      this.militaryTimeSelected = false;
+    this.$root.$on('enableMilitaryTime', () => {
+      if (this.militaryTimeSelected == false) {
+        this.militaryTimeSelected = true;
+      } else if (this.militaryTimeSelected == true) {
+        this.militaryTimeSelected = false;
+      }
     });
 
     // These come from the Greeting component when the user is switched, and so user preference is switched

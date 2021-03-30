@@ -62,6 +62,7 @@
               <settings-2
                 @toggleSettings="toggleSettings"
                 :showData="show"
+                :militaryData="militaryTime"
               /></div
           ></transition>
         </div>
@@ -129,6 +130,7 @@ export default {
         news: false,
         games: false,
       },
+      militaryTime: false,
     };
   },
   mounted() {
@@ -141,6 +143,7 @@ export default {
       this.checkQuote(result);
       this.checkUtilities(result);
       this.checkFont(result);
+      this.checkTime(result);
     });
     this.$root.$on('changedUser', (newUser) => {
       console.log('hit changed user in the momentum view');
@@ -151,6 +154,7 @@ export default {
       this.checkQuote(newUser);
       this.checkUtilities(newUser);
       this.checkFont(newUser);
+      this.checkTime(newUser);
     });
     this.$root.$on('submitNewUser', (user) => {
       this.checkCaclulator(user);
@@ -160,6 +164,7 @@ export default {
       this.checkQuote(user);
       this.checkUtilities(user);
       this.checkFont(user);
+      this.checkTime(user);
     });
     this.$root.$on('showComponents', (component) => {
       this.showComponents(component);
@@ -250,6 +255,13 @@ export default {
     checkFont(user) {
       let font = user.selected.font;
       this.$root.$emit('checkFont', font);
+    },
+    checkTime(user) {
+      if (user.selected.militaryTime == true) {
+        this.militaryTime = true;
+      } else {
+        this.militaryTime = false;
+      }
     },
     // Calculator control
     checkCaclulator(user) {

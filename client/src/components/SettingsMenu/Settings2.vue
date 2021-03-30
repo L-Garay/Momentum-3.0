@@ -29,7 +29,11 @@
           />
           <photos-menu v-if="show.photos" />
           <quotes-menu v-if="show.quotes" />
-          <clock-menu v-if="show.clock" />
+          <clock-menu
+            v-if="show.clock"
+            :militaryChoice="militaryTime"
+            @madeChange="madeChange"
+          />
         </div>
       </div>
     </div>
@@ -49,7 +53,7 @@ export default {
     QuotesMenu,
     ClockMenu,
   },
-  props: ['showData'],
+  props: ['showData', 'militaryData'],
   data() {
     return {
       show: {
@@ -59,6 +63,7 @@ export default {
         clock: false,
       },
       showComponents: { ...this.showData },
+      militaryTime: this.militaryData,
       changeMade: false,
     };
   },
