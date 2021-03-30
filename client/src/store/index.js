@@ -83,6 +83,10 @@ export default new Vuex.Store({
       contact: {},
       currentLetter: 'A',
     },
+    clocks: {
+      current: {},
+      saved: [],
+    },
   },
   mutations: {
     //#region --Photo Methods--
@@ -288,6 +292,13 @@ export default new Vuex.Store({
     },
     setFilteredContacts(state, contacts) {
       state.contacts.specificLetter = contacts;
+    },
+    //#endregion
+
+    //#region --Clock Methods--
+    setClock(state, data) {
+      console.log(data);
+      state.clocks.current = data;
     },
     //#endregion
   },
@@ -1305,6 +1316,28 @@ export default new Vuex.Store({
     async fetchContacts({ dispatch, state }, contact) {
       await dispatch('getContactsByUserId', contact.userId);
       dispatch('filterContacts', state.contacts.currentLetter);
+    },
+    //#endregion
+
+    //#region --Clock Methods--
+    async getWorldTimes({ commit }, city) {
+      let res = await api.get('clocks/' + city);
+      let data = {
+        name: res.data[0].resources[0].timeZoneAtLocation[0].placeName,
+        timeZoneId:
+          res.data[0].resources[0].timeZoneAtLocation[0].timeZone[0]
+            .ianaTimeZoneId,
+        timeZoneName:
+          res.data[0].resources[0].timeZoneAtLocation[0].timeZone[0]
+            .genericName,
+        timeZoneAbbr:
+          res.data[0].resources[0].timeZoneAtLocation[0].timeZone[0]
+            .abbreviation,
+        localTime:
+          res.data[0].resources[0].timeZoneAtLocation[0].timeZone[0]
+            .convertedTime.localTime,
+      };
+      commit('setClock', data);
     },
     //#endregion
   },
